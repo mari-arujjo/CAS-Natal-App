@@ -44,7 +44,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                 label: 'Cursos',
               ),
               NavigationDestination(
-                icon: Icon(CupertinoIcons.book_solid, color: Colors.black),
+                icon: Icon(Icons.sign_language, color: Colors.black),
                 label: 'Glossário',
               ),
               NavigationDestination(
