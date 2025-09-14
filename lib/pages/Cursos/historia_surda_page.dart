@@ -23,7 +23,7 @@ class _ModuloHistoriaSurdaPageState extends State<ModuloHistoriaSurdaPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Este módulo apresenta aspectos históricos, sociais e identitários da comunidade surda, com foco na valorização da Libras como primeira língua e no reconhecimento da surdez como diferença, e não deficiência.',
+                        'Este curso apresenta aspectos históricos, sociais e identitários da comunidade surda, com foco na valorização da Libras como primeira língua e no reconhecimento da surdez como diferença, e não deficiência.',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
