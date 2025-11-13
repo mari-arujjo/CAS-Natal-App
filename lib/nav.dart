@@ -31,6 +31,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         children: [
           SizedBox(height: 3),
           NavigationBar(
+            height: 65,
             backgroundColor: cores.cinzaClaro,
             indicatorColor: cores.azulEscuro,
             selectedIndex: _selectedIndex,
