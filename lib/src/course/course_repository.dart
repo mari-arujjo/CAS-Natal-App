@@ -16,13 +16,17 @@ class CourseRepository {
     }
   }
 
-  Future<List<CourseModel>> getCourseById(String id) async {
+  Future<CourseModel> getCourseById(String id) async {
     final response = await client.get(url:'https://cas-natal-api.onrender.com/CASNatal/courses/$id');
+  
+    if (response.statusCode != 200 && response.statusCode != 201){
+        throw Exception("Falha ao buscar curso. Status: ${response.statusCode}");
+    }
     try{
-      final body = jsonDecode(response.body) as List;
-      return body.map((item) => CourseModel.fromMap(item)).toList();
+      final body = jsonDecode(response.body) as Map<String, dynamic>; 
+      return CourseModel.fromMap(body);
     }catch(e){
-      throw Exception(e);
+      throw Exception('Erro ao processar a resposta do curso: $e');
     }
   }
 

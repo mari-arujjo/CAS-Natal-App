@@ -8,7 +8,7 @@ import 'package:app_cas_natal/pages/Configuracoes/preferencias_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/senha_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/sobre_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/termos_page.dart';
-import 'package:app_cas_natal/pages/Cursos/historia_surda_page.dart';
+import 'package:app_cas_natal/pages/Cursos/detalhe_curso_page.dart';
 import 'package:app_cas_natal/pages/Cursos/cursos_page.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:flutter/material.dart';
@@ -60,10 +60,14 @@ final goRouterProvider = Provider<GoRouter>((ref){
                 },
                 routes: [
                   GoRoute(
-                    path: '/historiaECulturaSurda',
-                    name: 'HistoriaECulturaSurda',
+                    path: 'detalheCurso/:courseId',
+                    name: 'DetalheCurso',
                     builder: (context, state) {
-                      return ModuloHistoriaSurdaPage(key: state.pageKey);
+                      final courseId = state.pathParameters['courseId']!;
+                      return DetalheCursoPage(
+                        key: state.pageKey, 
+                        courseId: courseId,
+                      );
                     },
                   ),
                 ]

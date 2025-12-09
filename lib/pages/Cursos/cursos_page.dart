@@ -1,38 +1,49 @@
-
-import 'package:app_cas_natal/widgets/cursos/direitos_deveres_card_widget.dart';
-import 'package:app_cas_natal/widgets/cursos/historia_cas_card_widget.dart';
-import 'package:app_cas_natal/widgets/cursos/historia_cultura_card_widget.dart';
-import 'package:app_cas_natal/widgets/cursos/letramento_card_widget.dart';
+// Importe os pacotes necessários
+import 'package:app_cas_natal/src/course/course_provider.dart';
+import 'package:app_cas_natal/widgets/cursos/card_cursos_widget.dart';
+import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CursosPage extends StatefulWidget {
+class CursosPage extends ConsumerWidget { 
   const CursosPage({super.key});
 
   @override
-  State<CursosPage> createState() => _CursosPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final coursesAsync = ref.watch(courseProvider);
 
-class _CursosPageState extends State<CursosPage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 30),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 5),
-              CardModuloHistoriaCASWidget(onPressed: () {}),
-              SizedBox(height: 15),
-              CardModuloHistoriaCulturaWidget(onPressed: () {context.goNamed('HistoriaECulturaSurda');}),
-              SizedBox(height: 15),
-              CardModuloLetramentoWidget(onPressed: () {}),
-              SizedBox(height: 15),
-              CardModuloDireitosDeveresWidget(onPressed: () {}),
-            ],
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: coursesAsync.when(
+            loading: () => const Center(child: CarregandoWidget()),
+            error: (error, stack) => Center(
+              child: Text('Erro ao carregar cursos: $error'),
+            ),
+            data: (courses) {
+              if (courses.isEmpty) {
+                return const Center(child: Text('Nenhum curso cadastrado.'));
+              }
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: courses.map((course) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: CourseCardWidget(
+                        course: course, 
+                        onPressed: () {
+                          context.go('/cursos/detalheCurso/${course.id}');
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            },
           ),
         ),
       ),

@@ -141,3 +141,78 @@ abstract class _$CourseNotifier extends $AsyncNotifier<List<CourseModel>> {
     element.handleValue(ref, created);
   }
 }
+
+@ProviderFor(courseDetail)
+const courseDetailProvider = CourseDetailFamily._();
+
+final class CourseDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CourseModel>,
+          CourseModel,
+          FutureOr<CourseModel>
+        >
+    with $FutureModifier<CourseModel>, $FutureProvider<CourseModel> {
+  const CourseDetailProvider._({
+    required CourseDetailFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'courseDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$courseDetailHash();
+
+  @override
+  String toString() {
+    return r'courseDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<CourseModel> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<CourseModel> create(Ref ref) {
+    final argument = this.argument as String;
+    return courseDetail(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CourseDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$courseDetailHash() => r'e0c6bd08756260fd74d75178f75dd19e5362b32c';
+
+final class CourseDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<CourseModel>, String> {
+  const CourseDetailFamily._()
+    : super(
+        retry: null,
+        name: r'courseDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  CourseDetailProvider call(String courseId) =>
+      CourseDetailProvider._(argument: courseId, from: this);
+
+  @override
+  String toString() => r'courseDetailProvider';
+}

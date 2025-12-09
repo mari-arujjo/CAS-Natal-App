@@ -93,6 +93,7 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    const double maxContentWidth = 400;
 
     return DefaultTabController(
       length: 2,
@@ -106,8 +107,13 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
             tabs: [Tab(text: 'Login'), Tab(text: 'Cadastro')],
           ),
         ),
-        body: TabBarView(
-          children: [_buildLoginForm(cor), _buildRegisterForm(cor)],
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: maxContentWidth),
+            child: TabBarView(
+              children: [_buildLoginForm(cor), _buildRegisterForm(cor)],
+            ),
+          ),
         ),
       ),
     );
