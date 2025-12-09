@@ -1,4 +1,4 @@
-import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/container_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +27,14 @@ class _RedefinirSenhaPageState extends State<RedefinirSenhaPage> {
                     children: [
                       Text('Nova senha:', style: TextStyle(fontSize: 16)),
                       SizedBox(height: 5),
-                      InputPadraoWidget(maxLength: 20),
+                      InputPadraoWidget(maxLength: 20, readOnly: false,),
 
                       Text(
                         'Confirmar nova senha:',
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 5),
-                      InputPadraoWidget(maxLength: 20),
+                      InputPadraoWidget(maxLength: 20, readOnly: false,),
                     ],
                   ),
                 ),

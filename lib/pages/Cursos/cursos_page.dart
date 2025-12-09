@@ -1,7 +1,8 @@
-import 'package:app_cas_natal/widgets/modulos/historia_CAS_card_widget.dart';
-import 'package:app_cas_natal/widgets/modulos/historia_cultura_card_widget.dart';
-import 'package:app_cas_natal/widgets/modulos/letramento_card_widget.dart';
-import 'package:app_cas_natal/widgets/modulos/direitos_deveres_card_widget.dart';
+
+import 'package:app_cas_natal/widgets/cursos/direitos_deveres_card_widget.dart';
+import 'package:app_cas_natal/widgets/cursos/historia_cas_card_widget.dart';
+import 'package:app_cas_natal/widgets/cursos/historia_cultura_card_widget.dart';
+import 'package:app_cas_natal/widgets/cursos/letramento_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +20,7 @@ class _CursosPageState extends State<CursosPage> {
       appBar: AppBar(toolbarHeight: 30),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.only(left: 30, right: 30),
+          padding: EdgeInsets.only(left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

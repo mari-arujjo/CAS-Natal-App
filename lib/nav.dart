@@ -1,5 +1,4 @@
 import 'package:app_cas_natal/cores.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,10 +35,6 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             indicatorColor: cores.azulEscuro,
             selectedIndex: _selectedIndex,
             destinations: const <Widget>[
-              /*NavigationDestination(
-                icon: Icon(Icons.home, color: Colors.black),
-                label: 'Início',
-              ),*/
               NavigationDestination(
                 icon: Icon(Icons.school, color: Colors.black),
                 label: 'Cursos',

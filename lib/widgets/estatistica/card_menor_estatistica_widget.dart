@@ -1,11 +1,11 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 
-class CardEstatisticaWidget extends StatefulWidget {
+class CardMenorEstatisticaWidget extends StatefulWidget {
   final String txt;
   final String dado;
   final IconData ico;
-  const CardEstatisticaWidget({
+  const CardMenorEstatisticaWidget({
     super.key,
     required this.txt,
     required this.dado,
@@ -13,10 +13,12 @@ class CardEstatisticaWidget extends StatefulWidget {
   });
 
   @override
-  State<CardEstatisticaWidget> createState() => _CardEstatisticaWidgetState();
+  State<CardMenorEstatisticaWidget> createState() =>
+      _CardMenorEstatisticaWidgetState();
 }
 
-class _CardEstatisticaWidgetState extends State<CardEstatisticaWidget> {
+class _CardMenorEstatisticaWidgetState
+    extends State<CardMenorEstatisticaWidget> {
   final cores = Cores();
   double progresso = 1.0;
 
@@ -29,12 +31,12 @@ class _CardEstatisticaWidgetState extends State<CardEstatisticaWidget> {
           width: constraints.maxWidth, // pega a largura disponível do grid
           padding: const EdgeInsets.only(
             top: 15,
-            bottom: 15,
-            left: 25,
-            right: 25,
+            bottom: 5,
+            left: 15,
+            right: 10,
           ),
           decoration: BoxDecoration(
-            color: cores.azulClaro,
+            color: cores.azulClaro3,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -61,7 +63,7 @@ class _CardEstatisticaWidgetState extends State<CardEstatisticaWidget> {
                       ],
                     ),
                   ),
-                  Icon(widget.ico, size: 50),
+                  Icon(widget.ico, size: 40),
                 ],
               ),
             ],

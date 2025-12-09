@@ -22,7 +22,7 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 30,
+      height: 40,
       width: double.infinity,
       child: Container(
         decoration: BoxDecoration(
@@ -51,7 +51,7 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 12,
+              fontSize: 16,
             ),
           ),
         ),

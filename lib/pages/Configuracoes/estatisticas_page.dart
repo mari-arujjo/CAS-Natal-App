@@ -1,4 +1,4 @@
-import 'package:app_cas_natal/widgets/vizualizacao/card_estatistica_widget.dart';
+import 'package:app_cas_natal/widgets/estatistica/card_estatistica_widget.dart';
 import 'package:flutter/material.dart';
 
 class EstatisticasPage extends StatefulWidget {

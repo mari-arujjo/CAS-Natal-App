@@ -1,34 +1,32 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 
-class InputPadraoWidget extends StatefulWidget {
+class InputDescricaoWidget extends StatefulWidget {
   final String? hintText;
   final int? maxLength;
   final TextEditingController? controller;
-  final bool readOnly;
-  const InputPadraoWidget({super.key, this.hintText, this.maxLength, this.controller, required this.readOnly});
+  const InputDescricaoWidget({super.key, this.hintText, required this.maxLength, this.controller});
 
   @override
-  State<InputPadraoWidget> createState() => _InputPadraoWidgetState();
+  State<InputDescricaoWidget> createState() => _InputDescricaoWidgetState();
 }
 
-class _InputPadraoWidgetState extends State<InputPadraoWidget> {
+class _InputDescricaoWidgetState extends State<InputDescricaoWidget> {
   final cores = Cores();
 
   @override
   Widget build(BuildContext context) {
-    final Color fillColor = widget.readOnly ? const Color.fromARGB(157, 255, 255, 255) : Colors.white;
-
     return TextFormField(
       controller: widget.controller,
       cursorColor: cores.azulEscuro,
       maxLength: widget.maxLength,
-      readOnly: widget.readOnly,
+      minLines: 3,
+      maxLines: 10,
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(color: cores.azulEscuro),
         filled: true,
-        fillColor: fillColor,
+        fillColor: Colors.white,
         border: UnderlineInputBorder(borderRadius: BorderRadius.circular(10)),
         focusedBorder: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(10),

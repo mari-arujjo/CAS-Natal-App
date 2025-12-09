@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class BotaoIconWidget extends StatefulWidget {
   final Icon icon;
-  const BotaoIconWidget({super.key, required this.icon});
+  final VoidCallback? onPressed;
+  const BotaoIconWidget({super.key, required this.icon, this.onPressed});
 
   @override
   State<BotaoIconWidget> createState() => _BotaoIconWidgetState();
@@ -14,7 +15,7 @@ class _BotaoIconWidgetState extends State<BotaoIconWidget> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: widget.onPressed,
       icon: widget.icon,
       color: Colors.white,
       style: ButtonStyle(

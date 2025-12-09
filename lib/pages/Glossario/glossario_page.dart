@@ -1,7 +1,7 @@
 import 'package:app_cas_natal/widgets/botoes/bt_gloss_widget.dart';
 import 'package:app_cas_natal/widgets/categorias/bt_categoria1_widget.dart';
 import 'package:app_cas_natal/widgets/categorias/bt_categoria2_widget.dart';
-import 'package:app_cas_natal/widgets/vizualizacao/search_widget.dart';
+import 'package:app_cas_natal/widgets/inputs/search_widget.dart';
 import 'package:flutter/material.dart';
 
 class GlossarioPage extends StatefulWidget {
@@ -142,7 +142,7 @@ class _GlossarioPageState extends State<GlossarioPage> {
                       txt: 'Obrigado',
                       tam: 350,
                       iconInicio: Icons.chat,
-                      txt2: 'Saudação utilizada para exp...',
+                      txt2: 'Saudação utilizada pap...',
                     ),
                   ],
                 ),
