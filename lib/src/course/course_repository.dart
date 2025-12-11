@@ -16,6 +16,16 @@ class CourseRepository {
     }
   }
 
+  Future<List<CourseModel>> getCoursesLessons() async {
+    final response = await client.get(url:'https://cas-natal-api.onrender.com/CASNatal/courses/lessons');
+    try{
+      final body = jsonDecode(response.body) as List;
+      return body.map((item) => CourseModel.fromMap(item)).toList();
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
   Future<CourseModel> getCourseById(String id) async {
     final response = await client.get(url:'https://cas-natal-api.onrender.com/CASNatal/courses/$id');
   

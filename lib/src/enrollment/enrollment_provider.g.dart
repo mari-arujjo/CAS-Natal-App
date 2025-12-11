@@ -98,6 +98,47 @@ final class EnrollmentRepositoryProvider
 String _$enrollmentRepositoryHash() =>
     r'66686a0500f423a0814259cf281a2df3bd110c75';
 
+@ProviderFor(userEnrollments)
+const userEnrollmentsProvider = UserEnrollmentsProvider._();
+
+final class UserEnrollmentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<EnrollmentModel>>,
+          List<EnrollmentModel>,
+          FutureOr<List<EnrollmentModel>>
+        >
+    with
+        $FutureModifier<List<EnrollmentModel>>,
+        $FutureProvider<List<EnrollmentModel>> {
+  const UserEnrollmentsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userEnrollmentsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userEnrollmentsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<EnrollmentModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<EnrollmentModel>> create(Ref ref) {
+    return userEnrollments(ref);
+  }
+}
+
+String _$userEnrollmentsHash() => r'aefa592a184ffd8d9d1f191023a2d0633a582e05';
+
 @ProviderFor(EnrollmentNotifier)
 const enrollmentProvider = EnrollmentNotifierProvider._();
 
@@ -123,7 +164,7 @@ final class EnrollmentNotifierProvider
 }
 
 String _$enrollmentNotifierHash() =>
-    r'1512a86b9da7348379a948636204aa3844cb9f4c';
+    r'6a0ad39e7a6cd376a728ea3cb3370191b175adef';
 
 abstract class _$EnrollmentNotifier
     extends $AsyncNotifier<List<EnrollmentModel>> {

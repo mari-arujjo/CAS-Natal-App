@@ -2,7 +2,7 @@ import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 
 class ProgressBarWidget extends StatefulWidget {
-  final double progress;
+  final int progress;
   const ProgressBarWidget({super.key, required this.progress});
 
   @override
@@ -15,7 +15,7 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      value: widget.progress,
+      value: widget.progress/100,
       color: cores.azulEscuro,
       backgroundColor: Colors.white,
       minHeight: 6,
