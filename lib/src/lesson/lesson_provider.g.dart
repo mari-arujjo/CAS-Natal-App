@@ -120,7 +120,7 @@ final class LessonNotifierProvider
   LessonNotifier create() => LessonNotifier();
 }
 
-String _$lessonNotifierHash() => r'3ce710613267d866033b269a0f9da9301820b11e';
+String _$lessonNotifierHash() => r'd4f49c4343bd07ce2d59b46a43a2b7aa64dff9ad';
 
 abstract class _$LessonNotifier extends $AsyncNotifier<List<LessonModel>> {
   FutureOr<List<LessonModel>> build();
@@ -140,4 +140,79 @@ abstract class _$LessonNotifier extends $AsyncNotifier<List<LessonModel>> {
             >;
     element.handleValue(ref, created);
   }
+}
+
+@ProviderFor(lessonDetail)
+const lessonDetailProvider = LessonDetailFamily._();
+
+final class LessonDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LessonModel>,
+          LessonModel,
+          FutureOr<LessonModel>
+        >
+    with $FutureModifier<LessonModel>, $FutureProvider<LessonModel> {
+  const LessonDetailProvider._({
+    required LessonDetailFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'lessonDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$lessonDetailHash();
+
+  @override
+  String toString() {
+    return r'lessonDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LessonModel> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LessonModel> create(Ref ref) {
+    final argument = this.argument as String;
+    return lessonDetail(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LessonDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$lessonDetailHash() => r'dd0aa456acfbbcbce1ff7563b7e0c66079e27e58';
+
+final class LessonDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<LessonModel>, String> {
+  const LessonDetailFamily._()
+    : super(
+        retry: null,
+        name: r'lessonDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  LessonDetailProvider call(String lessonId) =>
+      LessonDetailProvider._(argument: lessonId, from: this);
+
+  @override
+  String toString() => r'lessonDetailProvider';
 }

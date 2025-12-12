@@ -65,7 +65,7 @@ class CourseRepository {
   }
 
   Future<CourseModel> updateCourse(CourseModel course, String id) async {
-    final response = await client.update(
+    final response = await client.patch(
       url: 'https://cas-natal-api.onrender.com/CASNatal/courses/update/$id',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(course.toMap()),

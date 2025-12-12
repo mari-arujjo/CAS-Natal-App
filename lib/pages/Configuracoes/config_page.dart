@@ -29,19 +29,19 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+            padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
             child: Column(
               children: [
                 asyncUser.when(
                   data: (user) {
-                    if (user == null) return const Text('Usuário inválido');
+                    if (user == null) return Text('Usuário inválido');
                     final avatarWidget = asyncAvatar.when(
                       data: (imgBytes) => AvatarWidget(
                         tam: 40,
                         imgBytes: imgBytes,
                       ),
-                      loading: () => const AvatarWidget(tam: 40, imgBytes: null),
-                      error: (e, s) => const AvatarWidget(tam: 40, imgBytes: null),
+                      loading: () => AvatarWidget(tam: 40, imgBytes: null),
+                      error: (e, s) => AvatarWidget(tam: 40, imgBytes: null),
                     );
 
                     return Column(
@@ -49,16 +49,16 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const SizedBox(width: 15),
+                            SizedBox(width: 15),
                             avatarWidget,
-                            const SizedBox(width: 15),
+                            SizedBox(width: 15),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     user.fullName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -80,7 +80,8 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
+
+                        SizedBox(height: 15),
                         BotaoLaranjaWidget(
                           txt: 'Editar perfil',
                           onPressed: () {
@@ -88,7 +89,28 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                           },
                           tam: 360,
                         ),
-                        const SizedBox(height: 30),
+
+                        SizedBox(height: 30),
+                        BotaoMenuWidget(
+                          onPressed: () {
+                            context.goNamed('Estatisticas');
+                          },
+                          txt: 'Estatísticas',
+                          tam: 360,
+                          iconInicio: Icons.bar_chart,
+                        ),
+
+                        SizedBox(height: 5),
+                        BotaoMenuWidget(
+                          onPressed: () {
+                            context.goNamed('Admin');
+                          },
+                          txt: 'Opções de administrador',
+                          tam: 360,
+                          iconInicio: Icons.admin_panel_settings,
+                        ),
+
+                        SizedBox(height: 5),
                         BotaoMenuWidget(
                           onPressed: () {
                             context.goNamed('RedefinirSenha');
@@ -97,15 +119,36 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                           tam: 360,
                           iconInicio: Icons.lock,
                         ),
-                        const SizedBox(height: 5),
+
+                        SizedBox(height: 5),
+                        BotaoMenuWidget(
+                          onPressed: () {
+                            context.goNamed('Sobre');
+                          },
+                          txt: 'Sobre o app',
+                          tam: 360,
+                          iconInicio: Icons.info,
+                        ),
+
+                        SizedBox(height: 5),
+                        BotaoMenuWidget(
+                          onPressed: () {
+                            context.goNamed('Termos');
+                          },
+                          txt: 'Termos de serviço',
+                          tam: 360,
+                          iconInicio: Icons.description,
+                        ),
+
+                        SizedBox(height: 5),
                         BotaoMenuWidget(
                           onPressed: () async {
                             return await showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: const Text('Sair'),
-                                  content: const Text(
+                                  title: Text('Sair'),
+                                  content: Text(
                                     'Tem certeza que deseja sair? Você terá que fazer login novamente.',
                                   ),
                                   actions: [

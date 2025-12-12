@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:app_cas_natal/cores.dart';
 
 
-class ButtonQuadrado extends StatefulWidget {
+class ButtonQuadradoIcon extends StatefulWidget {
   final String txt;
   final VoidCallback onPressed;
+  final IconData icon;
 
-  const ButtonQuadrado({
+  const ButtonQuadradoIcon({
     super.key,
     required this.txt,
     required this.onPressed,
+    required this.icon,
   });
 
   @override
-  State<ButtonQuadrado> createState() => _ButtonQuadradoState();
+  State<ButtonQuadradoIcon> createState() => _ButtonQuadradoIconState();
 }
 
-class _ButtonQuadradoState extends State<ButtonQuadrado> {
+class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
   bool pressionado = false;
 
   @override
@@ -43,16 +45,20 @@ class _ButtonQuadradoState extends State<ButtonQuadrado> {
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            padding: const WidgetStatePropertyAll(
-              EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            ),
           ),
-          child: Text(
-            widget.txt,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(widget.icon, color: Colors.white, size: 40),
+              const SizedBox(height: 8),
+              Text(
+                widget.txt,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-        )
+        ),
       )
     );
   }

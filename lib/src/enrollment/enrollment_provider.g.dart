@@ -137,7 +137,7 @@ final class UserEnrollmentsProvider
   }
 }
 
-String _$userEnrollmentsHash() => r'aefa592a184ffd8d9d1f191023a2d0633a582e05';
+String _$userEnrollmentsHash() => r'784a529f235b560217ef72962f489be768084a20';
 
 @ProviderFor(EnrollmentNotifier)
 const enrollmentProvider = EnrollmentNotifierProvider._();
@@ -164,7 +164,7 @@ final class EnrollmentNotifierProvider
 }
 
 String _$enrollmentNotifierHash() =>
-    r'6a0ad39e7a6cd376a728ea3cb3370191b175adef';
+    r'4c717e19dcf5db6f761fe04be8f6a4cafe14de55';
 
 abstract class _$EnrollmentNotifier
     extends $AsyncNotifier<List<EnrollmentModel>> {

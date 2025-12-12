@@ -21,7 +21,9 @@ class LessonNotifier extends _$LessonNotifier{
   @override
   Future<List<LessonModel>> build() async{
     final repository = ref.read(lessonRepositoryProvider);
-    return repository.getLessons();
+    final lessons = await repository.getLessons();
+    lessons.sort((a, b) => a.name.compareTo(b.name));
+    return lessons;
   }
 
   Future<void> addLesson(LessonModel lesson) async {
@@ -53,4 +55,11 @@ class LessonNotifier extends _$LessonNotifier{
       state = AsyncValue.error(e, s);
     }
   }
+}
+
+@riverpod
+Future<LessonModel> lessonDetail(Ref ref, String lessonId) async {
+  final repository = ref.read(lessonRepositoryProvider);
+  final lesson = await repository.getLessonById(lessonId);
+  return lesson;
 }

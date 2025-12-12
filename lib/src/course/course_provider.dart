@@ -58,5 +58,13 @@ class CourseNotifier extends _$CourseNotifier{
 @riverpod
 Future<CourseModel> courseDetail(Ref ref, String courseId) async {
   final repository = ref.read(courseRepositoryProvider);
-  return repository.getCourseById(courseId); 
+  final course = await repository.getCourseById(courseId);
+
+  if (course.lessons != null && course.lessons!.isNotEmpty) {
+    course.lessons!.sort(
+      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+    );
+  }
+
+  return course;
 }

@@ -197,7 +197,7 @@ final class CourseDetailProvider
   }
 }
 
-String _$courseDetailHash() => r'e0c6bd08756260fd74d75178f75dd19e5362b32c';
+String _$courseDetailHash() => r'ed3a270e2d0873c47ed773585516ed4611c86294';
 
 final class CourseDetailFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<CourseModel>, String> {

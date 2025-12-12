@@ -1,6 +1,6 @@
 import 'package:app_cas_natal/cores.dart';
-import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes_padrao/bt_quadrado_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +8,7 @@ import 'package:app_cas_natal/src/course/course_provider.dart';
 import 'package:app_cas_natal/src/course/course_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
 import 'package:app_cas_natal/src/enrollment/enrollment_provider.dart';
+import 'package:go_router/go_router.dart';
 
 class DetalheCursoPage extends ConsumerStatefulWidget {
   final String courseId;
@@ -31,11 +32,11 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Cancelar',  style: TextStyle(color: cor.azulEscuro)),
+                  child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Confirmar',  style: TextStyle(color: cor.azulEscuro)),
+                  child: Text('Confirmar', style: TextStyle(color: cor.azulEscuro)),
                 ),
               ],
             );
@@ -114,7 +115,7 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
               return SingleChildScrollView(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30, top: 20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Row(
@@ -140,21 +141,31 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                         const SizedBox(height: 30),
                         if (isEnrolled)
                           lessons.isEmpty
-                              ? const Text('Nenhuma lição cadastrada para este curso.')
-                              : Column(
-                                  children: lessons.map((lesson) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                      child: BotaoLaranjaWidget(
-                                        txt: lesson.name,
-                                        onPressed: () {
-                                          print('Abrir lição: ${lesson.name} (${lesson.id})');
-                                        },
-                                        tam: 300,
-                                      ),
-                                    );
-                                  }).toList(),
-                                )
+                          ? const Text('Nenhuma lição cadastrada para este curso.')
+                            : ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: lessons.length,
+                                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final lesson = lessons[index];
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: ButtonQuadrado(
+                                      txt: lesson.name,
+                                      onPressed: () {
+                                        if (lesson.id == null || lesson.id!.isEmpty) {
+                                            debugPrint('ERRO: lesson.id é nulo ou vazio!');
+                                            return;
+                                        }
+                                        context.go(
+                                          '/cursos/detalheCurso/${course.id}/video/${lesson.id}' 
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              )
                         else
                           Column(
                             children: [
