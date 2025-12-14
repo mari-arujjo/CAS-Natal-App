@@ -79,7 +79,7 @@ class _CadastroAulaPageState extends ConsumerState<CadastroAulaPage> {
                       ///
                       const Text('Nome:', style: TextStyle(fontSize: 16)),
                       const SizedBox(height: 5),
-                      InputPadraoWidget(maxLength: 50, controller: nameCtrl, readOnly: false),
+                      InputPadraoWidget(maxLength: 100, controller: nameCtrl, readOnly: false),
                       ///
                       const Text('Curso:', style: TextStyle(fontSize: 16)),
                       const SizedBox(height: 5),

@@ -164,7 +164,7 @@ final class EnrollmentNotifierProvider
 }
 
 String _$enrollmentNotifierHash() =>
-    r'4c717e19dcf5db6f761fe04be8f6a4cafe14de55';
+    r'12d4e072410d3e759c07f4bac10922a63e582922';
 
 abstract class _$EnrollmentNotifier
     extends $AsyncNotifier<List<EnrollmentModel>> {

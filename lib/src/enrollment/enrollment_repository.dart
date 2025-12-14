@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:app_cas_natal/src/enrollment/enrollment_model.dart';
 import 'package:app_cas_natal/src/http_client.dart';
+import 'package:flutter/foundation.dart'; // Import necessário para debugPrint
 
 class EnrollmentRepository {
   final IHttpClient client;
@@ -71,6 +72,59 @@ class EnrollmentRepository {
       throw Exception('Erro ao processar a resposta JSON de matrícula. Resposta não é JSON válida. Erro: $e.');
     } catch(e){
       throw Exception('Erro inesperado na matrícula: $e');
+    }
+  }
+
+  Future<EnrollmentModel> updateEnrollmentStatus({
+    required String enrollmentId, 
+    required int newStatus, 
+    required String token
+  }) async {
+    final body = jsonEncode({'status': newStatus});
+    
+    // Garantindo que o ID não tenha espaços ou caracteres indesejados
+    final safeEnrollmentId = enrollmentId.trim(); 
+    
+    // URL MANTIDA conforme o backend [HttpPatch("update/{id}")]
+    final urlFinal = 'https://cas-natal-api.onrender.com/CASNatal/enrollments/update/$safeEnrollmentId';
+    
+    // Logs de Depuração
+    debugPrint('PATCH URL ENVIADA: $urlFinal'); 
+    debugPrint('Body ENVIADO: $body');
+    
+    final response = await client.patch(
+      url: urlFinal,
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json', // <--- NOVO HEADER ADICIONADO PARA MAIOR COMPATIBILIDADE
+      },
+      body: body,
+    );
+
+    if (response.statusCode != 200) {
+      if (response.body.isNotEmpty) {
+        try {
+          final responseBody = jsonDecode(response.body);
+          if (responseBody is String) {
+            throw Exception(responseBody);
+          } else if (responseBody is Map && responseBody.containsKey('title')) {
+            throw Exception(responseBody['title']);
+          }
+        } catch (e) {
+           debugPrint('Erro ao decodificar JSON do erro: $e');
+        }
+      }
+      throw Exception('Falha ao atualizar o status da matrícula. Status: ${response.statusCode}');
+    }
+    
+    try {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return EnrollmentModel.fromMap(responseBody);
+    } on FormatException catch(e){
+      throw Exception('Erro ao processar a resposta JSON de atualização. Resposta não é JSON válida. Erro: $e.');
+    } catch(e){
+      throw Exception('Erro inesperado na atualização: $e');
     }
   }
 }

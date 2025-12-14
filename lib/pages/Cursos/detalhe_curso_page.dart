@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, unused_result
 import 'package:app_cas_natal/cores.dart';
+import 'package:app_cas_natal/popup.dart';
+import 'package:app_cas_natal/snackbar.dart';
 import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/botoes_padrao/bt_quadrado_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
@@ -12,7 +15,6 @@ import 'package:go_router/go_router.dart';
 
 class DetalheCursoPage extends ConsumerStatefulWidget {
   final String courseId;
-
   const DetalheCursoPage({super.key, required this.courseId});
 
   @override
@@ -21,59 +23,26 @@ class DetalheCursoPage extends ConsumerStatefulWidget {
 
 class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
   final cor = Cores();
+  final popUp = PopUp();
 
-  Future<bool> _showEnrollmentConfirmationDialog(BuildContext context, String courseName) async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Confirmar Matrícula'),
-              content: Text('Você confirma a matrícula no curso "$courseName"?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Confirmar', style: TextStyle(color: cor.azulEscuro)),
-                ),
-              ],
-            );
-          },
-        ) ??
-        false;
-  }
-
-  Future<void> _enrollUser(BuildContext context, WidgetRef ref, String courseSymbol, String courseName) async {
-    final confirmed = await _showEnrollmentConfirmationDialog(context, courseName);
+  Future<void> fazerMatricula(BuildContext context, WidgetRef ref, String courseSymbol, String courseName) async {
+    final confirmed = await popUp.PopUpMatricula(context, courseName);
     if (!confirmed) return;
-
     final enrollmentNotifier = ref.read(enrollmentProvider.notifier);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Matriculando...'), duration: Duration(seconds: 1)),
+    SnackBarUtils.showCustomSnackbar( 
+      context, 'Matriculando...', cor.azulEscuro,
     );
-
     try {
       await enrollmentNotifier.enrollUser(courseSymbol);
-
       ref.invalidate(courseDetailProvider(widget.courseId));
-
       await ref.refresh(userEnrollmentsProvider.future);
-
-      if (mounted) setState(() {});
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Matrícula em "$courseName" realizada com sucesso!')),
+      SnackBarUtils.showCustomSnackbar(
+        context, 'Matrícula em "$courseName" realizada com sucesso!', cor.azulEscuro,
       );
     } catch (e) {
-      final msg = e.toString().replaceAll('Exception: Falha na matrícula: Exception: ', '');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(msg),
-          backgroundColor: Colors.red,
-        ),
+      final msg = e.toString().replaceAll('Falha na matrícula:', '');
+      SnackBarUtils.showCustomSnackbar(
+        context, msg, Colors.red,
       );
     }
   }
@@ -87,9 +56,10 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
       appBar: AppBar(
         title: courseAsync.maybeWhen(
           data: (course) => Text(course.name),
-          orElse: () => const Text('Detalhes do Curso'),
+          orElse: () => const Text('Curso'),
         ),
       ),
+
       body: courseAsync.when(
         loading: () => const Center(child: CarregandoWidget()),
         error: (error, stack) => Center(
@@ -98,9 +68,9 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
             child: Text('Erro ao carregar detalhes do curso: $error'),
           ),
         ),
+
         data: (CourseModel course) {
           final List<LessonModel> lessons = course.lessons ?? [];
-
           return userEnrollmentsAsync.when(
             loading: () => const Center(child: CarregandoWidget()),
             error: (error, stack) => Center(
@@ -109,9 +79,9 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                 child: Text('Erro ao carregar matrículas: $error'),
               ),
             ),
+
             data: (enrollments) {
               final isEnrolled = enrollments.any((e) => e.symbol?.toLowerCase() == course.symbol.toLowerCase());
-
               return SingleChildScrollView(
                 child: Center(
                   child: Padding(
@@ -170,14 +140,14 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                           Column(
                             children: [
                               const Text(
-                                'Você não está matriculado neste curso. Matricule-se para acessar as aulas.',
+                                'Você não está matriculado neste curso.\nMatricule-se para acessar as aulas.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
                               const SizedBox(height: 20),
                               BotaoLaranjaWidget(
                                 txt: 'Matricular-se agora!',
-                                onPressed: () => _enrollUser(context, ref, course.symbol, course.name),
+                                onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),
                                 tam: 300,
                               ),
                             ],

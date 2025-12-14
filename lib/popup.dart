@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +44,6 @@ class PopUp {
             ),
             TextButton(
               onPressed: () {
-                ///context.push(context.namedLocation('Home'));
                 context.pop();
                 context.pop();
               },
@@ -146,32 +147,31 @@ class PopUp {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Future<bool?> PopUpExcluir(BuildContext context) {
-    return showDialog<bool>(
+ Future<bool> PopUpMatricula (BuildContext context, String courseName) async {
+    return await showDialog<bool>(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Excluir'),
-          content: const Text(
-            'Tem certeza que deseja excluir? Os dados não poderão ser recuperados.',
-          ),
-          actions: [
+          title: const Text('Confirmar Matrícula'),
+          content: Text('Você confirma a matrícula no curso "$courseName"?'),
+          actions: <Widget>[
             TextButton(
-              onPressed: () => context.pop(false), // Não confirmou
-              child: Text('Não', style: TextStyle(color: cor.azulEscuro)),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
             ),
             TextButton(
-              onPressed: () => context.pop(true), // Confirmou
-              child: Text('Sim', style: TextStyle(color: cor.azulEscuro)),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Confirmar', style: TextStyle(color: cor.azulEscuro)),
             ),
           ],
         );
       },
-    );
+    ) ??
+    false;
   }
 
-  Future<bool?> PopUpAlterar(BuildContext context) {
-    return showDialog<bool>(
+  Future<bool?> PopUpAlterar(BuildContext context) async {
+    return await showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(

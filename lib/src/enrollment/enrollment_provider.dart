@@ -50,4 +50,28 @@ class EnrollmentNotifier extends _$EnrollmentNotifier{
       throw Exception('Falha na matrícula: ${e.toString().replaceAll('Exception: ', '')}');
     }
   }
+
+  Future<EnrollmentModel> updateEnrollmentStatus(String enrollmentId, int newStatus) async {
+    final repository = ref.read(enrollmentRepositoryProvider);
+    final currentUser = await ref.read(currentUserProvider.future);
+    
+    if (currentUser == null || currentUser.token == null) throw Exception('Falha ao atualizar matrícula: Usuário não autenticado ou token ausente.');
+
+    try {
+      final updated = await repository.updateEnrollmentStatus(
+        enrollmentId: enrollmentId, 
+        newStatus: newStatus, 
+        token: currentUser.token!
+      );
+      
+      if (!ref.mounted) return updated;
+      
+      ref.invalidate(userEnrollmentsProvider);
+
+      return updated;
+    } catch (e) {
+      print('Falha ao atualizar matrícula: ${e.toString().replaceAll('Exception: ', '')}');
+      throw Exception('Falha ao atualizar matrícula: ${e.toString().replaceAll('Exception: ', '')}');
+    }
+  }
 }

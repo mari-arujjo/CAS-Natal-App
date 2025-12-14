@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/popup.dart';
+import 'package:app_cas_natal/snackbar.dart';
 import 'package:app_cas_natal/src/appuser/appuser_model.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_icon_widget.dart';
@@ -134,7 +135,10 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
       DialogLoadingWidget.dismiss(context);
       
       context.pop(); 
-      popUp.PopUpAlert(context, "Perfil atualizado com sucesso!");
+      
+      SnackBarUtils.showCustomSnackbar(
+        context,  "Perfil atualizado com sucesso!", cores.azulEscuro,
+      );
 
     } catch (e) {
       if (!mounted) return;
