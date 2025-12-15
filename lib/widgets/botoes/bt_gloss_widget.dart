@@ -6,13 +6,12 @@ class BotaoGlossarioWidget extends StatefulWidget {
   final String txt2;
   final VoidCallback onPressed;
   final double tam;
-  final IconData iconInicio;
+
   const BotaoGlossarioWidget({
     super.key,
     required this.onPressed,
     required this.txt,
     required this.tam,
-    required this.iconInicio,
     required this.txt2,
   });
 
@@ -21,7 +20,7 @@ class BotaoGlossarioWidget extends StatefulWidget {
 }
 
 class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
-  final cores = Cores();
+  final cores = Cores(); 
   bool pressionado = false;
 
   @override
@@ -31,10 +30,10 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
       width: widget.tam,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.transparent,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
               blurRadius: 0,
             ),
           ],
@@ -42,52 +41,49 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
         ),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.white),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
+            backgroundColor: const WidgetStatePropertyAll(Colors.white),
+            shadowColor: const WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
 
-            padding: WidgetStatePropertyAll(
+            padding: const WidgetStatePropertyAll(
               EdgeInsets.symmetric(
-                horizontal: 5,
+                horizontal: 10,
                 vertical: 5,
-              ), // margem interna
+              ), 
             ),
           ),
           onPressed: widget.onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: cores.laranja,
-                      shape: BoxShape.circle,
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center, 
+                  children: [
+                    Flexible( 
+                      child: Text(
+                        widget.txt,
+                        style: TextStyle(color: cores.preto, fontSize: 16),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1, 
+                      ),
                     ),
-                    child: Icon(
-                      widget.iconInicio,
-                      size: 20,
-                      color: cores.preto,
+                    const SizedBox(width: 10),
+                    
+                    Expanded(
+                      child: Text(
+                        widget.txt2,
+                        style: TextStyle(color: cores.laranjaEscuro, fontSize: 12),
+                        overflow: TextOverflow.ellipsis, 
+                        maxLines: 1,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    widget.txt,
-                    style: TextStyle(color: cores.preto, fontSize: 16),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    widget.txt2,
-                    style: TextStyle(color: cores.laranjaEscuro, fontSize: 12),
-                  ),
-                ],
+                  ],
+                ),
               ),
-
               Icon(Icons.arrow_forward_ios, size: 20, color: cores.preto),
             ],
           ),

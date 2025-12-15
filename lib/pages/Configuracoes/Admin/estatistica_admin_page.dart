@@ -1,7 +1,7 @@
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/src/course/course_provider.dart';
 import 'package:app_cas_natal/src/enrollment/enrollment_provider.dart';
-import 'package:app_cas_natal/src/glossary/glossary_provider.dart';
+import 'package:app_cas_natal/src/sign/sign_provider.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
 import 'package:app_cas_natal/widgets/estatistica/card_estatistica_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,8 +31,8 @@ class _EstatisticasPageState extends ConsumerState<EstatisticasAdminPage> {
       loading: () => '...',
       error: (err, stack) => '?',
     );
-    final glossaryState = ref.watch(glossaryProvider);
-    final String glossaryCount = glossaryState.when(
+    final signState = ref.watch(signProvider);
+    final String signCount = signState.when(
       data: (glossaries) =>  glossaries.length.toString(),
       loading: () => '...',
       error: (err, stack) => '?',
@@ -83,7 +83,7 @@ class _EstatisticasPageState extends ConsumerState<EstatisticasAdminPage> {
             SizedBox(height: 15),
             CardEstatisticaWidget(
               txt: 'Sinais cadastrados no glossário',
-              dado: glossaryCount,
+              dado: signCount,
               ico: CupertinoIcons.book_solid,
             ),
           ],

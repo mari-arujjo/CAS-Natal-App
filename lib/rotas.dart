@@ -1,3 +1,4 @@
+// rotas.dart
 import 'package:app_cas_natal/nav.dart';
 import 'package:app_cas_natal/pages/Configuracoes/Admin/Gestao%20aula/aula_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/Admin/Gestao%20aula/cadastro_aula_page.dart';
@@ -16,6 +17,7 @@ import 'package:app_cas_natal/pages/Cursos/Aula/lesson_content_page.dart';
 import 'package:app_cas_natal/pages/Cursos/Aula/lesson_quiz_page.dart';
 import 'package:app_cas_natal/pages/Cursos/Aula/lesson_video_page.dart';
 import 'package:app_cas_natal/pages/Glossario/glossario_page.dart';
+import 'package:app_cas_natal/pages/Glossario/sign_page.dart'; // Import adicionado
 import 'package:app_cas_natal/pages/Configuracoes/config_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/editar_perfil_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/estatisticas_page.dart';
@@ -156,6 +158,16 @@ final goRouterProvider = Provider<GoRouter>((ref){
                 builder: (context, state) {
                   return GlossarioPage(key: state.pageKey);
                 },
+                routes: [ // Rota do Detalhe do Sinal adicionada
+                  GoRoute(
+                    path: 'sinal/:signId',
+                    name: 'SinalDetalhe',
+                    builder: (context, state) {
+                      final signId = state.pathParameters['signId']!;
+                      return SignPage(key: state.pageKey, signId: signId); 
+                    },
+                  ),
+                ]
               ),
             ],
           ),
