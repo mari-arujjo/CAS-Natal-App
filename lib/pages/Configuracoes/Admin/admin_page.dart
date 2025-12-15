@@ -1,4 +1,4 @@
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_quadrado_icon_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_quadrado_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

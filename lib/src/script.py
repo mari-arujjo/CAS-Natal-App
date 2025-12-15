@@ -1,7 +1,7 @@
 import requests
 import time
 
-url = "https://cas-natal-api.onrender.com/CASNatal/glossaries"
+url = "https://cas-natal-api.onrender.com/CASNatal/quizQuestions/byLessonId/acfefe9f-4afb-4ae4-aa9f-77a43e7e7745"
 i=0
 
 while True:
@@ -15,6 +15,3 @@ while True:
         print(f"Erro ao acessar o endpoint: {e}")
     
     time.sleep(5)
-
-# pip install requests
-# python script.py

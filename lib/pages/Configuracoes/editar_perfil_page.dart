@@ -7,7 +7,7 @@ import 'package:app_cas_natal/snackbar.dart';
 import 'package:app_cas_natal/src/appuser/appuser_model.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_icon_widget.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';

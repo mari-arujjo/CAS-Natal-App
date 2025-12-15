@@ -22,7 +22,7 @@ Future<List<EnrollmentModel>> userEnrollments(Ref ref) async {
   final repository = ref.read(enrollmentRepositoryProvider);
   final currentUser = await ref.watch(currentUserProvider.future); 
   if (currentUser == null || currentUser.token == null) return []; 
-  return repository.getUserEnrollments(token: currentUser.token!); 
+  return repository.getCourseUserEnrollments(token: currentUser.token!); 
 }
 
 

@@ -5,7 +5,7 @@ import 'package:app_cas_natal/src/course/course_model.dart';
 import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/src/course/course_provider.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_icon_widget.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/fotos/foto_curso_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_descricao_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_widget.dart';

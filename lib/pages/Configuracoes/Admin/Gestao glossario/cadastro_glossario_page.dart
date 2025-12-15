@@ -1,4 +1,4 @@
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/fotos/foto_sinal_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_descricao_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_widget.dart';

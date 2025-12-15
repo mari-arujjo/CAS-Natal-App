@@ -3,7 +3,7 @@ import 'package:app_cas_natal/widgets/vizualizacao/dg_loading_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/popup.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_icon_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/ipt_senha_outline_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/container_widget.dart';

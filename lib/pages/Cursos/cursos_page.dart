@@ -1,4 +1,4 @@
-import 'package:app_cas_natal/pages/Cursos/Aula/lesson_quiz_page.dart';
+import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/src/course/course_provider.dart';
 import 'package:app_cas_natal/widgets/cursos/card_cursos_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
@@ -17,7 +17,7 @@ class CursosPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 30),
       body: RefreshIndicator(
-        color: cor.amarelo,
+        color: cor.laranja,
         backgroundColor: Colors.white,
         onRefresh: () async {
           ref.invalidate(courseProvider);

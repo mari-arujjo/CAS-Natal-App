@@ -137,7 +137,7 @@ final class UserEnrollmentsProvider
   }
 }
 
-String _$userEnrollmentsHash() => r'784a529f235b560217ef72962f489be768084a20';
+String _$userEnrollmentsHash() => r'888fd1a4e6b53abdce340d0d89fd994f4f7420ed';
 
 @ProviderFor(EnrollmentNotifier)
 const enrollmentProvider = EnrollmentNotifierProvider._();

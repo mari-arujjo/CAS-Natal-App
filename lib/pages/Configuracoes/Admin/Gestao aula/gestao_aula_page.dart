@@ -1,7 +1,7 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_lista_widget.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/flutuante_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_lista_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/flutuante_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/search_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';

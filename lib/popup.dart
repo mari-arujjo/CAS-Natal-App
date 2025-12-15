@@ -26,35 +26,6 @@ class PopUp {
     );
   }
 
-  void PopUpCancel(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Cancelar operação'),
-          content: const Text(
-            'Tem certeza que deseja cancelar? Seu progresso será perdido.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                context.pop();
-              },
-              child: Text('Não', style: TextStyle(color: cor.azulEscuro)),
-            ),
-            TextButton(
-              onPressed: () {
-                context.pop();
-                context.pop();
-              },
-              child: Text('Sim', style: TextStyle(color: cor.azulEscuro)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void PopUpSair(BuildContext context) {
     showDialog(
       context: context,
@@ -82,13 +53,13 @@ class PopUp {
   }
   
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////// CRUD ///////////////////////////////////////////////////////////////////////////////////////////////
   void PopUpSalvar(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Salvar'),
+          title: const Text('Cadastrado'),
           content: const Text('Cadastro realizado com sucesso!'),
           actions: [
             TextButton(
@@ -103,13 +74,12 @@ class PopUp {
       },
     );
   }
-
   void PopUpAlterado(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Alterar'),
+          title: const Text('Alterado'),
           content: const Text('Registro alterado com sucesso!'),
           actions: [
             TextButton(
@@ -124,13 +94,12 @@ class PopUp {
       },
     );
   }
-
   void PopUpExcluido(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Excluir'),
+          title: const Text('Excluído'),
           content: const Text('Registro excluído com sucesso!'),
           actions: [
             TextButton(
@@ -146,13 +115,35 @@ class PopUp {
     );
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
- Future<bool> PopUpMatricula (BuildContext context, String courseName) async {
+  /////////// MATRICULA /////////////////////////////////////////////////////////////////////////////////////////////////
+  Future<bool> PopUpFazerMatricula (BuildContext context, String courseName) async {
     return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmar Matrícula'),
+          title: const Text('Confirmar matrícula'),
+          content: Text('Você confirma a matrícula no curso "$courseName"?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Confirmar', style: TextStyle(color: cor.azulEscuro)),
+            ),
+          ],
+        );
+      },
+    ) ??
+    false;
+  }
+  Future<bool> PopUpCancelarMatricula (BuildContext context, String courseName) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmar matrícula'),
           content: Text('Você confirma a matrícula no curso "$courseName"?'),
           actions: <Widget>[
             TextButton(
@@ -170,28 +161,5 @@ class PopUp {
     false;
   }
 
-  Future<bool?> PopUpAlterar(BuildContext context) async {
-    return await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Salvar alterações'),
-          content: const Text(
-            'Quer salvar as mudanças feitas? Isso vai atualizar os dados no sistema.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => context.pop(false),
-              child: Text('Não', style: TextStyle(color: cor.azulEscuro)),
-            ),
-
-            TextButton(
-              onPressed: () => context.pop(true),
-              child: Text('Sim', style: TextStyle(color: cor.azulEscuro)),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  
 }

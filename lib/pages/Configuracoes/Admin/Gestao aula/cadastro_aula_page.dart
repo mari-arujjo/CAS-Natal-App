@@ -1,7 +1,7 @@
 import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_content_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_widget.dart';
 import 'package:app_cas_natal/widgets/listas/lista_curso_widget.dart';

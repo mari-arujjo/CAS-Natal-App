@@ -17,9 +17,9 @@ class EnrollmentRepository {
     }
   }
   
-  Future<List<EnrollmentModel>> getUserEnrollments({required String token}) async {
+  Future<List<EnrollmentModel>> getCourseUserEnrollments({required String token}) async {
     final response = await client.get(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/enrollments/getUserEnrollment',
+      url: 'https://cas-natal-api.onrender.com/CASNatal/enrollments/getCourseUserEnrollment',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 

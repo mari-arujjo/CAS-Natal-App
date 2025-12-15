@@ -2,8 +2,8 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/snackbar.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_laranja_widget.dart';
-import 'package:app_cas_natal/widgets/botoes_padrao/bt_quadrado_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_quadrado_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,7 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
   final popUp = PopUp();
 
   Future<void> fazerMatricula(BuildContext context, WidgetRef ref, String courseSymbol, String courseName) async {
-    final confirmed = await popUp.PopUpMatricula(context, courseName);
+    final confirmed = await popUp.PopUpFazerMatricula(context, courseName);
     if (!confirmed) return;
     final enrollmentNotifier = ref.read(enrollmentProvider.notifier);
     SnackBarUtils.showCustomSnackbar( 

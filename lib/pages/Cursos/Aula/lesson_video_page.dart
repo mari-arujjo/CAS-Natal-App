@@ -1,5 +1,6 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_navegacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -89,16 +90,12 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton.icon(
+                BotaoNavegacaoWidget(
+                  txt: 'Próximo',
+                  icon:  Icon(Icons.arrow_forward),
                   onPressed: () {
                     context.go('/cursos/detalheCurso/${widget.lesson.courseId}/content/${widget.lesson.id}');
                   },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('Próximo'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: cor.azulEscuro,
-                    foregroundColor: Colors.white,
-                  ),
                 ),
               ],
             ),
