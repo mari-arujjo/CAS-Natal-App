@@ -24,8 +24,8 @@ class _ButtonListaState extends State<ButtonLista> {
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ButtonStyle(
-          elevation: const WidgetStatePropertyAll(3),
-          shadowColor: const WidgetStatePropertyAll(Colors.black),
+          elevation: WidgetStatePropertyAll(3),
+          shadowColor: WidgetStatePropertyAll(Colors.black),
           backgroundColor: WidgetStatePropertyAll(Colors.white),
           overlayColor: WidgetStatePropertyAll(cor.azulEscuro),
           shape: WidgetStatePropertyAll(

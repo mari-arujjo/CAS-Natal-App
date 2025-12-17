@@ -27,7 +27,7 @@ class _CardEstatisticaWidgetState extends State<CardEstatisticaWidget> {
         return Container(
           height: 90,
           width: constraints.maxWidth, 
-          padding: const EdgeInsets.only(
+          padding:EdgeInsets.only(
             top: 15,
             bottom: 15,
             left: 25,

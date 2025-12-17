@@ -28,8 +28,8 @@ class _CardMenorEstatisticaWidgetState
       builder: (context, constraints) {
         return Container(
           height: 80,
-          width: constraints.maxWidth, // pega a largura disponível do grid
-          padding: const EdgeInsets.only(
+          width: constraints.maxWidth,
+          padding: EdgeInsets.only(
             top: 15,
             bottom: 5,
             left: 15,

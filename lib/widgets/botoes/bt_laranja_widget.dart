@@ -30,7 +30,7 @@ class _BotaoLaranjaWidgetState extends State<BotaoLaranjaWidget> {
           boxShadow: [
             BoxShadow(
               color: cores.laranjaEscuro,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
               blurRadius: 0,
             ),
           ],

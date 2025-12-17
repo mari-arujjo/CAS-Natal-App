@@ -11,7 +11,7 @@ part 'appuser_provider.g.dart';
 
 @riverpod
 FlutterSecureStorage secureStorage(Ref ref) {
-  return const FlutterSecureStorage();
+  return FlutterSecureStorage();
 }
 
 @riverpod

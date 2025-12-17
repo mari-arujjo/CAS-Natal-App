@@ -49,7 +49,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             bottomNavigationBar: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 NavigationBar(
                   height: 65,
                   backgroundColor: cores.cinzaClaro,
@@ -84,7 +84,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                     );
                   }).toList(),
                 ),
-                const VerticalDivider(thickness: 1, width: 1), 
+                VerticalDivider(thickness: 1, width: 1), 
                 Expanded(
                   child: widget.navigationShell,
                 ),

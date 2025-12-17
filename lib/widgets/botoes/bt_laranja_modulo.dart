@@ -29,7 +29,7 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
           boxShadow: [
             BoxShadow(
               color: cores.laranjaEscuro,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
               blurRadius: 0,
             ),
           ],

@@ -25,7 +25,7 @@ class _FlutuanteState extends State<BotaoFlutuanteWidget> {
         setState(() {
           pressed = true;
         });
-        Future.delayed(const Duration(milliseconds: 100), () {
+        Future.delayed(Duration(milliseconds: 100), () {
           widget.onPressed();
           setState(() {
             pressed = false;
@@ -33,7 +33,7 @@ class _FlutuanteState extends State<BotaoFlutuanteWidget> {
         });
       },
 
-      label: const Text('Novo', style: TextStyle(fontWeight: FontWeight.bold),),
+      label: Text('Novo', style: TextStyle(fontWeight: FontWeight.bold),),
       icon: Icon(Icons.add),
     );
   }

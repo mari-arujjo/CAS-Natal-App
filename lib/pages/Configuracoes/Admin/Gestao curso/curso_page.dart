@@ -96,7 +96,7 @@ class _CursoPageState extends ConsumerState<CursoPage> {
       appBar: AppBar(title: Text(widget.curso.name)),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+          padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
           child: Column(
             children: [
               ContainerWidget(
@@ -113,33 +113,33 @@ class _CursoPageState extends ConsumerState<CursoPage> {
                             imgBytes: widget.curso.photo,
                           ),
                           BotaoIconWidget(
-                            icon: const Icon(Icons.edit),
+                            icon: Icon(Icons.edit),
                             onPressed: _noOp,
                           ),
                         ],
                       ),
-                      const SizedBox(height:20),
+                      SizedBox(height:20),
                       
-                      const Text('Código:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Código:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 13, controller: codeCtrl, readOnly: true),
                       
-                      const Text('Nome:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Nome:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, controller: nameCtrl, readOnly: false),
                       
-                      const Text('Abreviação:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Abreviação:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 4, controller: symbolCtrl,readOnly: false),
                       
-                      const Text('Descrição:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Descrição:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputDescricaoWidget(controller: descriptionCtrl, maxLength: 150),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -151,7 +151,7 @@ class _CursoPageState extends ConsumerState<CursoPage> {
                         tam: 150, 
                         onPressed: _asyncDeleteCourse,
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: 20),
                       BotaoLaranjaWidget(
                         txt: 'Salvar', 
                         tam: 150, 
@@ -159,7 +159,7 @@ class _CursoPageState extends ConsumerState<CursoPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   BotaoLaranjaWidget(txt: 'Cancelar', tam: 150, onPressed: (){
                     Navigator.of(context).pop();
                   }),

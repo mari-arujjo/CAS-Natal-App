@@ -65,10 +65,10 @@ class _CadastroAulaPageState extends ConsumerState<CadastroAulaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro de aulas')),
+      appBar: AppBar(title: Text('Cadastro de aulas')),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 20),
+          padding: EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 20),
           child: Column(
             children: [
               ContainerWidget(
@@ -77,40 +77,40 @@ class _CadastroAulaPageState extends ConsumerState<CadastroAulaPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///
-                      const Text('Nome:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Nome:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 100, controller: nameCtrl, readOnly: false),
                       ///
-                      const Text('Curso:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Curso:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       ListaCursoWidget(
                         onChanged: (newId) {
                           _selectedCourseId = newId;
                         },
                       ), 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       ///
-                      const Text('Sinais do glossário:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Sinais do glossário:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, controller: glossaryCtrl, readOnly: false),
                       ///
-                      const Text('URL Vídeo:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('URL Vídeo:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, controller: urlCtrl, readOnly: false),
                       ///
-                      const Text('Conteúdo escrito:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Conteúdo escrito:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputContentWidget(maxLength: 10000, controller: contentCtrl),                        
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BotaoLaranjaWidget(txt: 'Cancelar', onPressed: () => Navigator.of(context).pop(), tam: 150),
-                  const SizedBox(width: 20),
+                  SizedBox(width: 20),
                   BotaoLaranjaWidget(txt: 'Salvar', onPressed: asyncSaveLesson, tam: 150),
                 ],
               )

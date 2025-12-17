@@ -14,16 +14,16 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      constraints: const BoxConstraints(
-        minWidth: 200, // Largura mínima
-        maxWidth: 300, // Largura máxima
-        minHeight: 48, // Altura mínima
-        maxHeight: 56, // Altura máxima
+      constraints: BoxConstraints(
+        minWidth: 200,
+        maxWidth: 300,
+        minHeight: 48,
+        maxHeight: 56,
       ),
       backgroundColor: WidgetStatePropertyAll(cores.cinzaClaro),
-      leading: const Icon(Icons.search),
+      leading: Icon(Icons.search),
       hintText: 'Pesquisar',
-      elevation: const WidgetStatePropertyAll(1),
+      elevation: WidgetStatePropertyAll(1),
     );
   }
 }

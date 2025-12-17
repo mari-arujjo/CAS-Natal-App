@@ -77,7 +77,7 @@ class _ListaCursoWidgetState extends ConsumerState<ListaCursoWidget> {
               );
             },
 
-            loading: () => const Center(child: CarregandoWidget()),
+            loading: () => Center(child: CarregandoWidget()),
             error: (err, stack) => Text('Erro ao carregar cursos'),
           ),
         ),

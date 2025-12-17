@@ -30,7 +30,7 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
       width: widget.tam,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               color: Colors.transparent,
               offset: Offset(0, 4),
@@ -41,14 +41,14 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
         ),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: const WidgetStatePropertyAll(Colors.white),
-            shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+            backgroundColor: WidgetStatePropertyAll(Colors.white),
+            shadowColor: WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
 
-            padding: const WidgetStatePropertyAll(
+            padding: WidgetStatePropertyAll(
               EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 5,
@@ -71,7 +71,7 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
                         maxLines: 1, 
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     
                     Expanded(
                       child: Text(

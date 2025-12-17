@@ -11,13 +11,13 @@ class _TermosPageState extends State<TermosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Termos de serviço')),
+      appBar: AppBar(title: Text('Termos de serviço')),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(25),
+          padding: EdgeInsets.all(25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'Aplicativo Educacional para Formação Docente em Libras e Comunidade Surda',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

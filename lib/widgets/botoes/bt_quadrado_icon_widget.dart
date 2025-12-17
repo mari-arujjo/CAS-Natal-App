@@ -31,7 +31,7 @@ class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
           boxShadow: [
             BoxShadow(
               color: cor.laranjaEscuro,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
               blurRadius: 0,
             ),
           ],
@@ -50,11 +50,11 @@ class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(widget.icon, color: Colors.white, size: 40),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
                 widget.txt,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),

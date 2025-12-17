@@ -19,8 +19,8 @@ class GestaoAulaPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestão de aulas'),
-        bottom: const PreferredSize(
+        title: Text('Gestão de aulas'),
+        bottom: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: SearchBarWidget(),
         ),
@@ -33,24 +33,24 @@ class GestaoAulaPage extends ConsumerWidget {
 
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 10,bottom: 20,left: 20,right: 20),
+          padding: EdgeInsets.only(top: 10,bottom: 20,left: 20,right: 20),
           child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+            margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(right: 5, top: 5, bottom: 5),
             decoration: BoxDecoration(
               color: cor.cinzaClaro,
               borderRadius: BorderRadius.circular(10),
             ),
 
             child: asyncLessons.when(
-              loading: () => const Center(child: CarregandoWidget()),
+              loading: () => Center(child: CarregandoWidget()),
               error: (error, stackTrace) => Center(
                 child: Text('Erro ao carregar aulas: $error'),
               ),
 
               data: (lessons) {
                 if(lessons.isEmpty){
-                  return const Center(
+                  return Center(
                     child: Text(
                       'Nenhuma aula cadastrada.',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -61,11 +61,11 @@ class GestaoAulaPage extends ConsumerWidget {
                 return Scrollbar(
                   controller: scrollController,
                   thumbVisibility: true,
-                  radius: const Radius.circular(10),
+                  radius: Radius.circular(10),
                   child: ListView.separated(
                     controller: scrollController,
-                    padding: const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 12),
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    padding: EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 12),
+                    separatorBuilder: (_, __) => SizedBox(height: 12),
                     itemCount: lessons.length,
                     itemBuilder: (_, index) {
                       final lesson = lessons[index];

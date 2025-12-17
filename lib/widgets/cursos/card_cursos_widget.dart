@@ -30,7 +30,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
       builder: (context, constraints) {
         return Container(
           width: constraints.maxWidth,
-          padding: const EdgeInsets.all(15),
+          padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
             color: cores.cinzaClaro,
             borderRadius: BorderRadius.circular(10),
@@ -50,7 +50,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Text(
                           '0% concluído',
                           style: TextStyle(
@@ -77,7 +77,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               BotaoLaranjaModuloWidget(
                 txt: 'Acessar',
                 onPressed: widget.onPressed,

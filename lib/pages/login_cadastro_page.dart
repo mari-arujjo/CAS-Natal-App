@@ -109,7 +109,7 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: maxContentWidth),
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
             child: TabBarView(
               children: [_buildLoginForm(cor), _buildRegisterForm(cor)],
             ),
@@ -120,78 +120,112 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
   }
 
   Widget _buildLoginForm(Cores cor) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Image.asset('assets/avatar/menino2.png', height: 150),
-            SizedBox(height: 20),
-            Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 20),
-            ContainerWidget(
-              child: Form(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    InputOutline(txt: "Usuário", ico: Icon(Icons.person), controller: usernameLoginCtrl),
-                    SizedBox(height: 15),
-                    InputOutlineSenha(txt: "Senha", controller: passwordLoginCtrl),
+                    Image.asset('assets/avatar/menino2.png', height: 150),
+                    SizedBox(height: 20),
+                    Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
+                    SizedBox(height: 20),
+                    ContainerWidget(
+                      child: Form(
+                        child: Column(
+                          children: [
+                            InputOutline(txt: "Usuário", ico: Icon(Icons.person), controller: usernameLoginCtrl),
+                            SizedBox(height: 15),
+                            InputOutlineSenha(txt: "Senha", controller: passwordLoginCtrl),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    BotaoLaranjaWidget(
+                      txt: 'Entrar',
+                      onPressed: () async { 
+                        asyncLogin();
+                      },
+                      tam: 1000,
+                    ),
+                    Spacer(), 
+                    Text(
+                      'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo', 
+                      style: TextStyle(fontSize: 10), 
+                      textAlign: TextAlign.center
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            BotaoLaranjaWidget(
-              txt: 'Entrar',
-              onPressed: () async { 
-                asyncLogin();
-              },
-              tam: 1000,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildRegisterForm(Cores cor) {
-     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Image.asset('assets/avatar/menina2.png', height: 130),
-            SizedBox(height: 20),
-            Text('Crie agora a sua conta!', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 20),
-            ContainerWidget(
-              child: Form(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    InputOutline(txt: "Nome", ico: Icon(Icons.person), controller: nameCadastroCtrl),
-                    SizedBox(height: 15),
-                    InputOutline(txt: "Username", ico: Icon(Icons.alternate_email), controller: usernameCadastroCtrl),
-                    SizedBox(height: 15),
-                    InputOutline(txt: "Email", ico: Icon(Icons.email), controller: emailCadastroCtrl),
-                    SizedBox(height: 15),
-                    InputOutlineSenha(txt: "Senha", controller: passwordCadastroCtrl),
-                    SizedBox(height: 15),
-                    InputOutlineSenha(txt: "Confirmar senha", controller: password2CadastroCtrl),
+                    Image.asset('assets/avatar/menina2.png', height: 130),
+                    SizedBox(height: 20),
+                    Text('Crie agora a sua conta!', style: TextStyle(fontSize: 18)),
+                    SizedBox(height: 20),
+                    ContainerWidget(
+                      child: Form(
+                        child: Column(
+                          children: [
+                            InputOutline(txt: "Nome", ico: Icon(Icons.person), controller: nameCadastroCtrl),
+                            SizedBox(height: 15),
+                            InputOutline(txt: "Username", ico: Icon(Icons.alternate_email), controller: usernameCadastroCtrl),
+                            SizedBox(height: 15),
+                            InputOutline(txt: "Email", ico: Icon(Icons.email), controller: emailCadastroCtrl),
+                            SizedBox(height: 15),
+                            InputOutlineSenha(txt: "Senha", controller: passwordCadastroCtrl),
+                            SizedBox(height: 15),
+                            InputOutlineSenha(txt: "Confirmar senha", controller: password2CadastroCtrl),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    BotaoLaranjaWidget(
+                      txt: 'Cadastrar',
+                      onPressed: () async {
+                        asyncRegisterLogin();
+                      },
+                      tam: 1000,
+                    ),
+                    Spacer(),
+                    Text(
+                      'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            BotaoLaranjaWidget(
-              txt: 'Cadastrar',
-              onPressed: () async {
-                  asyncRegisterLogin();
-                },
-              tam: 1000,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

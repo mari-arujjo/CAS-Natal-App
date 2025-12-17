@@ -25,7 +25,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
     
     _controller = YoutubePlayerController(
       initialVideoId: videoId ?? '',
-      flags: const YoutubePlayerFlags(
+      flags: YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
       ),
@@ -63,10 +63,10 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
             valueListenable: _controller,
             builder: (context, value, child) {
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   _controller.metadata.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -77,7 +77,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
           
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 'Assista ao vídeo da lição antes de prosseguir para a leitura do conteúdo.',
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
@@ -86,7 +86,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
           ),
           
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

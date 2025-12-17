@@ -16,7 +16,7 @@ class _AdminPageState extends State<AdminPage> {
       appBar: AppBar(title: Text('Opções de administrador')),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: EdgeInsets.all(30),
           child: GridView.count(
             crossAxisCount: 2,
             crossAxisSpacing: 15,

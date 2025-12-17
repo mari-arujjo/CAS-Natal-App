@@ -79,10 +79,10 @@ class _CadastroCursoPageState extends ConsumerState<CadastroCursoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro de cursos')),
+      appBar: AppBar(title: Text('Cadastro de cursos')),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Column(
             children: [
               ContainerWidget(
@@ -99,35 +99,35 @@ class _CadastroCursoPageState extends ConsumerState<CadastroCursoPage> {
                             imgBytes: imgBytes,
                           ),
                           BotaoIconWidget(
-                            icon: const Icon(Icons.edit),
+                            icon: Icon(Icons.edit),
                             onPressed: pickImageGallery,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       
-                      const Text('Nome:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Nome:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, controller: nameCtrl, readOnly: false),
                       
-                      const Text('Abreviação:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Abreviação:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 4, controller: symbolCtrl, readOnly: false),
                       
-                      const Text('Descrição:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Descrição:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputDescricaoWidget(maxLength: 150, controller: descriptionCtrl),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BotaoLaranjaWidget(txt: 'Cancelar', tam: 150, onPressed: () => Navigator.of(context).pop()),
-                  const SizedBox(width: 20),
+                  SizedBox(width: 20),
                   BotaoLaranjaWidget(
                     txt: 'Salvar',
                     tam: 150,

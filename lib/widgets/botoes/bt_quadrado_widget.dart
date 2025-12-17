@@ -29,7 +29,7 @@ class _ButtonQuadradoState extends State<ButtonQuadrado> {
           boxShadow: [
             BoxShadow(
               color: cor.laranjaEscuro,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
               blurRadius: 0,
             ),
           ],
@@ -43,14 +43,14 @@ class _ButtonQuadradoState extends State<ButtonQuadrado> {
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            padding: const WidgetStatePropertyAll(
+            padding: WidgetStatePropertyAll(
               EdgeInsets.symmetric(vertical: 10, horizontal: 16),
             ),
           ),
           child: Text(
             widget.txt,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 15),
+            style: TextStyle(color: Colors.white, fontSize: 15),
           ),
         )
       )

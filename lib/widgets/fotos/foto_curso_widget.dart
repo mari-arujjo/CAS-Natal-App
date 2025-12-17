@@ -46,7 +46,7 @@ class _FotoCursoWidgetState extends State<FotoCursoWidget> {
               : null,
         ),
         child: imagem == null
-            ? const Center(
+            ? Center(
                 child: Icon(
                   Icons.school,
                   size: 40,

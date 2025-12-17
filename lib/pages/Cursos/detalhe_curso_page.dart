@@ -56,15 +56,15 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
       appBar: AppBar(
         title: courseAsync.maybeWhen(
           data: (course) => Text(course.name),
-          orElse: () => const Text('Curso'),
+          orElse: () => Text('Curso'),
         ),
       ),
 
       body: courseAsync.when(
-        loading: () => const Center(child: CarregandoWidget()),
+        loading: () => Center(child: CarregandoWidget()),
         error: (error, stack) => Center(
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: EdgeInsets.all(30.0),
             child: Text('Erro ao carregar detalhes do curso: $error'),
           ),
         ),
@@ -72,10 +72,10 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
         data: (CourseModel course) {
           final List<LessonModel> lessons = course.lessons ?? [];
           return userEnrollmentsAsync.when(
-            loading: () => const Center(child: CarregandoWidget()),
+            loading: () => Center(child: CarregandoWidget()),
             error: (error, stack) => Center(
               child: Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(30.0),
                 child: Text('Erro ao carregar matrículas: $error'),
               ),
             ),
@@ -85,7 +85,7 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
               return SingleChildScrollView(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Row(
@@ -94,10 +94,10 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                             Expanded(
                               child: Text(
                                 course.description,
-                                style: const TextStyle(fontSize: 16),
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10),
                             SizedBox(
                               width: 150,
                               height: 170,
@@ -108,15 +108,15 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30),
                         if (isEnrolled)
                           lessons.isEmpty
-                          ? const Text('Nenhuma lição cadastrada para este curso.')
+                          ? Text('Nenhuma lição cadastrada para este curso.')
                             : ListView.separated(
                                 shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: lessons.length,
-                                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                separatorBuilder: (context, index) => SizedBox(height: 12),
                                 itemBuilder: (context, index) {
                                   final lesson = lessons[index];
                                   return SizedBox(
@@ -139,12 +139,12 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                         else
                           Column(
                             children: [
-                              const Text(
+                              Text(
                                 'Você não está matriculado neste curso.\nMatricule-se para acessar as aulas.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontStyle: FontStyle.italic),
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: 20),
                               BotaoLaranjaWidget(
                                 txt: 'Matricular-se agora!',
                                 onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),

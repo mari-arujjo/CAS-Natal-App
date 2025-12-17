@@ -17,7 +17,7 @@ class _InputPadraoWidgetState extends State<InputPadraoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final Color fillColor = widget.readOnly ? const Color.fromARGB(157, 255, 255, 255) : Colors.white;
+    final Color fillColor = widget.readOnly ? Color.fromARGB(157, 255, 255, 255) : Colors.white;
 
     return TextFormField(
       controller: widget.controller,

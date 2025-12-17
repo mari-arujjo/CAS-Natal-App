@@ -1,11 +1,10 @@
-// sign_page.dart
 import 'package:app_cas_natal/src/sign/sign_provider.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart'; // Importação necessária
-import 'package:app_cas_natal/src/sign/sign_model.dart'; // Importação para o modelo (opcional se já tiver importado via provider)
-import 'package:app_cas_natal/cores.dart'; // Assumindo que você usa Cores
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:app_cas_natal/src/sign/sign_model.dart';
+import 'package:app_cas_natal/cores.dart';
 
 class SignPage extends ConsumerStatefulWidget {
   final String signId;
@@ -18,7 +17,7 @@ class SignPage extends ConsumerStatefulWidget {
 
 class _SignPageState extends ConsumerState<SignPage> {
   YoutubePlayerController? _controller;
-  final cor = Cores(); // Inicialização da classe de cores
+  final cor = Cores();
 
   @override
   void deactivate() {
@@ -32,7 +31,6 @@ class _SignPageState extends ConsumerState<SignPage> {
     super.dispose();
   }
 
-  // Widget para construir o player do YouTube
   Widget _buildYoutubePlayer(SignModel sign) {
     if (sign.url != null && sign.url!.isNotEmpty) {
       final videoId = YoutubePlayer.convertUrlToId(sign.url!);
@@ -40,7 +38,7 @@ class _SignPageState extends ConsumerState<SignPage> {
       if (videoId != null && _controller == null) {
         _controller = YoutubePlayerController(
           initialVideoId: videoId,
-          flags: const YoutubePlayerFlags(
+          flags: YoutubePlayerFlags(
             autoPlay: false,
             mute: false,
           ),
@@ -60,7 +58,6 @@ class _SignPageState extends ConsumerState<SignPage> {
       }
     }
     
-    // Fallback se URL estiver vazia ou não for um link válido
     return Container(
       height: 200,
       width: double.infinity,
@@ -89,12 +86,12 @@ class _SignPageState extends ConsumerState<SignPage> {
       appBar: AppBar(
         title: asyncSign.maybeWhen(
           data: (sign) => Text('Sinal: ${sign.name}'),
-          orElse: () => const Text('Detalhe do Sinal'),
+          orElse: () => Text('Detalhe do Sinal'),
         ),
         actions: asyncSign.maybeWhen(
           data: (sign) => [
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.favorite_border,
                 color: Colors.orange,
               ),
@@ -102,21 +99,20 @@ class _SignPageState extends ConsumerState<SignPage> {
                 // Implementar lógica de favoritar
               },
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
           ],
           orElse: () => [],
         ),
       ),
       body: asyncSign.when(
-        loading: () => const Center(child: CarregandoWidget()),
+        loading: () => Center(child: CarregandoWidget()),
         error: (err, stack) => Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Text('Erro ao carregar o sinal: $err'),
           ),
         ),
         data: (sign) {
-          // Garante que o controller é inicializado/resetado se o ID do sinal mudar
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_controller != null && YoutubePlayer.convertUrlToId(sign.url ?? '') != _controller!.initialVideoId) {
               setState(() {
@@ -127,25 +123,24 @@ class _SignPageState extends ConsumerState<SignPage> {
           });
           
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                const Text(
+                Text(
                   'Definição:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 5),
+                SizedBox(height: 5),
                 Text(
                   sign.description,
-                  style: const TextStyle(fontSize: 14),
+                  style: TextStyle(fontSize: 14),
                 ),
-
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Container(
                   height: 200,
                   width: double.infinity,
@@ -162,7 +157,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                             fit: BoxFit.cover,
                           ),
                         )
-                      : const Center(
+                      : Center(
                           child: Text(
                             'Imagem do Sinal (Photo) não disponível',
                             textAlign: TextAlign.center,
@@ -172,15 +167,15 @@ class _SignPageState extends ConsumerState<SignPage> {
                 ),
 
 
-                const SizedBox(height: 50),
-                const Text(
+                SizedBox(height: 50),
+                Text(
                   'Sinal em LIBRAS (Vídeo)',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 5),
+                SizedBox(height: 5),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: _buildYoutubePlayer(sign),

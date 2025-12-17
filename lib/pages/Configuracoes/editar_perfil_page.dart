@@ -155,20 +155,20 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
 
     if (asyncUser.isLoading || asyncAvatar.isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Carregando...')),
+        appBar: AppBar(title: Text('Carregando...')),
         body: Center(child: CarregandoWidget()),
       );
     }
 
     if (asyncUser.hasError) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Erro')),
+        appBar: AppBar(title: Text('Erro')),
         body: Center(child: Text('Erro ao carregar usuário: ${asyncUser.error}')),
       );
     }
     if (asyncAvatar.hasError) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Erro')),
+        appBar: AppBar(title: Text('Erro')),
         body: Center(child: Text('Erro ao carregar avatar: ${asyncAvatar.error}')),
       );
     }
@@ -178,8 +178,8 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
 
     if (user == null) {
         return Scaffold(
-            appBar: AppBar(title: const Text('Erro')),
-            body: const Center(child: Text('Dados do usuário não encontrados.')),
+            appBar: AppBar(title: Text('Erro')),
+            body: Center(child: Text('Dados do usuário não encontrados.')),
         );
     }
 
@@ -191,7 +191,7 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               children: [
                 Column(
@@ -205,54 +205,47 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
                           imgBytes: imgBytes,
                         ),
                         BotaoIconWidget(
-                          icon: const Icon(Icons.edit), 
+                          icon: Icon(Icons.edit), 
                           onPressed: pickImageGallery,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     ContainerWidget(
                       child: Form(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Nome:', style: TextStyle(fontSize: 16)),
-                            const SizedBox(height: 5),
+                            Text('Nome:', style: TextStyle(fontSize: 16)),
+                            SizedBox(height: 5),
                             InputPadraoWidget(
                               maxLength: 50,
                               readOnly: false,
                               controller: nameCtrl,
                             ),
 
-                            const Text('Usuário:', style: TextStyle(fontSize: 16)),
-                            const SizedBox(height: 5),
+                            Text('Usuário:', style: TextStyle(fontSize: 16)),
+                            SizedBox(height: 5),
                             InputPadraoWidget(
                               maxLength: 20,
                               readOnly: false, 
                               controller: userNameCtrl,
                             ),
 
-                            const Text('Email:', style: TextStyle(fontSize: 16)),
-                            const SizedBox(height: 5),
+                            Text('Email:', style: TextStyle(fontSize: 16)),
+                            SizedBox(height: 5),
                             InputPadraoWidget(
                               maxLength: 150,
                               readOnly: false,
                               controller: emailCtrl,
                             ),
 
-                            /*const Text('Role:', style: TextStyle(fontSize: 16)),
-                            const SizedBox(height: 5),
-                            InputPadraoWidget(
-                              maxLength: 150,
-                              readOnly: true,
-                              controller: roleCtrl,
-                            ),*/
                           ],
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -262,7 +255,7 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
                           onPressed: () => asyncUpdate(user),
                           tam: 120,
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         BotaoLaranjaWidget(
                           txt: 'Cancelar',
                           onPressed: () {

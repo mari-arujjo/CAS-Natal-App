@@ -23,23 +23,23 @@ class CursosPage extends ConsumerWidget {
           ref.invalidate(courseProvider);
         },
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 20, right: 20),
             child: coursesAsync.when(
-              loading: () => const Padding(
+              loading: () => Padding(
                 padding: EdgeInsets.only(top: 100),
                 child: Center(child: CarregandoWidget()),
               ),
               error: (error, stack) => Padding(
-                padding: const EdgeInsets.only(top: 100),
+                padding: EdgeInsets.only(top: 100),
                 child: Center(
                   child: Text('Erro ao carregar cursos: $error'),
                 ),
               ),
               data: (courses) {
                 if (courses.isEmpty) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.only(top: 100),
                     child: Center(
                       child: Text('Nenhum curso cadastrado.'),
@@ -50,21 +50,21 @@ class CursosPage extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
 
                     Image.asset(
                       'assets/logo_cas_transparente.png',
                       height: 110,
                       fit: BoxFit.contain,
                     ),
-
-                    const SizedBox(height: 50),
+                    
+                    SizedBox(height: 50),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: courses.map((course) {
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
+                          padding: EdgeInsets.only(bottom: 10),
                           child: CourseCardWidget(
                             course: course,
                             onPressed: () {

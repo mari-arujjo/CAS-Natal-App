@@ -98,7 +98,7 @@ class _AulaPageState extends ConsumerState<AulaPage> {
       appBar: AppBar(title: Text(widget.aula.name)),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+          padding: EdgeInsets.only(left: 20, right: 20, bottom: 30),
           child: Column(
             children: [
               ContainerWidget(
@@ -108,16 +108,16 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///
-                      const Text('Código:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Código:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, readOnly: true, controller: codeCtrl),
                       ///
-                      const Text('Nome:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Nome:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 100, readOnly: false, controller: nameCtrl),
                       ///
-                      const Text('Curso:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Curso:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       ListaCursoWidget(
                         initialCourseId: _selectedCourseId,
                         onChanged: (newId) {
@@ -126,24 +126,24 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                           });
                         },
                       ), 
-                      const SizedBox(height: 25),
+                      SizedBox(height: 25),
                       ///
-                      const Text('Sinais do glossário:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Sinais do glossário:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, readOnly: false),
                       ///
-                      const Text('URL Vídeo:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('URL Vídeo:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputPadraoWidget(maxLength: 50, readOnly: false, controller: urlCtrl),
                       ///
-                      const Text('Conteúdo escrito:', style: TextStyle(fontSize: 16)),
-                      const SizedBox(height: 5),
+                      Text('Conteúdo escrito:', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
                       InputContentWidget(maxLength: 10000, controller: contentCtrl,),                        
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -155,7 +155,7 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                         tam: 150, 
                         onPressed: _asyncDeleteLesson,
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: 20),
                       BotaoLaranjaWidget(
                         txt: 'Salvar', 
                         tam: 150, 
@@ -163,7 +163,7 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   BotaoLaranjaWidget(
                     txt: 'Cancelar', 
                     tam: 150, 

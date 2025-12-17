@@ -5,7 +5,7 @@ import 'package:app_cas_natal/src/quiz/quiz_provider.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart'; // Import necessário
+import 'package:go_router/go_router.dart';
 
 class LessonQuizPage extends ConsumerStatefulWidget {
   final LessonModel lesson;
@@ -52,7 +52,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
     final textColor = isSelected ? Colors.white : cor.azulEscuro;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
         width: double.infinity,
         height: 60,
@@ -77,7 +77,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
           ),
           child: Text(
             optionText,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -96,7 +96,6 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
         : Icon(Icons.cancel, color: dialogColor, size: 80);
     final title = _isCorrect ? 'Alternativa correta!' : 'Alternativa incorreta!';
 
-    // Dados dinâmicos para o feedback
     final String incorrectFeedbackText = _quizQuestion!.feedback;
     final String correctAnswerText = _correctOption!.optionText;
 
@@ -112,41 +111,38 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          contentPadding: const EdgeInsets.all(30),
+          contentPadding: EdgeInsets.all(30),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               icon,
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               if (feedbackText != null)
                 Column(
                   children: [
                     Text(
                       feedbackText,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: 14),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                   ],
                 ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // 1. Fecha o diálogo
                     Navigator.of(dialogContext).pop();
-                    
-                    // 2. Navega para a página de detalhes do curso usando o courseId
-                    // A rota é: '/cursos/detalheCurso/:courseId'
+
                     final courseId = widget.lesson.courseId;
                     if (courseId != null && mounted) {
                       context.go('/cursos/detalheCurso/$courseId');
@@ -155,12 +151,12 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: dialogColor,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding: EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Continuar',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -183,7 +179,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
+          preferredSize: Size.fromHeight(4.0),
           child: LinearProgressIndicator(
             value: 1.0 / 1.0,
             backgroundColor: Colors.grey[300],
@@ -194,10 +190,10 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
         centerTitle: false,
       ),
       body: quizAsync.when(
-        loading: () => const Center(child: CarregandoWidget()),
+        loading: () => Center(child: CarregandoWidget()),
         error: (error, stack) => Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Text('Erro ao carregar Quiz: ${error.toString().replaceAll('Exception: ', '')}'),
           ),
         ),
@@ -210,7 +206,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -226,28 +222,28 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
 
                       Text(
                         quizQuestion.questionText,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 50),
+                      SizedBox(height: 50),
 
                       ...quizQuestion.quizOptions.map((option) {
                         return _buildOptionButton(option.optionText);
                       }).toList(),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -255,7 +251,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
                       color: Colors.grey.withOpacity(0.1),
                       spreadRadius: 1,
                       blurRadius: 5,
-                      offset: const Offset(0, -3),
+                      offset: Offset(0, -3),
                     ),
                   ],
                 ),
@@ -272,7 +268,7 @@ class _LessonQuizPageState extends ConsumerState<LessonQuizPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Verificar',
                       style: TextStyle(
                         fontSize: 20,

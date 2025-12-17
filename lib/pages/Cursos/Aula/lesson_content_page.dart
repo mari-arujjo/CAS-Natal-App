@@ -43,8 +43,8 @@ class LessonContentPage extends ConsumerWidget {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: const Text('Início do Quiz'),
-            content: const Text( 'Tem certeza de que deseja prosseguir para o Quiz? Certifique-se de que revisou todo o conteúdo da lição.'),
+            title: Text('Início do Quiz'),
+            content: Text( 'Tem certeza de que deseja prosseguir para o Quiz? Certifique-se de que revisou todo o conteúdo da lição.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
@@ -76,7 +76,7 @@ class LessonContentPage extends ConsumerWidget {
         if (nextLessonId != null) {
           context.go('/cursos/detalheCurso/${lesson.courseId}/video/$nextLessonId');
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Quiz não encontrado. Prosseguindo para a próxima lição.')),
+            SnackBar(content: Text('Quiz não encontrado. Prosseguindo para a próxima lição.')),
           );
         } else {
           context.go('/cursos/detalheCurso/${lesson.courseId}'); 
@@ -98,32 +98,32 @@ class LessonContentPage extends ConsumerWidget {
         title: Text('Conteúdo: ${lesson.name}'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
                   lesson.content,
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: EdgeInsets.only(top: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BotaoNavegacaoWidget(
                     txt: 'Anterior',
-                    icon: const Icon(Icons.arrow_back),
+                    icon: Icon(Icons.arrow_back),
                     onPressed: () {
                       context.go('/cursos/detalheCurso/${lesson.courseId}/video/${lesson.id}');
                     },
                   ),
                   BotaoNavegacaoWidget(
                     txt: 'Próximo',
-                    icon: const Icon(Icons.arrow_forward),
+                    icon: Icon(Icons.arrow_forward),
                     onPressed: () =>  QuizConfirmation(context, ref),
                   ),
                 ],
