@@ -52,7 +52,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                 SizedBox(height: 3),
                 NavigationBar(
                   height: 65,
-                  backgroundColor: cores.cinzaClaro,
+                  backgroundColor: cores.cinzaClaro, 
                   indicatorColor: cores.azulEscuro,
                   selectedIndex: selectedIndex,
                   destinations: destinations,
@@ -69,13 +69,24 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             body: Row(
               children: <Widget>[
                 NavigationRail(
-                  backgroundColor: cores.cinzaClaro,
+                  extended: true,
+                  minExtendedWidth: 220,
+                  backgroundColor: cores.branco,
                   indicatorColor: cores.azulEscuro,
                   selectedIndex: selectedIndex,
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Image.asset(
+                      'assets/logo_cas_transparente2.png',
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  groupAlignment: -1.0,
                   onDestinationSelected: (int index) {
                     mudarDeBranch(index);
                   },
-                  labelType: NavigationRailLabelType.all,
+                  labelType: null, 
                   destinations: destinations.map((destination) {
                     return NavigationRailDestination(
                       icon: destination.icon,
@@ -84,7 +95,6 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                     );
                   }).toList(),
                 ),
-                VerticalDivider(thickness: 1, width: 1), 
                 Expanded(
                   child: widget.navigationShell,
                 ),

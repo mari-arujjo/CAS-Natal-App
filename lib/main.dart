@@ -13,19 +13,33 @@ void main() {
 
 class AppWidget extends ConsumerWidget {
   const AppWidget({super.key});
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cores = Cores();
-
-    final router = ref.watch(goRouterProvider); 
+    final router = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
       title: 'CAS Natal + IFRN',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
+      
+        // --- ESTILIZAÇÃO DO NAVIGATION RAIL (Desktop/Web) ---
+        navigationRailTheme: NavigationRailThemeData(
+          selectedLabelTextStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          unselectedLabelTextStyle: const TextStyle(
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+        ),
+
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           scrolledUnderElevation: 0,
           surfaceTintColor: Colors.transparent,
           foregroundColor: cores.preto,
@@ -42,7 +56,7 @@ class AppWidget extends ConsumerWidget {
           bodySmall: TextStyle(color: cores.preto),
         ),
       ),
-      routerConfig: router
+      routerConfig: router,
     );
   }
 }

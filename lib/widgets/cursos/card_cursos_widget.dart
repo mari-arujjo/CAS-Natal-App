@@ -43,12 +43,19 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.memory(
-                      course.photo!,
-                      width: constraints.maxWidth * 0.35,
-                      height: 70,
-                      fit: BoxFit.cover,
-                    ),
+                    child: course.photo != null
+                        ? Image.memory(
+                            course.photo!,
+                            width: constraints.maxWidth * 0.4,
+                            height: 90,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/modulos/placeholder_curso.jpg',
+                            width: constraints.maxWidth * 0.4,
+                            height: 90,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   SizedBox(width: 10),
                   Expanded(
