@@ -25,17 +25,26 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
     final int selectedIndex = widget.navigationShell.currentIndex; 
     const double breakpoint = 600.0; 
 
-    final destinations = const <NavigationDestination>[
+    final destinations = <NavigationDestination>[
       NavigationDestination(
-        icon: Icon(Icons.school, color: Colors.black),
+        icon: Icon(
+          Icons.school, 
+          color: selectedIndex == 0 ? Colors.white : Colors.black,
+        ),
         label: 'Cursos',
       ),
       NavigationDestination(
-        icon: Icon(Icons.sign_language, color: Colors.black),
+        icon: Icon(
+          Icons.sign_language, 
+          color: selectedIndex == 1 ? Colors.white : Colors.black,
+        ),
         label: 'Glossário',
       ),
       NavigationDestination(
-        icon: Icon(Icons.settings, color: Colors.black),
+        icon: Icon(
+          Icons.settings, 
+          color: selectedIndex == 2 ? Colors.white : Colors.black,
+        ),
         label: 'Configurações',
       ),
     ];
@@ -74,6 +83,8 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                   backgroundColor: cores.branco,
                   indicatorColor: cores.azulEscuro,
                   selectedIndex: selectedIndex,
+                  unselectedIconTheme: const IconThemeData(color: Colors.black),
+                  selectedIconTheme: const IconThemeData(color: Colors.white),
                   leading: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Image.asset(
@@ -95,6 +106,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                     );
                   }).toList(),
                 ),
+                const VerticalDivider(thickness: 1, width: 1,color: Color.fromARGB(30, 0, 0, 0),),
                 Expanded(
                   child: widget.navigationShell,
                 ),

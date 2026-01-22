@@ -32,8 +32,15 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
           width: constraints.maxWidth,
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: cores.cinzaClaro,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(30, 0, 0, 0),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

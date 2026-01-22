@@ -17,9 +17,12 @@ class GlossarioPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        elevation: 4,
+        shadowColor: Color.fromARGB(83, 0, 0, 0),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(10), 
-          child: SearchBarWidget(),
+          child: Column(children: [SearchBarWidget(), SizedBox(height: 10,)],)
         ),
       ),
       body: SingleChildScrollView(
