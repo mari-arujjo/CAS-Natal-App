@@ -28,76 +28,71 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
-          width: constraints.maxWidth,
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
+        return Card(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(30, 0, 0, 0),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: course.photo != null
-                        ? Image.memory(
-                            course.photo!,
-                            width: constraints.maxWidth * 0.4,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/modulos/placeholder_curso.jpg',
-                            width: constraints.maxWidth * 0.4,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          course.name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: cores.preto,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          '0% concluído',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: cores.preto,
-                          ),
-                        ),
-                        ProgressBarWidget(progress: 0),
-                      ],
+          elevation: 2,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: course.photo != null
+                          ? Image.memory(
+                              course.photo!,
+                              width: constraints.maxWidth * 0.4,
+                              height: 90,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/modulos/placeholder_curso.jpg',
+                              width: constraints.maxWidth * 0.4,
+                              height: 90,
+                              fit: BoxFit.cover,
+                            ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              BotaoLaranjaModuloWidget(
-                txt: 'Acessar',
-                onPressed: widget.onPressed,
-              ),
-            ],
-          ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            course.name,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: cores.preto,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            '0% concluído',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: cores.preto,
+                            ),
+                          ),
+                          ProgressBarWidget(progress: 0),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                BotaoLaranjaModuloWidget(
+                  txt: 'Acessar',
+                  onPressed: widget.onPressed,
+                ),
+              ],
+            ),
+          )
         );
       },
     );

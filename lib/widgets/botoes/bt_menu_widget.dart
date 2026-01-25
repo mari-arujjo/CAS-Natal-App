@@ -27,7 +27,13 @@ class _BotaoMenuWidgetState extends State<BotaoMenuWidget> {
     return SizedBox(
       height: 50,
       width: widget.tam,
-      child: ElevatedButton(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        color: Colors.white,
+        child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(Colors.transparent),
           shadowColor: WidgetStatePropertyAll(Colors.transparent),
@@ -69,6 +75,7 @@ class _BotaoMenuWidgetState extends State<BotaoMenuWidget> {
           ],
         ),
       ),
+      )
     );
   }
 }

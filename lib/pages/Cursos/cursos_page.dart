@@ -6,7 +6,6 @@ import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CursosPage extends ConsumerWidget {
   const CursosPage({super.key});
@@ -15,8 +14,8 @@ class CursosPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cor = Cores();
     final coursesAsync = ref.watch(courseProvider);
-    final double larguraTela = MediaQuery.of(context).size.width;
-    final int colunas = larguraTela > 900 ? 3 : 1;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 900;
 
     return Scaffold(
       appBar: AppBar(
@@ -50,17 +49,21 @@ class CursosPage extends ConsumerWidget {
             return SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
-                    MasonryGridView.count(
-                      crossAxisCount: colunas,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
+                    Text('Resultados encontrados: ${courses.length}'),
+                    SizedBox(height: 10),
+                    GridView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isDesktop ? 3 : 1,
+                        mainAxisExtent: 180,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15,
+                      ),
                       itemCount: courses.length,
                       itemBuilder: (context, index) {
                         final course = courses[index];

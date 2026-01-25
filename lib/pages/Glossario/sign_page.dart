@@ -31,6 +31,20 @@ class _SignPageState extends ConsumerState<SignPage> {
     super.dispose();
   }
 
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10, top: 10),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.shade600,
+        ),
+      ),
+    );
+  }
+
   Widget _buildYoutubePlayer(SignModel sign) {
     if (sign.url != null && sign.url!.isNotEmpty) {
       final videoId = YoutubePlayer.convertUrlToId(sign.url!);
@@ -38,9 +52,14 @@ class _SignPageState extends ConsumerState<SignPage> {
       if (videoId != null && _controller == null) {
         _controller = YoutubePlayerController(
           initialVideoId: videoId,
-          flags: YoutubePlayerFlags(
+          flags: const YoutubePlayerFlags(
             autoPlay: false,
             mute: false,
+            disableDragSeek: false,
+            loop: false,
+            isLive: false,
+            forceHD: false,
+            enableCaption: true,
           ),
         );
       }
@@ -53,27 +72,23 @@ class _SignPageState extends ConsumerState<SignPage> {
           bottomActions: [
             CurrentPosition(),
             ProgressBar(isExpanded: true),
+            const PlaybackSpeedButton(),
+            FullScreenButton(),
           ],
         );
       }
     }
     
     return Container(
-      height: 200,
+      height: 250,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.lightBlue.shade50,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.lightBlue.shade200),
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
       ),
-      child: Center(
-        child: Text(
-          sign.url != null && sign.url!.isNotEmpty
-              ? 'Erro ao carregar vídeo: URL inválida ou sem conexão.'
-              : 'Vídeo do Sinal não disponível (URL vazia).',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey.shade600),
-        ),
+      child: const Center(
+        child: Text('Vídeo não disponível para este sinal.'),
       ),
     );
   }
@@ -81,106 +96,139 @@ class _SignPageState extends ConsumerState<SignPage> {
   @override
   Widget build(BuildContext context) {
     final asyncSign = ref.watch(signDetailProvider(widget.signId));
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 1100;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: asyncSign.maybeWhen(
-          data: (sign) => Text('Sinal: ${sign.name}'),
-          orElse: () => Text('Detalhe do Sinal'),
+          data: (sign) => Text('Sinal: ${sign.name}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          orElse: () => const Text('Detalhe do Sinal'),
         ),
-        actions: asyncSign.maybeWhen(
-          data: (sign) => [
-            IconButton(
-              icon: Icon(
-                Icons.favorite_border,
-                color: Colors.orange,
-              ),
-              onPressed: () {
-                // Implementar lógica de favoritar
-              },
-            ),
-            SizedBox(width: 10),
-          ],
-          orElse: () => [],
-        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite_border, color: Colors.orange),
+            onPressed: () {},
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
       body: asyncSign.when(
-        loading: () => Center(child: CarregandoWidget()),
-        error: (err, stack) => Center(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text('Erro ao carregar o sinal: $err'),
-          ),
-        ),
+        loading: () => const Center(child: CarregandoWidget()),
+        error: (err, stack) => Center(child: Text('Erro ao carregar: $err')),
         data: (sign) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (_controller != null && YoutubePlayer.convertUrlToId(sign.url ?? '') != _controller!.initialVideoId) {
+            if (_controller != null && 
+                YoutubePlayer.convertUrlToId(sign.url ?? '') != _controller!.initialVideoId) {
               setState(() {
                 _controller?.dispose();
                 _controller = null;
               });
             }
           });
-          
-          return SingleChildScrollView(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
 
-                Text(
-                  'Definição:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  sign.description,
-                  style: TextStyle(fontSize: 14),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue.shade50,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.lightBlue.shade200),
-                  ),
-                  child: sign.photo != null && sign.photo!.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.memory(
-                            sign.photo!,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Center(
-                          child: Text(
-                            'Imagem do Sinal (Photo) não disponível',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.black54),
+          Widget photoWidget = ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              color: Colors.grey.shade100,
+              child: sign.photo != null && sign.photo!.isNotEmpty
+                  ? Image.memory(sign.photo!, fit: BoxFit.cover)
+                  : const AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Center(child: Icon(Icons.image_not_supported, size: 50, color: Colors.grey)),
+                    ),
+            ),
+          );
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: isDesktop 
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildSectionTitle('Definição do Sinal'),
+                              Text(
+                                sign.description,
+                                style: const TextStyle(
+                                  fontSize: 19,
+                                  height: 1.6,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              SizedBox(height: 40),
+                              Divider(color: Colors.grey.shade300),
+                              SizedBox(height: 20),
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: cor.laranja.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.info_outline, color: cor.laranja),
+                                    const SizedBox(width: 15),
+                                    const Expanded(
+                                      child: Text(
+                                        "Este sinal faz parte do glossário oficial do CAS Natal.",
+                                        style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                ),
-
-
-                SizedBox(height: 50),
-                Text(
-                  'Sinal em LIBRAS (Vídeo)',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 5),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: _buildYoutubePlayer(sign),
-                ),
-              ],
+                        SizedBox(width: 40),
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildSectionTitle('Demonstração em Vídeo'),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: _buildYoutubePlayer(sign),
+                              ),
+                              const SizedBox(height: 30),
+                              _buildSectionTitle('Referência Visual'),
+                              photoWidget,
+                            ],
+                          ),
+                        ),
+                        
+                      ],
+                    )
+                  : Column( // VERSÃO MOBILE (EMPILHADO)
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSectionTitle('Definição'),
+                        Text(sign.description, style: const TextStyle(fontSize: 17, height: 1.5)),
+                        const SizedBox(height: 24),
+                        _buildSectionTitle('Referência Visual'),
+                        photoWidget,
+                        const SizedBox(height: 32),
+                        _buildSectionTitle('Sinal em LIBRAS'),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: _buildYoutubePlayer(sign),
+                        ),
+                      ],
+                    ),
+              ),
             ),
           );
         },

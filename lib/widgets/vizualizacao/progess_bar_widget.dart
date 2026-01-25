@@ -17,7 +17,7 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
     return LinearProgressIndicator(
       value: widget.progress/100,
       color: cores.azulEscuro,
-      backgroundColor: Colors.yellow,
+      backgroundColor: cores.cinzaClaro,
       minHeight: 6,
       borderRadius: BorderRadius.circular(4),
     );

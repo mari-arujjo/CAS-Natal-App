@@ -2,8 +2,8 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/snackbar.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_aula_widget.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_quadrado_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,21 +29,14 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
     final confirmed = await popUp.PopUpFazerMatricula(context, courseName);
     if (!confirmed) return;
     final enrollmentNotifier = ref.read(enrollmentProvider.notifier);
-    SnackBarUtils.showCustomSnackbar( 
-      context, 'Matriculando...', cor.azulEscuro,
-    );
+    SnackBarUtils.showCustomSnackbar(context, 'Matriculando...', cor.azulEscuro);
     try {
       await enrollmentNotifier.enrollUser(courseSymbol);
       ref.invalidate(courseDetailProvider(widget.courseId));
       await ref.refresh(userEnrollmentsProvider.future);
-      SnackBarUtils.showCustomSnackbar(
-        context, 'Matrícula em "$courseName" realizada com sucesso!', cor.azulEscuro,
-      );
+      SnackBarUtils.showCustomSnackbar(context, 'Matrícula realizada com sucesso!', cor.azulEscuro);
     } catch (e) {
-      final msg = e.toString().replaceAll('Falha na matrícula:', '');
-      SnackBarUtils.showCustomSnackbar(
-        context, msg, Colors.red,
-      );
+      SnackBarUtils.showCustomSnackbar(context, e.toString(), Colors.red);
     }
   }
 
@@ -53,113 +46,135 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
     final userEnrollmentsAsync = ref.watch(userEnrollmentsProvider);
 
     return Scaffold(
+      
       appBar: AppBar(
         title: courseAsync.maybeWhen(
           data: (course) => Text(course.name),
           orElse: () => Text('Curso'),
         ),
       ),
-
       body: courseAsync.when(
         loading: () => Center(child: CarregandoWidget()),
-        error: (error, stack) => Center(
-          child: Padding(
-            padding: EdgeInsets.all(30.0),
-            child: Text('Erro ao carregar detalhes do curso: $error'),
-          ),
-        ),
-
+        error: (error, stack) => Center(child: Text('Erro: $error')),
         data: (CourseModel course) {
           final List<LessonModel> lessons = course.lessons ?? [];
           return userEnrollmentsAsync.when(
             loading: () => Center(child: CarregandoWidget()),
-            error: (error, stack) => Center(
-              child: Padding(
-                padding: EdgeInsets.all(30.0),
-                child: Text('Erro ao carregar matrículas: $error'),
-              ),
-            ),
-
+            error: (error, stack) => Center(child: Text('Erro nas matrículas')),
             data: (enrollments) {
               final isEnrolled = enrollments.any((e) => e.symbol?.toLowerCase() == course.symbol.toLowerCase());
+              
               return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                course.description,
-                                style: TextStyle(fontSize: 16),
-                              ),
+                        Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: course.photo != null 
+                                    ? Image.memory(course.photo!, width: 220, height: 150, fit: BoxFit.cover)
+                                    : Container(width: 220, height: 220, color: Colors.grey[200]),
+                                ),
+                                const SizedBox(width: 25),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      _infoItem(Icons.access_time, "Carga horária:", "3 horas"),
+                                      _infoItem(Icons.group_outlined, "Público-alvo:", "Professores, Estudantes, Profissionais"),
+                                      _infoItem(Icons.track_changes, "Objetivo:", course.description),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 10),
-                            SizedBox(
-                              width: 150,
-                              height: 170,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: course.photo != null ? Image.memory(course.photo!, fit: BoxFit.cover) : Container(color: Colors.grey),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        if (isEnrolled)
-                          lessons.isEmpty
-                          ? Text('Nenhuma lição cadastrada para este curso.')
-                            : ListView.separated(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: lessons.length,
-                                separatorBuilder: (context, index) => SizedBox(height: 12),
-                                itemBuilder: (context, index) {
-                                  final lesson = lessons[index];
-                                  return SizedBox(
-                                    width: double.infinity,
-                                    child: ButtonQuadrado(
-                                      txt: lesson.name,
-                                      onPressed: () {
-                                        if (lesson.id == null || lesson.id!.isEmpty) {
-                                            debugPrint('ERRO: lesson.id é nulo ou vazio!');
-                                            return;
-                                        }
-                                        context.go(
-                                          '/cursos/detalheCurso/${course.id}/video/${lesson.id}' 
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              )
-                        else
-                          Column(
-                            children: [
-                              Text(
-                                'Você não está matriculado neste curso.\nMatricule-se para acessar as aulas.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
-                              SizedBox(height: 20),
-                              BotaoLaranjaWidget(
-                                txt: 'Matricular-se agora!',
-                                onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),
-                                tam: 300,
-                              ),
-                            ],
                           ),
-                      ],
+                        ),
+
+                        const SizedBox(height: 30),
+                        
+                        const Text(
+                          "Aulas",
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 15),
+
+                        if (isEnrolled)
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: lessons.length,
+                          separatorBuilder: (context, index) => const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final lesson = lessons[index];
+                            return AulaTile(
+                              index: index + 1,
+                              title: lesson.name,
+                              onTap: () {
+                                context.go('/cursos/detalheCurso/${course.id}/video/${lesson.id}');
+                              },
+                            );
+                          },
+                        )
+                      else
+                        _buildLockedState(course),
+                    ],
                     ),
                   ),
-                ),
               );
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget _infoItem(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: Colors.black54),
+          const SizedBox(width: 10),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(fontSize: 15, color: Colors.black87),
+                children: [
+                  TextSpan(text: "$label ", style: const TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: value),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildLockedState(CourseModel course) {
+    return Center(
+      child: Column(
+        children: [
+          const Text("Matricule-se para acessar as aulas.", style: TextStyle(fontStyle: FontStyle.italic)),
+          const SizedBox(height: 20),
+          BotaoLaranjaWidget(
+            txt: 'Matricular-se agora!',
+            onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),
+            tam: 300,
+          ),
+        ],
       ),
     );
   }

@@ -44,7 +44,6 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
           ),
           child: Text(
             widget.txt,

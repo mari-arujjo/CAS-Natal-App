@@ -28,26 +28,20 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
     return SizedBox(
       height: 50,
       width: widget.tam,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.transparent,
-              offset: Offset(0, 4),
-              blurRadius: 0,
-            ),
-          ],
+      child: Card(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        elevation: 2,
+        color: Colors.white,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(Colors.white),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
+            shadowColor: WidgetStatePropertyAll(Colors.transparent),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
-
             padding: WidgetStatePropertyAll(
               EdgeInsets.symmetric(
                 horizontal: 10,

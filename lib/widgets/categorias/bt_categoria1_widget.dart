@@ -44,7 +44,6 @@ class _BotaoCategoria1WidgetState extends State<BotaoCategoria1Widget> {
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
             ),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
           ),
           child: Icon(widget.ico, size: 30, color: cores.preto),
         ),

@@ -14,6 +14,8 @@ class GlossarioPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncGlossary = ref.watch(signProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 900;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,154 +29,105 @@ class GlossarioPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 30),
-
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(width: 30),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria2Widget(
-                          onPressed: () {},
-                          ico: Icons.chat,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Emoções e\nComunicação',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria1Widget(
-                          onPressed: () {},
-                          ico: Icons.location_on,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Sinais\nRegionais',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria2Widget(
-                          onPressed: () {},
-                          ico: Icons.people,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Pessoas e\nProfissões',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria1Widget(
-                          onPressed: () {},
-                          ico: Icons.book,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Verbos e\nAdjetivos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria2Widget(
-                          onPressed: () {},
-                          ico: Icons.computer,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Mídia e\nTecnologia',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    
-                    SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BotaoCategoria1Widget(onPressed: () {}, ico: Icons.eco),
-                        SizedBox(height: 5),
-                        Text(
-                          'Clima e\nNatureza',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    
-                    SizedBox(width: 30),
-                  ],
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: asyncGlossary.when(
-                  loading: () => Center(child: CarregandoWidget()),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: Column(
+              children: [
+                // --- SEÇÃO DE CATEGORIAS ---
+                isDesktop 
+                ? Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    children: _buildCategories(),
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: _buildCategories(withPadding: true)),
+                  ),
                   
-                  error: (err, stack) => Center(
-                      child: Text('Erro ao carregar sinais: $err')),
-                      
-                  data: (glossaries) {
-                    if (glossaries.isEmpty) return Center(child: Text('Nenhum sinal encontrado.'));
-                    
+                SizedBox(height: 40),
+
+                // --- LISTAGEM DE SINAIS ---
+                asyncGlossary.when(
+                  loading: () => Center(child: CarregandoWidget()),
+                  error: (err, stack) => Center(child: Text('Erro: $err')),
+                  data: (signs) {
+                    if (signs.isEmpty) return Center(child: Text('Nenhum sinal encontrado.'));
                     return Column(
-                      children: glossaries.map((sign) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 10.0),
-                          child: BotaoGlossarioWidget(
-                            onPressed: () {
-                              context.goNamed(
-                                'SinalDetalhe', 
-                                pathParameters: {'signId': sign.id!},
-                              );
-                            },
-                            txt: sign.name, 
-                            tam: double.infinity, 
-                            txt2: sign.description.length > 70
-                                ? '${sign.description.substring(0, 70)}...' 
-                                : sign.description,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Resultados encontrados: ${signs.length}'),
+                        SizedBox(height: 10),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: isDesktop ? 3 : 1,
+                            mainAxisExtent: 50,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15,
                           ),
-                        );
-                      }).toList(),
+                          itemCount: signs.length,
+                          itemBuilder: (context, index) {
+                            final sign = signs[index];
+                            return BotaoGlossarioWidget(
+                              onPressed: () { 
+                                context.goNamed(
+                                  'SinalDetalhe',
+                                  pathParameters: {'signId': sign.id!},
+                                );
+                              },
+                              txt: sign.name,
+                              tam: double.infinity,
+                              txt2: sign.description.length > 70
+                                  ? '${sign.description.substring(0, 70)}...'
+                                  : sign.description,
+                            );
+                          },
+                        ),
+                      ]
                     );
                   },
                 ),
-              ),
-            ],
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildCategories({bool withPadding = false}) {
+    final categorias = [
+      {'label': 'Emoções e\nComunicação', 'ico': Icons.chat, 'tipo': 2},
+      {'label': 'Sinais\nRegionais', 'ico': Icons.location_on, 'tipo': 1},
+      {'label': 'Pessoas e\nProfissões', 'ico': Icons.people, 'tipo': 2},
+      {'label': 'Verbos e\nAdjetivos', 'ico': Icons.book, 'tipo': 1},
+      {'label': 'Mídia e\nTecnologia', 'ico': Icons.computer, 'tipo': 2},
+      {'label': 'Clima e\nNatureza', 'ico': Icons.eco, 'tipo': 1},
+    ];
+
+    List<Widget> widgets = categorias.map((cat) {
+      return Column(
+        children: [
+          cat['tipo'] == 1 
+            ? BotaoCategoria1Widget(onPressed: () {}, ico: cat['ico'] as IconData)
+            : BotaoCategoria2Widget(onPressed: () {}, ico: cat['ico'] as IconData),
+          const SizedBox(height: 5),
+          Text(
+            cat['label'] as String,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
+      );
+    }).toList();
+
+    if (withPadding) {
+      return widgets.expand((w) => [w, const SizedBox(width: 20)]).toList();
+    }
+    return widgets;
   }
 }
