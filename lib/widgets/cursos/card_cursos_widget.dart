@@ -51,11 +51,11 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                               height: 90,
                               fit: BoxFit.cover,
                             )
-                          : Image.asset(
-                              'assets/modulos/placeholder_curso.jpg',
+                          : Container(
                               width: constraints.maxWidth * 0.4,
                               height: 90,
-                              fit: BoxFit.cover,
+                              color: Colors.grey[200],
+                              child: const Icon(Icons.image, size: 50),
                             ),
                     ),
                     SizedBox(width: 10),
@@ -87,7 +87,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
                 ),
                 SizedBox(height: 10),
                 BotaoLaranjaModuloWidget(
-                  txt: 'Acessar',
+                  txt: 'Acessar curso',
                   onPressed: widget.onPressed,
                 ),
               ],

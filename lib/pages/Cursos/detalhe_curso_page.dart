@@ -68,35 +68,42 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Center(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Card(
                           elevation: 2,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: course.photo != null 
-                                    ? Image.memory(course.photo!, width: 220, height: 150, fit: BoxFit.cover)
-                                    : Container(width: 220, height: 220, color: Colors.grey[200]),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                child: course.photo != null
+                                    ? Image.memory(
+                                        course.photo!,
+                                        width: double.infinity,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        width: double.infinity,
+                                        height: 200,
+                                        color: Colors.grey[200],
+                                        child: const Icon(Icons.image, size: 50),
+                                      ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: [
+                                    _infoItem(Icons.access_time, "Carga horária:", "3 horas"),
+                                    _infoItem(Icons.group_outlined, "Público-alvo:", "Professores, Estudantes, Profissionais"),
+                                    _infoItem(Icons.track_changes, "Objetivo:", course.description),
+                                  ],
                                 ),
-                                const SizedBox(width: 25),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      _infoItem(Icons.access_time, "Carga horária:", "3 horas"),
-                                      _infoItem(Icons.group_outlined, "Público-alvo:", "Professores, Estudantes, Profissionais"),
-                                      _infoItem(Icons.track_changes, "Objetivo:", course.description),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
 
@@ -128,8 +135,8 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                       else
                         _buildLockedState(course),
                     ],
-                    ),
                   ),
+                ),
               );
             },
           );
@@ -163,18 +170,35 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
   }
 
 
-  Widget _buildLockedState(CourseModel course) {
-    return Center(
-      child: Column(
-        children: [
-          const Text("Matricule-se para acessar as aulas.", style: TextStyle(fontStyle: FontStyle.italic)),
-          const SizedBox(height: 20),
-          BotaoLaranjaWidget(
-            txt: 'Matricular-se agora!',
-            onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),
-            tam: 300,
+    Widget _buildLockedState(CourseModel course) {
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        color: Colors.white,
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Matricule-se para acessar as aulas.",
+                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              BotaoLaranjaWidget(
+                txt: 'Matricular-se agora!',
+                onPressed: () => fazerMatricula(context, ref, course.symbol, course.name),
+                tam: 300,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

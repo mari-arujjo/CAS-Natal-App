@@ -17,38 +17,72 @@ class BotaoNavegacaoWidget extends StatefulWidget {
 }
 
 class _BotaoNavegacaoWidgetState extends State<BotaoNavegacaoWidget> {
-  bool pressionado = false;
+  bool _isHovered = false;
+  bool _isPressed = false;
   final cores = Cores();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 35,
-      width: 120,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: cores.laranjaEscuro,
-              offset: Offset(0, 4),
-              blurRadius: 0,
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10),
-        ),
+    double offsetDeslocamento = 0;
+    double offsetSombra = 4;
 
-        child: ElevatedButton.icon(
-          onPressed: widget.onPressed,
-          icon: widget.icon,
-          label: Text(widget.txt),
-          style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll(Colors.white),
-            backgroundColor: WidgetStatePropertyAll(cores.laranja),
-            overlayColor: WidgetStatePropertyAll(cores.laranjaEscuro),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    if (_isPressed) {
+      offsetDeslocamento = 3;
+      offsetSombra = 1;
+    } else if (_isHovered) {
+      offsetDeslocamento = 1.5;
+      offsetSombra = 2.5;
+    }
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          height: 35,
+          width: 120,
+          transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: cores.laranjaEscuro,
+                offset: Offset(0, offsetSombra),
+                blurRadius: 0,
+              ),
+            ],
+          ),
+          child: ElevatedButton.icon(
+            onPressed: null,
+            icon: Icon(
+              widget.icon.icon,
+              color: Colors.white,
+              size: 18,
             ),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
+            label: Text(
+              widget.txt,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              disabledBackgroundColor: cores.laranja,
+              backgroundColor: cores.laranja,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+            ),
           ),
         ),
       ),

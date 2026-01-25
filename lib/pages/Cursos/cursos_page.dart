@@ -20,7 +20,7 @@ class CursosPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        elevation: 4,
+        elevation: 2,
         shadowColor: Color.fromARGB(83, 0, 0, 0),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(10), 
@@ -49,7 +49,7 @@ class CursosPage extends ConsumerWidget {
             return SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

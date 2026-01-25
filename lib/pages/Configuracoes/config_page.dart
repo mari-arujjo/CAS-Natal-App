@@ -2,9 +2,10 @@
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_menu_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_menu_widget.dart'; // Seu botão original
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_menu_web_widget.dart'; // O novo componente
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,168 +24,188 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   Widget build(BuildContext context) {
     final asyncUser = ref.watch(currentUserProvider);
     final asyncAvatar = ref.watch(avatarProvider);
+    final larguraTela = MediaQuery.of(context).size.width;
+    final isWeb = larguraTela > 850;
 
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 40),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-            child: Column(
-              children: [
-                asyncUser.when(
-                  data: (user) {
-                    if (user == null) return Text('Usuário inválido');
-                    final avatarWidget = asyncAvatar.when(
-                      data: (imgBytes) => AvatarWidget(
-                        tam: 40,
-                        imgBytes: imgBytes,
-                      ),
-                      loading: () => AvatarWidget(tam: 40, imgBytes: null),
-                      error: (e, s) => AvatarWidget(tam: 40, imgBytes: null),
-                    );
+      appBar: AppBar(
+        toolbarHeight: 40,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: asyncUser.when(
+        data: (user) {
+          if (user == null) return const Center(child: Text('Usuário inválido'));
 
-                    return Column(
+          final avatarWidget = asyncAvatar.when(
+            data: (imgBytes) => AvatarWidget(
+              tam: 50,
+              imgBytes: imgBytes,
+            ),
+            loading: () => AvatarWidget(tam: 50, imgBytes: null),
+            error: (e, s) => AvatarWidget(tam: 50, imgBytes: null),
+          );
+
+          return SingleChildScrollView(
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: isWeb ? 30 : 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 15),
-                            avatarWidget,
-                            SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    user.fullName,
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                  ),
-                                  Text(
-                                    user.email,
-                                    style: TextStyle(
-                                      color: cores.azulEscuro,
-                                      fontSize: 14,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                  ),
-                                ],
+                        avatarWidget,
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                user.fullName,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 15),
-                        BotaoLaranjaWidget(
-                          txt: 'Editar perfil',
-                          onPressed: () {
-                            context.goNamed('EditarPerfil');
-                          },
-                          tam: 360,
-                        ),
-
-                        SizedBox(height: 30),
-                        BotaoMenuWidget(
-                          onPressed: () {
-                            context.goNamed('Estatisticas');
-                          },
-                          txt: 'Estatísticas',
-                          tam: 360,
-                          iconInicio: Icons.bar_chart,
-                        ),
-
-                        SizedBox(height: 5),
-                        BotaoMenuWidget(
-                          onPressed: () {
-                            context.goNamed('Admin');
-                          },
-                          txt: 'Opções de administrador',
-                          tam: 360,
-                          iconInicio: Icons.admin_panel_settings,
-                        ),
-
-                        SizedBox(height: 5),
-                        BotaoMenuWidget(
-                          onPressed: () {
-                            context.goNamed('RedefinirSenha');
-                          },
-                          txt: 'Redefinir senha',
-                          tam: 360,
-                          iconInicio: Icons.lock,
-                        ),
-
-                        SizedBox(height: 5),
-                        BotaoMenuWidget(
-                          onPressed: () {
-                            context.goNamed('Sobre');
-                          },
-                          txt: 'Sobre o app',
-                          tam: 360,
-                          iconInicio: Icons.info,
-                        ),
-
-                        SizedBox(height: 5),
-                        BotaoMenuWidget(
-                          onPressed: () {
-                            context.goNamed('Termos');
-                          },
-                          txt: 'Termos de serviço',
-                          tam: 360,
-                          iconInicio: Icons.description,
-                        ),
-
-                        SizedBox(height: 5),
-                        BotaoMenuWidget(
-                          onPressed: () async {
-                            return await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Sair'),
-                                  content: Text(
-                                    'Tem certeza que deseja sair? Você terá que fazer login novamente.',
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => context.pop(false),
-                                      child: Text('Não', style: TextStyle(color: cores.azulEscuro)),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        await ref.read(secureStorageProvider).deleteAll();
-                                        if (!mounted) return;
-                                        context.pop(true);
-                                        context.goNamed('LoginRegister');
-                                      },
-                                      child: Text('Sim', style: TextStyle(color: cores.azulEscuro)),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          txt: 'Sair',
-                          tam: 360,
-                          iconInicio: Icons.logout,
+                              Text(
+                                user.email,
+                                style: TextStyle(
+                                  color: cores.azulEscuro,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    );
-                  },
-                  loading: () => CarregandoWidget(),
-                  error: (error, stackTrace) => Text('Erro: $error'),
+                    ),
+                    SizedBox(height: 25),
+                    BotaoLaranjaWidget(
+                      txt: 'Editar perfil',
+                      onPressed: () => context.goNamed('EditarPerfil'),
+                      tam: isWeb ? 220 : double.infinity,
+                    ),
+                    SizedBox(height: 40),
+                    isWeb 
+                      ? _buildGridMenu(context) 
+                      : _buildListaMenu(context),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
+        loading: () => const CarregandoWidget(),
+        error: (error, stackTrace) => Center(child: Text('Erro: $error')),
       ),
+    );
+  }
+
+  // Layout para Web/Telas Grandes
+  Widget _buildGridMenu(BuildContext context) {
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      childAspectRatio: 2.2,
+      children: _listagemItensMenu(context).map((item) {
+        return BotaoMenuWebWidget(
+          titulo: item['titulo'],
+          subtitulo: item['subtitulo'],
+          icone: item['icone'],
+          onPressed: item['onPressed'],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildListaMenu(BuildContext context) {
+    return Column(
+      children: _listagemItensMenu(context).map((item) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: BotaoMenuWidget(
+            onPressed: item['onPressed'],
+            txt: item['titulo'],
+            tam: double.infinity,
+            iconInicio: item['icone'],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  List<Map<String, dynamic>> _listagemItensMenu(BuildContext context) {
+    return [
+      {
+        'titulo': 'Estatísticas',
+        'subtitulo': 'Acompanhe seu progresso',
+        'icone': Icons.bar_chart,
+        'onPressed': () => context.goNamed('Estatisticas'),
+      },
+      {
+        'titulo': 'Opções de administrador',
+        'subtitulo': 'Gerencie configurações avançadas',
+        'icone': Icons.admin_panel_settings,
+        'onPressed': () => context.goNamed('Admin'),
+      },
+      {
+        'titulo': 'Redefinir senha',
+        'subtitulo': 'Altere sua senha de acesso',
+        'icone': Icons.lock,
+        'onPressed': () => context.goNamed('RedefinirSenha'),
+      },
+      {
+        'titulo': 'Sobre o app',
+        'subtitulo': 'Saiba mais sobre o aplicativo',
+        'icone': Icons.info,
+        'onPressed': () => context.goNamed('Sobre'),
+      },
+      {
+        'titulo': 'Termos de serviço',
+        'subtitulo': 'Leia os termos e condições',
+        'icone': Icons.description,
+        'onPressed': () => context.goNamed('Termos'),
+      },
+      {
+        'titulo': 'Sair',
+        'subtitulo': 'Desconectar da sua conta',
+        'icone': Icons.logout,
+        'onPressed': () => _dialogSair(context),
+      },
+    ];
+  }
+
+  Future<void> _dialogSair(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Sair'),
+          content: const Text(
+            'Tem certeza que deseja sair? Você terá que fazer login novamente.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => context.pop(false),
+              child: Text('Não', style: TextStyle(color: cores.azulEscuro)),
+            ),
+            TextButton(
+              onPressed: () async {
+                await ref.read(secureStorageProvider).deleteAll();
+                if (!mounted) return;
+                context.pop(true);
+                context.goNamed('LoginRegister');
+              },
+              child: Text('Sim', style: TextStyle(color: cores.azulEscuro)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

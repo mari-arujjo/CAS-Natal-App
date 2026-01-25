@@ -30,7 +30,7 @@ class GlossarioPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
                 // --- SEÇÃO DE CATEGORIAS ---
@@ -66,7 +66,7 @@ class GlossarioPage extends ConsumerWidget {
                             crossAxisCount: isDesktop ? 3 : 1,
                             mainAxisExtent: 50,
                             crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
+                            mainAxisSpacing: 10,
                           ),
                           itemCount: signs.length,
                           itemBuilder: (context, index) {

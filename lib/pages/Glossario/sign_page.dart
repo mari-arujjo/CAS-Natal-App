@@ -37,9 +37,9 @@ class _SignPageState extends ConsumerState<SignPage> {
       child: Text(
         title,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.grey.shade600,
+          color: Colors.black,
         ),
       ),
     );
@@ -162,7 +162,7 @@ class _SignPageState extends ConsumerState<SignPage> {
                               Text(
                                 sign.description,
                                 style: const TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 15,
                                   height: 1.6,
                                   color: Colors.black87,
                                 ),

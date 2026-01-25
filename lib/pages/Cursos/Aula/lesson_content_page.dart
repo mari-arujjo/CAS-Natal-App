@@ -15,15 +15,14 @@ class LessonContentPage extends ConsumerWidget {
 
   String? _findNextLessonId(WidgetRef ref, LessonModel currentLesson) {
     final lessonsAsync = ref.watch(lessonProvider);
-
     return lessonsAsync.maybeWhen(
       data: (allLessons) {
         final courseLessons = allLessons
             .where((l) => l.courseId == currentLesson.courseId)
             .toList();
-        
         courseLessons.sort((a, b) => a.name.compareTo(b.name));
-        final currentIndex = courseLessons.indexWhere((l) => l.id == currentLesson.id);
+        final currentIndex =
+            courseLessons.indexWhere((l) => l.id == currentLesson.id);
         if (currentIndex != -1 && currentIndex < courseLessons.length - 1) {
           return courseLessons[currentIndex + 1].id;
         }
@@ -35,7 +34,6 @@ class LessonContentPage extends ConsumerWidget {
 
   void QuizConfirmation(BuildContext context, WidgetRef ref) async {
     final cor = Cores();
-
     try {
       await ref.read(quizQuestionDetailProvider(lesson.id!).future);
       if (!context.mounted) return;
@@ -43,8 +41,9 @@ class LessonContentPage extends ConsumerWidget {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: Text('Início do Quiz'),
-            content: Text( 'Tem certeza de que deseja prosseguir para o Quiz? Certifique-se de que revisou todo o conteúdo da lição.'),
+            title: const Text('Início do Quiz'),
+            content: const Text(
+                'Tem certeza de que deseja prosseguir para o Quiz? Certifique-se de que revisou todo o conteúdo da lição.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
@@ -52,7 +51,8 @@ class LessonContentPage extends ConsumerWidget {
               ),
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
-                child: Text('Prosseguir', style: TextStyle(color: cor.azulEscuro)),
+                child:
+                    Text('Prosseguir', style: TextStyle(color: cor.azulEscuro)),
               ),
             ],
           );
@@ -62,29 +62,29 @@ class LessonContentPage extends ConsumerWidget {
       if (confirmed == true && context.mounted) {
         context.go('/cursos/detalheCurso/${lesson.courseId}/quiz/${lesson.id}');
       }
-
     } catch (e) {
       final errorText = e.toString().toLowerCase();
-
-      if (errorText.contains('falha ao buscar a questão do quiz. status: 404') || 
+      if (errorText.contains('falha ao buscar a questão do quiz. status: 404') ||
           errorText.contains('falha ao buscar a questão do quiz')) {
-        
         final nextLessonId = _findNextLessonId(ref, lesson);
-        
         if (!context.mounted) return;
-        
         if (nextLessonId != null) {
-          context.go('/cursos/detalheCurso/${lesson.courseId}/video/$nextLessonId');
+          context.go(
+              '/cursos/detalheCurso/${lesson.courseId}/video/$nextLessonId');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Quiz não encontrado. Prosseguindo para a próxima lição.')),
+            const SnackBar(
+                content: Text(
+                    'Quiz não encontrado. Prosseguindo para a próxima lição.')),
           );
         } else {
-          context.go('/cursos/detalheCurso/${lesson.courseId}'); 
+          context.go('/cursos/detalheCurso/${lesson.courseId}');
         }
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Erro inesperado ao verificar o Quiz: ${e.toString()}')),
+            SnackBar(
+                content:
+                    Text('Erro inesperado ao verificar o Quiz: ${e.toString()}')),
           );
         }
       }
@@ -93,44 +93,70 @@ class LessonContentPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isWebWide = screenWidth > 900;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Conteúdo: ${lesson.name}'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  lesson.content,
-                  style: TextStyle(fontSize: 16),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 1000), 
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isWebWide ? 40.0 : 20.0,
+                    vertical: 20.0,
+                  ),
+                  child: SelectionArea( // Permite selecionar texto na Web
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lesson.content,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            height: 1.6,
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BotaoNavegacaoWidget(
-                    txt: 'Anterior',
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      context.go('/cursos/detalheCurso/${lesson.courseId}/video/${lesson.id}');
-                    },
-                  ),
-                  BotaoNavegacaoWidget(
-                    txt: 'Próximo',
-                    icon: Icon(Icons.arrow_forward),
-                    onPressed: () =>  QuizConfirmation(context, ref),
-                  ),
-                ],
-              ),
-            ),
-          ],
+              
+              _buildBottomNavigation(context, ref),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigation(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          BotaoNavegacaoWidget(
+            txt: 'Anterior',
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              context.go(
+                  '/cursos/detalheCurso/${lesson.courseId}/video/${lesson.id}');
+            },
+          ),
+          BotaoNavegacaoWidget(
+            txt: 'Próximo',
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () => QuizConfirmation(context, ref),
+          ),
+        ],
       ),
     );
   }

@@ -5,6 +5,7 @@ class BotaoLaranjaWidget extends StatefulWidget {
   final String txt;
   final VoidCallback onPressed;
   final double tam;
+  
   const BotaoLaranjaWidget({
     super.key,
     required this.txt,
@@ -17,41 +18,66 @@ class BotaoLaranjaWidget extends StatefulWidget {
 }
 
 class _BotaoLaranjaWidgetState extends State<BotaoLaranjaWidget> {
-  bool pressionado = false;
+  bool _isHovered = false;
+  bool _isPressed = false;
   final cores = Cores();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
-      width: widget.tam,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: cores.laranjaEscuro,
-              offset: Offset(0, 4),
-              blurRadius: 0,
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10),
-        ),
+    // Definindo as variações de profundidade
+    double offsetDeslocamento = 0;
+    double offsetSombra = 5;
 
-        child: ElevatedButton(
-          onPressed: widget.onPressed,
-          style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(cores.laranja),
-            overlayColor: WidgetStatePropertyAll(cores.laranjaEscuro),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
+    if (_isPressed) {
+      offsetDeslocamento = 4; // Botão quase no chão
+      offsetSombra = 1;       // Sombra quase sumindo
+    } else if (_isHovered) {
+      offsetDeslocamento = 2; // Botão levemente abaixado
+      offsetSombra = 3;       // Sombra diminui um pouco
+    }
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          height: 40,
+          width: widget.tam,
+          transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: cores.laranjaEscuro,
+                offset: Offset(0, offsetSombra),
+                blurRadius: 0,
+              ),
+            ],
           ),
-          child: Text(
-            widget.txt,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+          child: ElevatedButton(
+            onPressed: null, 
+            style: ElevatedButton.styleFrom(
+              disabledBackgroundColor: cores.laranja,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.zero,
+            ),
+            child: Text(
+              widget.txt.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
             ),
           ),
         ),
