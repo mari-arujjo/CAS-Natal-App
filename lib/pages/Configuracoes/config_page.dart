@@ -48,18 +48,18 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeaderPerfil(user, isWeb),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
-                      filtrarPor: ['Editar perfil', 'Redefinir senha', 'Sair']
+                      filtrarPor: ['Editar perfil', 'Redefinir senha', 'Estatísticas']
                     ),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
-                      filtrarPor: ['Estatísticas', 'Opções de administrador', 'Sobre o app', 'Termos de serviço']
+                      filtrarPor: ['Opções de administrador', 'Sobre o app', 'Termos de serviço', 'Sair']
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -176,13 +176,13 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
 
   List<Map<String, dynamic>> _listagemItensMenu(BuildContext context) {
     return [
-      {'titulo': 'Editar perfil', 'subtitulo': 'Dados pessoais e contato', 'icone': Icons.person_outline, 'cor': cores.laranja, 'onPressed': () => context.goNamed('EditarPerfil')},
+      {'titulo': 'Editar perfil', 'subtitulo': 'Edite seus dados pessoais', 'icone': Icons.person_outline, 'cor': cores.laranja, 'onPressed': () => context.goNamed('EditarPerfil')},
       {'titulo': 'Redefinir senha', 'subtitulo': 'Altere sua senha de acesso', 'icone': Icons.lock_open_outlined, 'cor': const Color.fromARGB(255, 108, 82, 255), 'onPressed': () => context.goNamed('RedefinirSenha')},
-      {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
-      {'titulo': 'Estatísticas', 'subtitulo': 'Visualizar uso e progresso', 'icone': Icons.auto_graph_outlined, 'cor': const Color.fromARGB(255, 5, 173, 157), 'onPressed': () => context.goNamed('Estatisticas')},
+      {'titulo': 'Estatísticas', 'subtitulo': 'Visualize seu progresso', 'icone': Icons.auto_graph_outlined, 'cor': const Color.fromARGB(255, 5, 173, 41), 'onPressed': () => context.goNamed('Estatisticas')},
       {'titulo': 'Opções de administrador', 'subtitulo': 'Gestão de usuários e sistema', 'icone': Icons.admin_panel_settings_outlined, 'cor': const Color.fromARGB(255, 239, 0, 179), 'onPressed': () => context.goNamed('Admin')},
       {'titulo': 'Sobre o app', 'subtitulo': 'Versão e informações', 'icone': Icons.help_outline, 'cor': const Color.fromARGB(255, 57, 171, 216), 'onPressed': () => context.goNamed('Sobre')},
-      {'titulo': 'Termos de serviço', 'subtitulo': 'Regras e privacidade', 'icone': Icons.assignment_outlined, 'cor': Colors.blueGrey, 'onPressed': () => context.goNamed('Termos')},
+      {'titulo': 'Termos de serviço', 'subtitulo': 'Regras e privacidade', 'icone': Icons.assignment_outlined, 'cor': Colors.deepOrange, 'onPressed': () => context.goNamed('Termos')},
+      {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
     ];
   }
 

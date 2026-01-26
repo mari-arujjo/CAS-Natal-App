@@ -71,7 +71,7 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
               padding: EdgeInsets.zero,
             ),
             child: Text(
-              widget.txt.toUpperCase(),
+              widget.txt,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,

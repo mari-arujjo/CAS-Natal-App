@@ -17,7 +17,7 @@ import 'package:app_cas_natal/pages/Cursos/Aula/lesson_content_page.dart';
 import 'package:app_cas_natal/pages/Cursos/Aula/lesson_quiz_page.dart';
 import 'package:app_cas_natal/pages/Cursos/Aula/lesson_video_page.dart';
 import 'package:app_cas_natal/pages/Glossario/glossario_page.dart';
-import 'package:app_cas_natal/pages/Glossario/sign_page.dart'; // Import adicionado
+import 'package:app_cas_natal/pages/Glossario/sign_page.dart'; 
 import 'package:app_cas_natal/pages/Configuracoes/config_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/editar_perfil_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/estatisticas_page.dart';
@@ -75,69 +75,87 @@ final goRouterProvider = Provider<GoRouter>((ref){
               GoRoute(
                 path: '/cursos',
                 name: 'Cursos',
-                builder: (context, state) {
-                  return CursosPage(key: state.pageKey);
-                },
+                pageBuilder: (context, state) => buildPageWithTransition(
+                  context: context,
+                  state: state,
+                  child: CursosPage(key: state.pageKey),
+                ),
                 routes: [
                   GoRoute(
                     path: 'detalheCurso/:courseId',
                     name: 'DetalheCurso',
-                    builder: (context, state) {
+                    pageBuilder: (context, state) {
                       final courseId = state.pathParameters['courseId']!;
-                      return DetalheCursoPage(
-                        key: state.pageKey, 
-                        courseId: courseId,
+                      return buildPageWithTransition(
+                        context: context,
+                        state: state,
+                        child: DetalheCursoPage(
+                          key: state.pageKey, 
+                          courseId: courseId,
+                        ),
                       );
                     },
                     routes: [
                       GoRoute(
                         path: 'video/:lessonId',
                         name: 'LessonVideo',
-                        builder: (context, state) {
+                        pageBuilder: (context, state) {
                           final lessonId = state.pathParameters['lessonId']!;
-                          return Consumer(
-                            builder: (context, ref, child) {
-                              final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
-                              return lessonAsync.when(
-                                loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
-                                error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar vídeo: $error'))),
-                                data: (lesson) => LessonVideoPage(lesson: lesson, key: state.pageKey),
-                              );
-                            },
+                          return buildPageWithTransitionSlide(
+                            context: context,
+                            state: state,
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
+                                return lessonAsync.when(
+                                  loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                  error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar vídeo: $error'))),
+                                  data: (lesson) => LessonVideoPage(lesson: lesson, key: state.pageKey),
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
                       GoRoute(
                         path: 'content/:lessonId',
                         name: 'LessonContent',
-                        builder: (context, state) {
+                        pageBuilder: (context, state) {
                           final lessonId = state.pathParameters['lessonId']!;
-                          return Consumer(
-                            builder: (context, ref, child) {
-                              final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
-                              return lessonAsync.when(
-                                loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
-                                error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar conteúdo: $error'))),
-                                data: (lesson) => LessonContentPage(lesson: lesson, key: state.pageKey),
-                              );
-                            },
+                          return buildPageWithTransitionSlide(
+                            context: context,
+                            state: state,
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
+                                return lessonAsync.when(
+                                  loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                  error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar conteúdo: $error'))),
+                                  data: (lesson) => LessonContentPage(lesson: lesson, key: state.pageKey),
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
                       GoRoute(
                         path: 'quiz/:lessonId',
                         name: 'LessonQuiz',
-                        builder: (context, state) {
+                        pageBuilder: (context, state) {
                           final lessonId = state.pathParameters['lessonId']!;
-                          return Consumer(
-                            builder: (context, ref, child) {
-                              final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
-                              return lessonAsync.when(
-                                loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
-                                error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar quiz: $error'))),
-                                data: (lesson) => LessonQuizPage(lesson: lesson, key: state.pageKey),
-                              );
-                            },
+                          return buildPageWithTransitionSlide(
+                            context: context,
+                            state: state,
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                final lessonAsync = ref.watch(lessonDetailProvider(lessonId)); 
+                                return lessonAsync.when(
+                                  loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                  error: (error, stack) => Scaffold(body: Center(child: Text('Erro ao carregar quiz: $error'))),
+                                  data: (lesson) => LessonQuizPage(lesson: lesson, key: state.pageKey),
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
@@ -155,16 +173,22 @@ final goRouterProvider = Provider<GoRouter>((ref){
               GoRoute(
                 path: '/glossario',
                 name: 'Glossario',
-                builder: (context, state) {
-                  return GlossarioPage(key: state.pageKey);
-                },
-                routes: [ // Rota do Detalhe do Sinal adicionada
+                pageBuilder: (context, state) => buildPageWithTransition(
+                  context: context,
+                  state: state,
+                  child: GlossarioPage(key: state.pageKey),
+                ),
+                routes: [ 
                   GoRoute(
                     path: 'sinal/:signId',
                     name: 'SinalDetalhe',
-                    builder: (context, state) {
+                    pageBuilder: (context, state) {
                       final signId = state.pathParameters['signId']!;
-                      return SignPage(key: state.pageKey, signId: signId); 
+                      return buildPageWithTransition(
+                        context: context,
+                        state: state,
+                        child: SignPage(key: state.pageKey, signId: signId),
+                      );
                     },
                   ),
                 ]
@@ -179,74 +203,96 @@ final goRouterProvider = Provider<GoRouter>((ref){
               GoRoute(
                 path: '/configuracoes',
                 name: 'Configuracoes',
-                builder: (context, state) {
-                  return ConfiguracoesPage(key: state.pageKey);
-                },
+                pageBuilder: (context, state) => buildPageWithTransition(
+                  context: context,
+                  state: state,
+                  child: ConfiguracoesPage(key: state.pageKey),
+                ),
                 routes: [
                   GoRoute(
                     path: '/editarPerfil',
                     name: 'EditarPerfil',
-                    builder: (context, state) {
-                      return EditarPerfilPage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: EditarPerfilPage(key: state.pageKey),
+                    ),
                   ),
                   GoRoute(
                     path: '/estatisticas',
                     name: 'Estatisticas',
-                    builder: (context, state) {
-                      return EstatisticasPage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: EstatisticasPage(key: state.pageKey),
+                    ),
                   ),
                   GoRoute(
                     path: '/admin',
                     name: 'Admin',
-                    builder: (context, state) {
-                      return AdminPage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: AdminPage(key: state.pageKey),
+                    ),
                     routes: [
                       GoRoute(
                         path: 'gestaoUsers',
                         name: 'GestaoUsers',
-                        builder: (context, state) {
-                          return GestaoUsersPage(key: state.pageKey);
-                        },
+                        pageBuilder: (context, state) => buildPageWithTransition(
+                          context: context,
+                          state: state,
+                          child: GestaoUsersPage(key: state.pageKey),
+                        ),
                         routes: [
                           GoRoute(
                             path: 'cadastroUser',
                             name: 'CadastroUser',
-                            builder: (context, state) {
-                              return CadastrarUserPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: CadastrarUserPage(key: state.pageKey),
+                            ),
                           ),
                           GoRoute(
                             path: 'alterarUser',
                             name: 'AlterarUser',
-                            builder: (context, state) {
-                              return UserPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: UserPage(key: state.pageKey),
+                            ),
                           )
                         ]
                       ),
                       GoRoute(
                         path: 'gestaoCurso',
                         name: 'GestaoCurso',
-                        builder: (context, state) {
-                          return GestaoCursoPage(key: state.pageKey);
-                        },
+                        pageBuilder: (context, state) => buildPageWithTransition(
+                          context: context,
+                          state: state,
+                          child: GestaoCursoPage(key: state.pageKey),
+                        ),
                         routes: [
                           GoRoute(
                             path: 'cadastroCurso',
                             name: 'CadastroCurso',
-                            builder: (context, state) {
-                              return CadastroCursoPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: CadastroCursoPage(key: state.pageKey),
+                            ),
                           ),
                           GoRoute(
                             path: 'alterarCurso',
                             name: 'AlterarCurso',
-                            builder: (context, state) {
+                            pageBuilder: (context, state) {
                               final curso = state.extra as CourseModel;
-                              return CursoPage(key: state.pageKey, curso: curso);
+                              return buildPageWithTransition(
+                                context: context,
+                                state: state,
+                                child: CursoPage(key: state.pageKey, curso: curso),
+                              );
                             },
                           ),
                         ]
@@ -254,23 +300,31 @@ final goRouterProvider = Provider<GoRouter>((ref){
                       GoRoute(
                         path: 'gestaoAula',
                         name: 'GestaoAula',
-                        builder: (context, state) {
-                          return GestaoAulaPage(key: state.pageKey);
-                        },
+                        pageBuilder: (context, state) => buildPageWithTransition(
+                          context: context,
+                          state: state,
+                          child: GestaoAulaPage(key: state.pageKey),
+                        ),
                         routes: [
                           GoRoute(
                             path: 'cadastroAula',
                             name: 'CadastroAula',
-                            builder: (context, state) {
-                              return CadastroAulaPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: CadastroAulaPage(key: state.pageKey),
+                            ),
                           ),
                           GoRoute(
                             path: 'alterarAula',
                             name: 'AlterarAula',
-                            builder: (context, state) {
+                            pageBuilder: (context, state) {
                               final aula = state.extra as LessonModel;
-                              return AulaPage(key: state.pageKey, aula: aula);
+                              return buildPageWithTransition(
+                                context: context,
+                                state: state,
+                                child: AulaPage(key: state.pageKey, aula: aula),
+                              );
                             },
                           ),
                         ]
@@ -278,55 +332,69 @@ final goRouterProvider = Provider<GoRouter>((ref){
                       GoRoute(
                         path: 'gestaoGlossario',
                         name: 'GestaoGlossario',
-                        builder: (context, state) {
-                          return GestaoGlossarioPage(key: state.pageKey);
-                        },
+                        pageBuilder: (context, state) => buildPageWithTransition(
+                          context: context,
+                          state: state,
+                          child: GestaoGlossarioPage(key: state.pageKey),
+                        ),
                         routes: [
                           GoRoute(
                             path: 'cadastroGlossario',
                             name: 'CadastroGlossario',
-                            builder: (context, state) {
-                              return CadastroGlossarioPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: CadastroGlossarioPage(key: state.pageKey),
+                            ),
                           ),
                           GoRoute(
                             path: 'alterarGlossario',
                             name: 'AlterarGlossario',
-                            builder: (context, state) {
-                              return GlossarioPage(key: state.pageKey);
-                            },
+                            pageBuilder: (context, state) => buildPageWithTransition(
+                              context: context,
+                              state: state,
+                              child: GlossarioPage(key: state.pageKey),
+                            ),
                           ),
                         ]
                       ),
                       GoRoute(
                         path: '/estatisticaAdmin',
                         name: 'EstatisticasAdmin',
-                        builder: (context, state) {
-                          return EstatisticasAdminPage(key: state.pageKey);
-                        },
+                        pageBuilder: (context, state) => buildPageWithTransition(
+                          context: context,
+                          state: state,
+                          child: EstatisticasAdminPage(key: state.pageKey),
+                        ),
                       )
                     ]
                   ),
                   GoRoute(
                     path: '/redefinirSenha',
                     name: 'RedefinirSenha',
-                    builder: (context, state) {
-                      return RedefinirSenhaPage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: RedefinirSenhaPage(key: state.pageKey),
+                    ),
                   ),
                   GoRoute(
                     path: '/sobre',
                     name: 'Sobre',
-                    builder: (context, state) {
-                      return SobrePage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: SobrePage(key: state.pageKey),
+                    ),
                   ),
                   GoRoute(
                     path: '/termos',
                     name: 'Termos',
-                    builder: (context, state) {
-                      return TermosPage(key: state.pageKey);
-                    },
+                    pageBuilder: (context, state) => buildPageWithTransition(
+                      context: context,
+                      state: state,
+                      child: TermosPage(key: state.pageKey),
+                    ),
                   ),
                 ],
               ),
@@ -340,10 +408,55 @@ final goRouterProvider = Provider<GoRouter>((ref){
       GoRoute(
         path: '/loginRegister',
         name: 'LoginRegister',
-        builder: (context, state) {
-          return LoginRegisterPage(key: state.pageKey);
-        },
+        pageBuilder: (context, state) => buildPageWithTransition(
+          context: context,
+          state: state,
+          child: LoginRegisterPage(key: state.pageKey),
+        ),
       )
     ],
   );
 });
+
+CustomTransitionPage buildPageWithTransition<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+        child: child,
+      );
+    },
+  );
+}
+
+CustomTransitionPage buildPageWithTransitionSlide<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 250), // Um pouco mais rápido para ser sutil
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: SlideTransition(
+          position: animation.drive(
+            Tween<Offset>(
+              begin: const Offset(0.05, 0.0), // Apenas 5% de deslocamento. Quase imperceptível, mas fluido.
+              end: Offset.zero,
+            ).chain(CurveTween(curve: Curves.easeOut)),
+          ),
+          child: child,
+        ),
+      );
+    },
+  );
+}
