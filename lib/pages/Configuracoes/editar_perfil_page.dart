@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -36,7 +37,7 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
   bool changePhoto = false;
   Uint8List? imgBytes;
   final picker = ImagePicker();
-  bool _isInitialized = false; 
+  bool _isInitialized = false;
 
   void _initializeControllers(AppUserModel user, Uint8List? loadedAvatar) {
     if (!_isInitialized) {
@@ -44,14 +45,14 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
       userNameCtrl = TextEditingController(text: user.userName);
       emailCtrl = TextEditingController(text: user.email);
       roleCtrl = TextEditingController(text: user.privateRole);
-    
+
       if (img == null && loadedAvatar != null) {
-          imgBytes = loadedAvatar;
+        imgBytes = loadedAvatar;
       }
       _isInitialized = true;
     }
     if (nameCtrl.text != user.fullName) {
-        nameCtrl.text = user.fullName;
+      nameCtrl.text = user.fullName;
     }
   }
 
@@ -64,10 +65,9 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
     super.dispose();
   }
 
-
-  pickImageGallery() async{
+  pickImageGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null){
+    if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
       setState(() {
         img = File(pickedFile.path);
@@ -82,8 +82,10 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
     final newUserName = userNameCtrl.text;
     final newEmail = emailCtrl.text;
 
-    final dataChanged = newFullName != user.fullName || newUserName != user.userName || newEmail != user.email;
-    
+    final dataChanged = newFullName != user.fullName ||
+        newUserName != user.userName ||
+        newEmail != user.email;
+
     if (newFullName.isEmpty) {
       if (!mounted) return;
       popUp.PopUpAlert(context, "O campo 'Nome' não pode ser vazio.");
@@ -108,15 +110,16 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
         if (imgBytes != null) {
           base64Avatar = base64Encode(imgBytes!);
         }
-        updatedUser = await repository.updateAvatar(token: token, avatar: base64Avatar);
+        updatedUser =
+            await repository.updateAvatar(token: token, avatar: base64Avatar);
         if (updatedUser.token != null && updatedUser.token!.isNotEmpty) {
           await storage.write(key: 'token', value: updatedUser.token!);
         }
-        ref.invalidate(avatarProvider); 
+        ref.invalidate(avatarProvider);
       }
 
       if (dataChanged) {
-        final latestToken = updatedUser.token!; 
+        final latestToken = updatedUser.token!;
         updatedUser = await repository.update(
           token: latestToken,
           fullName: newFullName,
@@ -133,13 +136,14 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
 
       if (!mounted) return;
       DialogLoadingWidget.dismiss(context);
-      
-      context.pop(); 
-      
-      SnackBarUtils.showCustomSnackbar(
-        context,  "Perfil atualizado com sucesso!", cores.azulEscuro,
-      );
 
+      context.pop();
+
+      SnackBarUtils.showCustomSnackbar(
+        context,
+        "Perfil atualizado com sucesso!",
+        cores.azulEscuro,
+      );
     } catch (e) {
       if (!mounted) return;
       DialogLoadingWidget.dismiss(context);
@@ -155,21 +159,16 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
 
     if (asyncUser.isLoading || asyncAvatar.isLoading) {
       return Scaffold(
-        appBar: AppBar(title: Text('Carregando...')),
-        body: Center(child: CarregandoWidget()),
+        appBar: AppBar(title: const Text('Carregando...')),
+        body: const Center(child: CarregandoWidget()),
       );
     }
 
-    if (asyncUser.hasError) {
+    if (asyncUser.hasError || asyncAvatar.hasError) {
       return Scaffold(
-        appBar: AppBar(title: Text('Erro')),
-        body: Center(child: Text('Erro ao carregar usuário: ${asyncUser.error}')),
-      );
-    }
-    if (asyncAvatar.hasError) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Erro')),
-        body: Center(child: Text('Erro ao carregar avatar: ${asyncAvatar.error}')),
+        appBar: AppBar(title: const Text('Erro')),
+        body: Center(
+            child: Text('Erro ao carregar dados: ${asyncUser.error ?? asyncAvatar.error}')),
       );
     }
 
@@ -177,97 +176,95 @@ class _EditarPerfilPageState extends ConsumerState<EditarPerfilPage> {
     final loadedAvatar = asyncAvatar.value;
 
     if (user == null) {
-        return Scaffold(
-            appBar: AppBar(title: Text('Erro')),
-            body: Center(child: Text('Dados do usuário não encontrados.')),
-        );
+      return Scaffold(
+        appBar: AppBar(title: const Text('Erro')),
+        body: const Center(child: Text('Dados do usuário não encontrados.')),
+      );
     }
 
     _initializeControllers(user, loadedAvatar);
 
-
     return Scaffold(
-      appBar: AppBar(title: Text('Editar perfil')), 
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        AvatarWidget(
-                          tam: 60, 
-                          imgFile: img, 
-                          imgBytes: imgBytes,
-                        ),
-                        BotaoIconWidget(
-                          icon: Icon(Icons.edit), 
-                          onPressed: pickImageGallery,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    ContainerWidget(
-                      child: Form(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Nome:', style: TextStyle(fontSize: 16)),
-                            SizedBox(height: 5),
-                            InputPadraoWidget(
-                              maxLength: 50,
-                              readOnly: false,
-                              controller: nameCtrl,
-                            ),
-
-                            Text('Usuário:', style: TextStyle(fontSize: 16)),
-                            SizedBox(height: 5),
-                            InputPadraoWidget(
-                              maxLength: 20,
-                              readOnly: false, 
-                              controller: userNameCtrl,
-                            ),
-
-                            Text('Email:', style: TextStyle(fontSize: 16)),
-                            SizedBox(height: 5),
-                            InputPadraoWidget(
-                              maxLength: 150,
-                              readOnly: false,
-                              controller: emailCtrl,
-                            ),
-
-                          ],
-                        ),
+      appBar: AppBar(
+        title: const Text('Editar perfil'),
+        centerTitle: true,
+      ),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 900),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      AvatarWidget(
+                        tam: 60,
+                        imgFile: img,
+                        imgBytes: imgBytes,
+                      ),
+                      BotaoIconWidget(
+                        icon: const Icon(Icons.edit),
+                        onPressed: pickImageGallery,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  ContainerWidget(
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Nome:', style: TextStyle(fontSize: 16)),
+                          const SizedBox(height: 8),
+                          InputPadraoWidget(
+                            maxLength: 50,
+                            readOnly: false,
+                            controller: nameCtrl,
+                          ),
+                          const SizedBox(height: 15),
+                          const Text('Usuário:', style: TextStyle(fontSize: 16)),
+                          const SizedBox(height: 8),
+                          InputPadraoWidget(
+                            maxLength: 20,
+                            readOnly: false,
+                            controller: userNameCtrl,
+                          ),
+                          const SizedBox(height: 15),
+                          const Text('Email:', style: TextStyle(fontSize: 16)),
+                          const SizedBox(height: 8),
+                          InputPadraoWidget(
+                            maxLength: 150,
+                            readOnly: false,
+                            controller: emailCtrl,
+                          ),
+                        ],
                       ),
                     ),
-
-                    SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BotaoLaranjaWidget(
-                          txt: 'Salvar',
-                          onPressed: () => asyncUpdate(user),
-                          tam: 120,
-                        ),
-                        SizedBox(width: 20),
-                        BotaoLaranjaWidget(
-                          txt: 'Cancelar',
-                          onPressed: () {
-                            context.pop();
-                          },
-                          tam: 120,
-                        ),
-                      ],
-                    ),
-                  ]
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BotaoLaranjaWidget(
+                        txt: 'Salvar',
+                        onPressed: () => asyncUpdate(user),
+                        tam: 150,
+                      ),
+                      const SizedBox(width: 20),
+                      BotaoLaranjaWidget(
+                        txt: 'Cancelar',
+                        onPressed: () => context.pop(),
+                        tam: 150,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

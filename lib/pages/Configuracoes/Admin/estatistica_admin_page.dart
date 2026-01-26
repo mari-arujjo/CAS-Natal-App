@@ -18,7 +18,6 @@ class EstatisticasAdminPage extends ConsumerStatefulWidget {
 class _EstatisticasPageState extends ConsumerState<EstatisticasAdminPage> {
   @override
   Widget build(BuildContext context) {
-
     final courseState = ref.watch(courseProvider);
     final String courseCount = courseState.when(
       data: (courses) => courses.length.toString(),
@@ -33,60 +32,71 @@ class _EstatisticasPageState extends ConsumerState<EstatisticasAdminPage> {
     );
     final signState = ref.watch(signProvider);
     final String signCount = signState.when(
-      data: (glossaries) =>  glossaries.length.toString(),
+      data: (glossaries) => glossaries.length.toString(),
       loading: () => '...',
       error: (err, stack) => '?',
     );
     final userState = ref.watch(appUserProvider);
     final String userCount = userState.when(
-      data: (users) =>  users.length.toString(),
+      data: (users) => users.length.toString(),
       loading: () => '...',
       error: (err, stack) => '?',
     );
     final enrollmentState = ref.watch(enrollmentProvider);
     final String enrollmentCount = enrollmentState.when(
-      data: (enrollments) =>  enrollments.length.toString(),
+      data: (enrollments) => enrollments.length.toString(),
       loading: () => '...',
       error: (err, stack) => '?',
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Estatísticas')),
-      body: Padding(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CardEstatisticaWidget(
-              txt: 'Usuários cadastrados',
-              dado: userCount,
-              ico: Icons.people
+      appBar: AppBar(
+        title: const Text('Estatísticas'),
+        centerTitle: true,
+      ),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardEstatisticaWidget(
+                    txt: 'Usuários cadastrados',
+                    dado: userCount,
+                    ico: Icons.people,
+                  ),
+                  const SizedBox(height: 15),
+                  CardEstatisticaWidget(
+                    txt: 'Usuários matriculados',
+                    dado: enrollmentCount,
+                    ico: Icons.check,
+                  ),
+                  const SizedBox(height: 15),
+                  CardEstatisticaWidget(
+                    txt: 'Cursos cadastrados',
+                    dado: courseCount,
+                    ico: Icons.school,
+                  ),
+                  const SizedBox(height: 15),
+                  CardEstatisticaWidget(
+                    txt: 'Aulas cadastradas',
+                    dado: lessonCount,
+                    ico: Icons.play_circle_fill,
+                  ),
+                  const SizedBox(height: 15),
+                  CardEstatisticaWidget(
+                    txt: 'Sinais cadastrados no glossário',
+                    dado: signCount,
+                    ico: CupertinoIcons.book_solid,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 15),
-            CardEstatisticaWidget(
-              txt: 'Usuários matriculados',
-              dado: enrollmentCount,
-              ico: Icons.check
-            ),
-            SizedBox(height: 15),
-            CardEstatisticaWidget(
-              txt: 'Cursos cadastrados',
-              dado: courseCount,
-              ico: Icons.school,
-            ),
-            SizedBox(height: 15),
-            CardEstatisticaWidget(
-              txt: 'Aulas cadastradas',
-              dado: lessonCount,
-              ico: Icons.play_circle_fill,
-            ),
-            SizedBox(height: 15),
-            CardEstatisticaWidget(
-              txt: 'Sinais cadastrados no glossário',
-              dado: signCount,
-              ico: CupertinoIcons.book_solid,
-            ),
-          ],
+          ),
         ),
       ),
     );

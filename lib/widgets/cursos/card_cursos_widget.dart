@@ -32,7 +32,7 @@ class _CourseCardWidgetState extends State<CourseCardWidget> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          elevation: 0,
+          elevation: 1,
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(15),

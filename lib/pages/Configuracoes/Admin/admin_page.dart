@@ -18,16 +18,13 @@ class _AdminPageState extends State<AdminPage> {
         child: Padding(
           padding: const EdgeInsets.all(30),
           child: ConstrainedBox(
-            // Opcional: define uma largura máxima para o grid não espalhar 
-            // no monitor ultra-wide
-            constraints: const BoxConstraints(maxWidth: 1000), 
+            constraints: const BoxConstraints(maxWidth: 700), 
             child: GridView.builder(
-              // Define o tamanho máximo de cada botão
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250, // Tamanho máximo de cada botão
+                maxCrossAxisExtent: 250,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
-                childAspectRatio: 1, // Mantém o formato quadrado
+                childAspectRatio: 1,
               ),
               itemCount: _buildButtons(context).length,
               itemBuilder: (context, index) => _buildButtons(context)[index],
@@ -37,8 +34,6 @@ class _AdminPageState extends State<AdminPage> {
       ),
     );
   }
-
-  // Organizei os botões em uma lista para facilitar a manutenção
   List<Widget> _buildButtons(BuildContext context) {
     return [
       ButtonQuadradoIcon(

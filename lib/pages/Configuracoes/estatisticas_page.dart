@@ -12,50 +12,62 @@ class _EstatisticasPageState extends State<EstatisticasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Estatísticas')),
-      body: Padding(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Aulas',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            CardEstatisticaWidget(
-              txt: 'Aulas assistidas',
-              dado: '15',
-              ico: Icons.play_circle,
-            ),
-            SizedBox(height: 30),
+      appBar: AppBar(
+        title: const Text('Estatísticas'),
+        centerTitle: true,
+      ),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Aulas',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const CardEstatisticaWidget(
+                  txt: 'Aulas assistidas',
+                  dado: '15',
+                  ico: Icons.play_circle,
+                ),
+                const SizedBox(height: 30),
 
-            Text(
-              'Exercícios',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            CardEstatisticaWidget(
-              txt: 'Exercícios concluídos',
-              dado: '60',
-              ico: Icons.book,
-            ),
-            SizedBox(height: 10),
-            CardEstatisticaWidget(
-              txt: 'Acertos',
-              dado: '45',
-              ico: Icons.check_circle,
-            ),
-            SizedBox(height: 30),
+                const Text(
+                  'Exercícios',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const CardEstatisticaWidget(
+                  txt: 'Exercícios concluídos',
+                  dado: '60',
+                  ico: Icons.book,
+                ),
+                const SizedBox(height: 10),
+                const CardEstatisticaWidget(
+                  txt: 'Acertos',
+                  dado: '45',
+                  ico: Icons.check_circle,
+                ),
+                const SizedBox(height: 30),
 
-            Text(
-              'Notas',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const Text(
+                  'Notas',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const CardEstatisticaWidget(
+                  txt: 'Média',
+                  dado: '9,00',
+                  ico: Icons.bar_chart,
+                ),
+              ],
             ),
-            CardEstatisticaWidget(
-              txt: 'Média',
-              dado: '9,00',
-              ico: Icons.bar_chart,
-            ),
-          ],
+          ),
         ),
       ),
     );

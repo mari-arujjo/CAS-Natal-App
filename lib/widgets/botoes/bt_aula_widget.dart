@@ -32,7 +32,7 @@ class _AulaTileState extends State<AulaTile> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          color: _isHovered ? cores.cinzaClaro: Colors.white,
+          color: _isHovered ? cores.cinzaClaro: Color(0xFFF8F9FA),
           borderRadius: BorderRadius.circular(10),
           
         ),
@@ -76,7 +76,7 @@ class _AulaTileState extends State<AulaTile> {
               ),
               Icon(
                 Icons.chevron_right, 
-                color: Colors.black,
+                color: cores.laranja,
               ),
               const SizedBox(width: 15),
             ],

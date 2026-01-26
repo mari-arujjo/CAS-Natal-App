@@ -48,7 +48,7 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
           maxWidth: 900,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(15),
           child: player,
         ),
       ),

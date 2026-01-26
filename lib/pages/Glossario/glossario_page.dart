@@ -68,7 +68,7 @@ class GlossarioPage extends ConsumerWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Resultados encontrados: ${signs.length}'),
+                        Text('Resultados encontrados: ${signs.length}', style: TextStyle(color: Colors.black54, fontStyle: FontStyle.italic)),
                         const SizedBox(height: 10),
                         GridView.builder(
                           shrinkWrap: true,

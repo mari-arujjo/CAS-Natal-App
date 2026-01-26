@@ -7,9 +7,11 @@ class Cores {
   final azulClaro4 = const Color.fromARGB(255, 236, 245, 250);
   final azulEscuro = const Color(0xFF148FBF);
   final azulEscuro2 = const Color.fromARGB(255, 14, 109, 146);
+  final azulEscuro3 = const Color.fromARGB(255, 31, 174, 231);
 
   final laranja = const Color(0xFFF9A826);
   final laranjaEscuro = const Color(0xFFCA8B26);
+  final laranjaEscuro2 = const Color.fromARGB(255, 228, 158, 45);
 
 
   final branco = const Color.fromARGB(255, 241, 241, 241);

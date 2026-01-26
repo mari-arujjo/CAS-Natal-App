@@ -73,7 +73,7 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Card(
-                            elevation: 0,
+                            elevation: 1,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             color: Colors.white,
                             child: Column(

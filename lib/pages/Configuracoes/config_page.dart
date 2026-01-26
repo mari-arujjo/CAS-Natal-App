@@ -3,6 +3,7 @@ import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_menu_detalhes_widget.dart';
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
+import 'package:app_cas_natal/widgets/inputs/search_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,9 +26,14 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
     final isWeb = larguraTela > 1000;
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        elevation: 0,
+       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        elevation: 1,
+        shadowColor: Color.fromARGB(115, 0, 0, 0),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10), 
+          child: Column(children: [SearchBarWidget(), SizedBox(height: 10,)],)
+        ),
       ),
       body: asyncUser.when(
         data: (user) {
@@ -37,27 +43,17 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
             child: Center(
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 1100),
-                padding: EdgeInsets.symmetric(
-                  horizontal: isWeb ? 30 : 20, 
-                ),
+                padding: EdgeInsets.symmetric(horizontal: isWeb ? 30 : 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeaderPerfil(user, isWeb),
-                    const SizedBox(height: 50),
-                    
-                    _buildSeccaoTitle("CONTA"),
                     const SizedBox(height: 10),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
                       filtrarPor: ['Editar perfil', 'Redefinir senha', 'Sair']
                     ),
-                    
-                    const SizedBox(height: 40),
-
-                    _buildSeccaoTitle("SISTEMA"),
-                    const SizedBox(height: 10),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
@@ -75,36 +71,24 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
       ),
     );
   }
-
-  Widget _buildSeccaoTitle(String titulo) {
-    return Text(
-      titulo,
-      style: TextStyle(
-        fontSize: 13,
-        fontWeight: FontWeight.bold,
-        color: Colors.grey[500],
-        letterSpacing: 1.5,
-      ),
-    );
-  }
-
+  
   Widget _buildHeaderPerfil(dynamic user, bool isWeb) {
     final asyncAvatar = ref.watch(avatarProvider);
 
     return Card(
-      elevation: 0, 
+      elevation: 1, 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             asyncAvatar.maybeWhen(
-              data: (imgBytes) => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: imgBytes),
-              orElse: () => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: null),
+              data: (imgBytes) => AvatarWidget(tam: isWeb ? 50 : 40, imgBytes: imgBytes),
+              orElse: () => AvatarWidget(tam: isWeb ? 50 : 40, imgBytes: null),
             ),
-            const SizedBox(width: 25),
+            SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,18 +96,17 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                   Text(
                     user.fullName,
                     style: TextStyle(
-                      fontSize: isWeb ? 28 : 22,
+                      fontSize: isWeb ? 25 : 18,
                       fontWeight: FontWeight.bold,
                       color: cores.azulEscuro,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Wrap(
                     spacing: 15,
                     runSpacing: 5,
                     children: [
-                      _buildInfoItem("Usuário:", "@${user.userName}"),
-                      _buildInfoItem("Email:", user.email),
+                      _buildInfoItem("Usuário:", "@${user.userName}")
                     ],
                   ),
                 ],
@@ -145,7 +128,7 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
           ),
           TextSpan(
             text: value,
-            style: const TextStyle(color: Colors.black54, fontSize: 14),
+            style: const TextStyle(color: Colors.black54, fontSize: 15),
           ),
         ],
       ),
@@ -198,7 +181,7 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
       {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
       {'titulo': 'Estatísticas', 'subtitulo': 'Visualizar uso e progresso', 'icone': Icons.auto_graph_outlined, 'cor': const Color.fromARGB(255, 5, 173, 157), 'onPressed': () => context.goNamed('Estatisticas')},
       {'titulo': 'Opções de administrador', 'subtitulo': 'Gestão de usuários e sistema', 'icone': Icons.admin_panel_settings_outlined, 'cor': const Color.fromARGB(255, 239, 0, 179), 'onPressed': () => context.goNamed('Admin')},
-      {'titulo': 'Sobre o app', 'subtitulo': 'Versão e informações', 'icone': Icons.help_outline, 'cor': Colors.indigo, 'onPressed': () => context.goNamed('Sobre')},
+      {'titulo': 'Sobre o app', 'subtitulo': 'Versão e informações', 'icone': Icons.help_outline, 'cor': const Color.fromARGB(255, 57, 171, 216), 'onPressed': () => context.goNamed('Sobre')},
       {'titulo': 'Termos de serviço', 'subtitulo': 'Regras e privacidade', 'icone': Icons.assignment_outlined, 'cor': Colors.blueGrey, 'onPressed': () => context.goNamed('Termos')},
     ];
   }

@@ -53,7 +53,7 @@ class CursosPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Resultados encontrados: ${courses.length}'),
+                    Text('Resultados encontrados: ${courses.length}', style: TextStyle(color: Colors.black54, fontStyle: FontStyle.italic)),
                     SizedBox(height: 10),
                     GridView.builder(
                       shrinkWrap: true,

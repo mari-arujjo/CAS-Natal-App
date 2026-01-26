@@ -10,31 +10,66 @@ class BotaoFlutuanteWidget extends StatefulWidget {
 }
 
 class _FlutuanteState extends State<BotaoFlutuanteWidget> {
-  bool pressed = false;
+  bool _isHovered = false;
+  bool _isPressed = false;
+  final cor = Cores();
 
   @override
   Widget build(BuildContext context) {
-    final cor = Cores();
+    double offsetDeslocamento = 0;
+    double offsetSombra = 5;
 
-    return FloatingActionButton.extended(
-      foregroundColor: Colors.white,
-      backgroundColor: cor.laranja,
-      elevation: 2,
+    if (_isPressed) {
+      offsetDeslocamento = 4;
+      offsetSombra = 1;
+    } else if (_isHovered) {
+      offsetDeslocamento = 2;
+      offsetSombra = 3;
+    }
 
-      onPressed: () {
-        setState(() {
-          pressed = true;
-        });
-        Future.delayed(Duration(milliseconds: 100), () {
-          widget.onPressed();
-          setState(() {
-            pressed = false;
-          });
-        });
-      },
-
-      label: Text('Novo', style: TextStyle(fontWeight: FontWeight.bold),),
-      icon: Icon(Icons.add),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: cor.laranjaEscuro,
+                offset: Offset(0, offsetSombra),
+                blurRadius: 0,
+              ),
+            ],
+          ),
+          child: FloatingActionButton.extended(
+            onPressed: null,
+            foregroundColor: Colors.white,
+            backgroundColor: cor.laranja,
+            elevation: 0,
+            hoverElevation: 0,
+            focusElevation: 0,
+            highlightElevation: 0,
+            disabledElevation: 0,
+            label: const Text(
+              'Novo',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            icon: const Icon(Icons.add),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

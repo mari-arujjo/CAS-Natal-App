@@ -20,7 +20,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         minHeight: 48,
         maxHeight: 56,
       ),
-      backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+      backgroundColor: WidgetStatePropertyAll(Colors.white),
       side: WidgetStatePropertyAll(
         BorderSide(color: cores.cinzaClaro, width: 2),
       ),

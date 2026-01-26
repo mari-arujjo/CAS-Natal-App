@@ -1,4 +1,3 @@
-import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 
 class ButtonLista extends StatefulWidget {
@@ -16,18 +15,16 @@ class _ButtonListaState extends State<ButtonLista> {
 
   @override
   Widget build(BuildContext context) {
-    final cor = Cores();
-
     return SizedBox(
       height: 45,
 
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ButtonStyle(
-          elevation: WidgetStatePropertyAll(3),
+          elevation: WidgetStatePropertyAll(1),
           shadowColor: WidgetStatePropertyAll(Colors.black),
           backgroundColor: WidgetStatePropertyAll(Colors.white),
-          overlayColor: WidgetStatePropertyAll(cor.azulEscuro),
+          overlayColor: WidgetStatePropertyAll(const Color.fromARGB(33, 0, 0, 0)),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
