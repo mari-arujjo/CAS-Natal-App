@@ -24,16 +24,15 @@ class _BotaoLaranjaWidgetState extends State<BotaoLaranjaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Definindo as variações de profundidade
     double offsetDeslocamento = 0;
     double offsetSombra = 5;
 
     if (_isPressed) {
-      offsetDeslocamento = 4; // Botão quase no chão
-      offsetSombra = 1;       // Sombra quase sumindo
+      offsetDeslocamento = 4;
+      offsetSombra = 1;
     } else if (_isHovered) {
-      offsetDeslocamento = 2; // Botão levemente abaixado
-      offsetSombra = 3;       // Sombra diminui um pouco
+      offsetDeslocamento = 2;
+      offsetSombra = 3;
     }
 
     return MouseRegion(

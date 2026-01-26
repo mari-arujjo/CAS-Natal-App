@@ -121,7 +121,8 @@ class _LessonVideoPageState extends State<LessonVideoPage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.grey[500],
+            letterSpacing: 1,
           ),
         ),
         Text(

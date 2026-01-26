@@ -72,6 +72,7 @@ class _BotaoNavegacaoWidgetState extends State<BotaoNavegacaoWidget> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
+                letterSpacing:1.5,
               ),
             ),
             style: ElevatedButton.styleFrom(

@@ -3,6 +3,7 @@ import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_menu_web_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,31 +27,27 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: cores.azulEscuro),
       ),
       body: asyncUser.when(
         data: (user) {
           if (user == null) return const Center(child: Text('Usuário inválido'));
 
           return SingleChildScrollView(
-            child: Padding(
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 1100),
                 padding: EdgeInsets.symmetric(
                   horizontal: isWeb ? 30 : 20, 
-                  vertical: 0
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // --- CABEÇALHO DE PERFIL ---
                     _buildHeaderPerfil(user, isWeb),
-                    
                     const SizedBox(height: 50),
                     
-                    // --- SEÇÃO: CONTA ---
                     _buildSeccaoTitle("CONTA"),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
@@ -58,10 +55,9 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                     ),
                     
                     const SizedBox(height: 40),
-                    
-                    // --- SEÇÃO: SISTEMA ---
+
                     _buildSeccaoTitle("SISTEMA"),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     _buildMenuLayout(
                       context, 
                       isWeb, 
@@ -71,6 +67,7 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
                   ],
                 ),
               ),
+            ),
           );
         },
         loading: () => const CarregandoWidget(),
@@ -92,13 +89,11 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   }
 
   Widget _buildHeaderPerfil(dynamic user, bool isWeb) {
-    // RESOLUÇÃO DO ERRO: Movendo o watch do avatar para dentro do builder ou tratando o nulo
     final asyncAvatar = ref.watch(avatarProvider);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Tratamento seguro do AsyncValue<Uint8List?>
         asyncAvatar.maybeWhen(
           data: (imgBytes) => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: imgBytes),
           orElse: () => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: null),
@@ -154,19 +149,19 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
 
     if (isWeb) {
       return Container(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          childAspectRatio: 2.8, 
-        ),
-        itemCount: itens.length,
-        itemBuilder: (context, index) => _buildMenuCard(itens[index]),
-                )
+        constraints: const BoxConstraints(maxWidth: 1100),
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            childAspectRatio: 2.8, 
+          ),
+          itemCount: itens.length,
+          itemBuilder: (context, index) => _buildMenuCard(itens[index]),
+        )
       );
     }
 
@@ -179,75 +174,24 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   }
 
   Widget _buildMenuCard(Map<String, dynamic> item) {
-    final bool isSair = item['titulo'] == 'Sair';
-    
-    return InkWell(
-      onTap: item['onPressed'],
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.withOpacity(0.1)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: (item['cor'] as Color).withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(item['icone'], color: item['cor'], size: 22),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['titulo'], 
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 15,
-                      color: isSair ? Colors.red[700] : Colors.black87
-                    )
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item['subtitulo'], 
-                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right, color: Colors.grey[300], size: 20),
-          ],
-        ),
-      ),
+    return MenuBotaoWidget(
+      titulo: item['titulo'],
+      subtitulo: item['subtitulo'],
+      icone: item['icone'],
+      cor: item['cor'],
+      onPressed: item['onPressed'],
     );
   }
 
   List<Map<String, dynamic>> _listagemItensMenu(BuildContext context) {
     return [
-      {'titulo': 'Editar perfil', 'subtitulo': 'Dados pessoais e contato', 'icone': Icons.person_outline, 'cor': Colors.blue, 'onPressed': () => context.goNamed('EditarPerfil')},
-      {'titulo': 'Estatísticas', 'subtitulo': 'Visualizar uso e progresso', 'icone': Icons.auto_graph_outlined, 'cor': Colors.teal, 'onPressed': () => context.goNamed('Estatisticas')},
-      {'titulo': 'Opções de administrador', 'subtitulo': 'Gestão de usuários e sistema', 'icone': Icons.admin_panel_settings_outlined, 'cor': Colors.orange[800], 'onPressed': () => context.goNamed('Admin')},
-      {'titulo': 'Redefinir senha', 'subtitulo': 'Altere sua senha de acesso', 'icone': Icons.lock_open_outlined, 'cor': Colors.redAccent, 'onPressed': () => context.goNamed('RedefinirSenha')},
+      {'titulo': 'Editar perfil', 'subtitulo': 'Dados pessoais e contato', 'icone': Icons.person_outline, 'cor': cores.laranja, 'onPressed': () => context.goNamed('EditarPerfil')},
+      {'titulo': 'Redefinir senha', 'subtitulo': 'Altere sua senha de acesso', 'icone': Icons.lock_open_outlined, 'cor': const Color.fromARGB(255, 108, 82, 255), 'onPressed': () => context.goNamed('RedefinirSenha')},
+      {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
+      {'titulo': 'Estatísticas', 'subtitulo': 'Visualizar uso e progresso', 'icone': Icons.auto_graph_outlined, 'cor': const Color.fromARGB(255, 5, 173, 157), 'onPressed': () => context.goNamed('Estatisticas')},
+      {'titulo': 'Opções de administrador', 'subtitulo': 'Gestão de usuários e sistema', 'icone': Icons.admin_panel_settings_outlined, 'cor': const Color.fromARGB(255, 239, 0, 179), 'onPressed': () => context.goNamed('Admin')},
       {'titulo': 'Sobre o app', 'subtitulo': 'Versão e informações', 'icone': Icons.help_outline, 'cor': Colors.indigo, 'onPressed': () => context.goNamed('Sobre')},
       {'titulo': 'Termos de serviço', 'subtitulo': 'Regras e privacidade', 'icone': Icons.assignment_outlined, 'cor': Colors.blueGrey, 'onPressed': () => context.goNamed('Termos')},
-      {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
     ];
   }
 
@@ -255,20 +199,24 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: const Text('Sair'),
-        content: const Text('Tem certeza que deseja sair do CAS Natal?'),
+        title: Text('Sair'),
+        content: Text('Tem certeza que deseja sair? Você terá que fazer login novamente.'),
         actions: [
-          TextButton(onPressed: () => context.pop(false), child: Text('Cancelar', style: TextStyle(color: Colors.grey[600]))),
+          TextButton(
+            onPressed: () => context.pop(false),
+            child: Text('Cancelar', style: TextStyle(color: cores.azulEscuro)),
+          ),
           TextButton(
             onPressed: () async {
+              await ref.read(secureStorageProvider).deleteAll();
+              if (!mounted) return;
               context.pop(true);
               context.goNamed('LoginRegister');
-            }, 
-            child: const Text('Sim, Sair', style: TextStyle(color: Colors.red))
+            },
+            child: Text('Sim', style: TextStyle(color: cores.azulEscuro)),
           ),
         ],
-      ),
+      )
     );
   }
 }

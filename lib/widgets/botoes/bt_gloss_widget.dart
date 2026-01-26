@@ -21,7 +21,6 @@ class BotaoGlossarioWidget extends StatefulWidget {
 
 class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
   final cores = Cores(); 
-  bool pressionado = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +41,8 @@ class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
             ),
             shadowColor: WidgetStatePropertyAll(Colors.transparent),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
-            padding: WidgetStatePropertyAll(
-              EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ), 
-            ),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10,vertical: 10)),
+            side: WidgetStatePropertyAll(BorderSide(color: const Color.fromARGB(24, 158, 158, 158),width: 1))
           ),
           onPressed: widget.onPressed,
           child: Row(

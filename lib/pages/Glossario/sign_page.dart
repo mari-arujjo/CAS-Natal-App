@@ -39,7 +39,8 @@ class _SignPageState extends ConsumerState<SignPage> {
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.grey[500],
+          letterSpacing: 1,
         ),
       ),
     );

@@ -19,49 +19,60 @@ class GlossarioPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 4,
-        shadowColor: Color.fromARGB(83, 0, 0, 0),
+        shadowColor: const Color.fromARGB(83, 0, 0, 0),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(10), 
-          child: Column(children: [SearchBarWidget(), SizedBox(height: 10,)],)
+          preferredSize: const Size.fromHeight(10), 
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 1100),
+                  child: SearchBarWidget(),
+                ),
+              ), 
+              const SizedBox(height: 10),
+            ],
+          )
         ),
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 1100), 
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // --- SEÇÃO DE CATEGORIAS ---
-                isDesktop 
-                ? Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
-                    alignment: WrapAlignment.center,
-                    children: _buildCategories(),
-                  )
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: _buildCategories(withPadding: true)),
-                  ),
-                  
+                Center(
+                  child: isDesktop 
+                  ? Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.center,
+                      children: _buildCategories(),
+                    )
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(children: _buildCategories(withPadding: true)),
+                    ),
+                ),
                 SizedBox(height: 40),
 
-                // --- LISTAGEM DE SINAIS ---
                 asyncGlossary.when(
-                  loading: () => Center(child: CarregandoWidget()),
+                  loading: () => const Center(child: CarregandoWidget()),
                   error: (err, stack) => Center(child: Text('Erro: $err')),
                   data: (signs) {
-                    if (signs.isEmpty) return Center(child: Text('Nenhum sinal encontrado.'));
+                    if (signs.isEmpty) return const Center(child: Text('Nenhum sinal encontrado.'));
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Resultados encontrados: ${signs.length}'),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         GridView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: isDesktop ? 4 : 1,
                             mainAxisExtent: 55,
@@ -86,7 +97,7 @@ class GlossarioPage extends ConsumerWidget {
                             );
                           },
                         ),
-                      ]
+                      ],
                     );
                   },
                 ),

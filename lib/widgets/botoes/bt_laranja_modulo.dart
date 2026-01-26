@@ -75,6 +75,8 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
               ),
             ),
           ),
