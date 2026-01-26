@@ -24,14 +24,14 @@ class _BotaoNavegacaoWidgetState extends State<BotaoNavegacaoWidget> {
   @override
   Widget build(BuildContext context) {
     double offsetDeslocamento = 0;
-    double offsetSombra = 4;
+    double offsetSombra = 5;
 
     if (_isPressed) {
-      offsetDeslocamento = 3;
+      offsetDeslocamento = 4;
       offsetSombra = 1;
     } else if (_isHovered) {
-      offsetDeslocamento = 1.5;
-      offsetSombra = 2.5;
+      offsetDeslocamento = 2;
+      offsetSombra = 3;
     }
 
     return MouseRegion(

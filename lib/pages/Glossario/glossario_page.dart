@@ -63,8 +63,8 @@ class GlossarioPage extends ConsumerWidget {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: isDesktop ? 3 : 1,
-                            mainAxisExtent: 50,
+                            crossAxisCount: isDesktop ? 4 : 1,
+                            mainAxisExtent: 55,
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 10,
                           ),

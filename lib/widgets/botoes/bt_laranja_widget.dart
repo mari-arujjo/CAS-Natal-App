@@ -48,7 +48,7 @@ class _BotaoLaranjaWidgetState extends State<BotaoLaranjaWidget> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeOut,
-          height: 40,
+          height: 35,
           width: widget.tam,
           transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
           decoration: BoxDecoration(
@@ -72,7 +72,7 @@ class _BotaoLaranjaWidgetState extends State<BotaoLaranjaWidget> {
               padding: EdgeInsets.zero,
             ),
             child: Text(
-              widget.txt.toUpperCase(),
+              widget.txt,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,

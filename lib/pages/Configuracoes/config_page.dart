@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/cores.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_menu_widget.dart'; // Seu botão original
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_menu_web_widget.dart'; // O novo componente
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,189 +20,255 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   @override
   Widget build(BuildContext context) {
     final asyncUser = ref.watch(currentUserProvider);
-    final asyncAvatar = ref.watch(avatarProvider);
     final larguraTela = MediaQuery.of(context).size.width;
-    final isWeb = larguraTela > 850;
+    final isWeb = larguraTela > 1000;
 
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: cores.azulEscuro),
       ),
       body: asyncUser.when(
         data: (user) {
           if (user == null) return const Center(child: Text('Usuário inválido'));
 
-          final avatarWidget = asyncAvatar.when(
-            data: (imgBytes) => AvatarWidget(
-              tam: 50,
-              imgBytes: imgBytes,
-            ),
-            loading: () => AvatarWidget(tam: 50, imgBytes: null),
-            error: (e, s) => AvatarWidget(tam: 50, imgBytes: null),
-          );
-
           return SingleChildScrollView(
-            child: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: isWeb ? 30 : 20),
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isWeb ? 30 : 20, 
+                  vertical: 0
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        avatarWidget,
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                user.fullName,
-                                style: const TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                user.email,
-                                style: TextStyle(
-                                  color: cores.azulEscuro,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    // --- CABEÇALHO DE PERFIL ---
+                    _buildHeaderPerfil(user, isWeb),
+                    
+                    const SizedBox(height: 50),
+                    
+                    // --- SEÇÃO: CONTA ---
+                    _buildSeccaoTitle("CONTA"),
+                    const SizedBox(height: 16),
+                    _buildMenuLayout(
+                      context, 
+                      isWeb, 
+                      filtrarPor: ['Editar perfil', 'Redefinir senha', 'Sair']
                     ),
-                    SizedBox(height: 25),
-                    BotaoLaranjaWidget(
-                      txt: 'Editar perfil',
-                      onPressed: () => context.goNamed('EditarPerfil'),
-                      tam: isWeb ? 220 : double.infinity,
+                    
+                    const SizedBox(height: 40),
+                    
+                    // --- SEÇÃO: SISTEMA ---
+                    _buildSeccaoTitle("SISTEMA"),
+                    const SizedBox(height: 16),
+                    _buildMenuLayout(
+                      context, 
+                      isWeb, 
+                      filtrarPor: ['Estatísticas', 'Opções de administrador', 'Sobre o app', 'Termos de serviço']
                     ),
-                    SizedBox(height: 40),
-                    isWeb 
-                      ? _buildGridMenu(context) 
-                      : _buildListaMenu(context),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
-            ),
           );
         },
         loading: () => const CarregandoWidget(),
-        error: (error, stackTrace) => Center(child: Text('Erro: $error')),
+        error: (error, stackTrace) => Center(child: Text('Erro ao carregar usuário: $error')),
       ),
     );
   }
 
-  // Layout para Web/Telas Grandes
-  Widget _buildGridMenu(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 3,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      childAspectRatio: 2.2,
-      children: _listagemItensMenu(context).map((item) {
-        return BotaoMenuWebWidget(
-          titulo: item['titulo'],
-          subtitulo: item['subtitulo'],
-          icone: item['icone'],
-          onPressed: item['onPressed'],
-        );
-      }).toList(),
+  Widget _buildSeccaoTitle(String titulo) {
+    return Text(
+      titulo,
+      style: TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.bold,
+        color: Colors.grey[500],
+        letterSpacing: 1.5,
+      ),
     );
   }
 
-  Widget _buildListaMenu(BuildContext context) {
-    return Column(
-      children: _listagemItensMenu(context).map((item) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: BotaoMenuWidget(
-            onPressed: item['onPressed'],
-            txt: item['titulo'],
-            tam: double.infinity,
-            iconInicio: item['icone'],
+  Widget _buildHeaderPerfil(dynamic user, bool isWeb) {
+    // RESOLUÇÃO DO ERRO: Movendo o watch do avatar para dentro do builder ou tratando o nulo
+    final asyncAvatar = ref.watch(avatarProvider);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Tratamento seguro do AsyncValue<Uint8List?>
+        asyncAvatar.maybeWhen(
+          data: (imgBytes) => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: imgBytes),
+          orElse: () => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: null),
+        ),
+        const SizedBox(width: 25),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.fullName,
+                style: TextStyle(
+                  fontSize: isWeb ? 28 : 22, 
+                  fontWeight: FontWeight.bold, 
+                  color: cores.azulEscuro
+                ),
+              ),
+              const SizedBox(height: 4),
+              Wrap(
+                spacing: 15,
+                runSpacing: 5,
+                children: [
+                  _buildInfoItem("Usuário:", "@${user.userName}"),
+                  _buildInfoItem("Email:", user.email),
+                ],
+              ),
+            ],
           ),
-        );
-      }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoItem(String label, String value) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: "$label ",
+            style: TextStyle(color: cores.azulEscuro, fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          TextSpan(
+            text: value,
+            style: const TextStyle(color: Colors.black54, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuLayout(BuildContext context, bool isWeb, {required List<String> filtrarPor}) {
+    final itens = _listagemItensMenu(context).where((i) => filtrarPor.contains(i['titulo'])).toList();
+
+    if (isWeb) {
+      return Container(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          childAspectRatio: 2.8, 
+        ),
+        itemCount: itens.length,
+        itemBuilder: (context, index) => _buildMenuCard(itens[index]),
+                )
+      );
+    }
+
+    return Column(
+      children: itens.map((item) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: _buildMenuCard(item),
+      )).toList(),
+    );
+  }
+
+  Widget _buildMenuCard(Map<String, dynamic> item) {
+    final bool isSair = item['titulo'] == 'Sair';
+    
+    return InkWell(
+      onTap: item['onPressed'],
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: (item['cor'] as Color).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(item['icone'], color: item['cor'], size: 22),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['titulo'], 
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      fontSize: 15,
+                      color: isSair ? Colors.red[700] : Colors.black87
+                    )
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    item['subtitulo'], 
+                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: Colors.grey[300], size: 20),
+          ],
+        ),
+      ),
     );
   }
 
   List<Map<String, dynamic>> _listagemItensMenu(BuildContext context) {
     return [
-      {
-        'titulo': 'Estatísticas',
-        'subtitulo': 'Acompanhe seu progresso',
-        'icone': Icons.bar_chart,
-        'onPressed': () => context.goNamed('Estatisticas'),
-      },
-      {
-        'titulo': 'Opções de administrador',
-        'subtitulo': 'Gerencie configurações avançadas',
-        'icone': Icons.admin_panel_settings,
-        'onPressed': () => context.goNamed('Admin'),
-      },
-      {
-        'titulo': 'Redefinir senha',
-        'subtitulo': 'Altere sua senha de acesso',
-        'icone': Icons.lock,
-        'onPressed': () => context.goNamed('RedefinirSenha'),
-      },
-      {
-        'titulo': 'Sobre o app',
-        'subtitulo': 'Saiba mais sobre o aplicativo',
-        'icone': Icons.info,
-        'onPressed': () => context.goNamed('Sobre'),
-      },
-      {
-        'titulo': 'Termos de serviço',
-        'subtitulo': 'Leia os termos e condições',
-        'icone': Icons.description,
-        'onPressed': () => context.goNamed('Termos'),
-      },
-      {
-        'titulo': 'Sair',
-        'subtitulo': 'Desconectar da sua conta',
-        'icone': Icons.logout,
-        'onPressed': () => _dialogSair(context),
-      },
+      {'titulo': 'Editar perfil', 'subtitulo': 'Dados pessoais e contato', 'icone': Icons.person_outline, 'cor': Colors.blue, 'onPressed': () => context.goNamed('EditarPerfil')},
+      {'titulo': 'Estatísticas', 'subtitulo': 'Visualizar uso e progresso', 'icone': Icons.auto_graph_outlined, 'cor': Colors.teal, 'onPressed': () => context.goNamed('Estatisticas')},
+      {'titulo': 'Opções de administrador', 'subtitulo': 'Gestão de usuários e sistema', 'icone': Icons.admin_panel_settings_outlined, 'cor': Colors.orange[800], 'onPressed': () => context.goNamed('Admin')},
+      {'titulo': 'Redefinir senha', 'subtitulo': 'Altere sua senha de acesso', 'icone': Icons.lock_open_outlined, 'cor': Colors.redAccent, 'onPressed': () => context.goNamed('RedefinirSenha')},
+      {'titulo': 'Sobre o app', 'subtitulo': 'Versão e informações', 'icone': Icons.help_outline, 'cor': Colors.indigo, 'onPressed': () => context.goNamed('Sobre')},
+      {'titulo': 'Termos de serviço', 'subtitulo': 'Regras e privacidade', 'icone': Icons.assignment_outlined, 'cor': Colors.blueGrey, 'onPressed': () => context.goNamed('Termos')},
+      {'titulo': 'Sair', 'subtitulo': 'Encerrar sessão atual', 'icone': Icons.logout_rounded, 'cor': Colors.red[400], 'onPressed': () => _dialogSair(context)},
     ];
   }
 
   Future<void> _dialogSair(BuildContext context) async {
     return await showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Sair'),
-          content: const Text(
-            'Tem certeza que deseja sair? Você terá que fazer login novamente.',
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        title: const Text('Sair'),
+        content: const Text('Tem certeza que deseja sair do CAS Natal?'),
+        actions: [
+          TextButton(onPressed: () => context.pop(false), child: Text('Cancelar', style: TextStyle(color: Colors.grey[600]))),
+          TextButton(
+            onPressed: () async {
+              context.pop(true);
+              context.goNamed('LoginRegister');
+            }, 
+            child: const Text('Sim, Sair', style: TextStyle(color: Colors.red))
           ),
-          actions: [
-            TextButton(
-              onPressed: () => context.pop(false),
-              child: Text('Não', style: TextStyle(color: cores.azulEscuro)),
-            ),
-            TextButton(
-              onPressed: () async {
-                await ref.read(secureStorageProvider).deleteAll();
-                if (!mounted) return;
-                context.pop(true);
-                context.goNamed('LoginRegister');
-              },
-              child: Text('Sim', style: TextStyle(color: cores.azulEscuro)),
-            ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 }

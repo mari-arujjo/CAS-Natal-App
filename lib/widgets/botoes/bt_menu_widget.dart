@@ -26,55 +26,54 @@ class _BotaoMenuWidgetState extends State<BotaoMenuWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
-      width: widget.tam,
-      child: Card(
+      width: widget.tam,child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 2,
         color: Colors.white,
         child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.transparent),
-          shadowColor: WidgetStatePropertyAll(Colors.transparent),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-          overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
-          side: WidgetStatePropertyAll(
-            BorderSide(color: Colors.transparent, width: 1),
-          ),
-          padding: WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 5, vertical: 5), // margem interna
-          ),
-        ),
-        onPressed: widget.onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: cores.laranja,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(widget.iconInicio, size: 20, color: cores.preto),
-                ),
-                SizedBox(width: 10),
-                Text(
-                  widget.txt,
-                  style: TextStyle(color: cores.preto, fontSize: 16),
-                ),
-              ],
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(Colors.white),
+            shadowColor: WidgetStatePropertyAll(Colors.transparent),
+            shape: WidgetStatePropertyAll(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
+            overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
+            side: WidgetStatePropertyAll(
+              BorderSide(color: Colors.transparent, width: 1),
+            ),
+            padding: WidgetStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 15, vertical: 0), // margem interna
+            ),
+          ),
+          onPressed: widget.onPressed,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: cores.laranja,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(widget.iconInicio, size: 20, color: cores.preto),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    widget.txt,
+                    style: TextStyle(color: cores.preto, fontSize: 16),
+                  ),
+                ],
+              ),
 
-            Icon(Icons.arrow_forward_ios, size: 20, color: cores.preto),
-          ],
+              Icon(Icons.arrow_forward_ios, size: 20, color: cores.preto),
+            ],
+          ),
         ),
-      ),
       )
     );
   }

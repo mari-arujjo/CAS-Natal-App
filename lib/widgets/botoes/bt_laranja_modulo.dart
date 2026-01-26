@@ -45,7 +45,7 @@ class _BotaoLaranjaModuloWidgetState extends State<BotaoLaranjaModuloWidget> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeOut,
-          height: 40,
+          height: 35,
           width: double.infinity,
           transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
           decoration: BoxDecoration(

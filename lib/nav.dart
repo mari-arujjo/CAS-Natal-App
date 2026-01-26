@@ -1,8 +1,8 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Para ícones de marcas
-import 'package:url_launcher/url_launcher.dart'; // Para abrir os links
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -20,7 +20,6 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
     );
   }
 
-  // Função para abrir os links
   Future<void> _abrirLink(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -28,8 +27,18 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
     }
   }
 
-  // Widget do Footer Customizado com Redes Sociais
-  Widget _buildFooter(Cores cores, bool isMobile) {
+  bool _deveMostrarFooter(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.path;
+    const telasPrincipais = [
+      '/cursos', 
+      '/glossario', 
+      '/configuracoes'
+    ];
+
+    return telasPrincipais.contains(location);
+  }
+
+  Widget _buildFooter(Cores cores) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -37,16 +46,16 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         color: cores.branco,
         border: Border(top: BorderSide(color: Colors.black.withOpacity(0.05))),
       ),
-      child: Wrap( // Wrap ajuda a não quebrar em telas muito pequenas
+      child: Wrap(
         alignment: WrapAlignment.spaceBetween,
         crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 10,
+        runSpacing: 10,
         children: [
           Text(
             "© 2026 CAS Natal + IFRN",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: cores.preto),
           ),
-          
-          // Seção de Ícones Sociais
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -60,7 +69,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
               const SizedBox(width: 8),
               Container(height: 15, width: 1, color: Colors.grey.withOpacity(0.5)),
               const SizedBox(width: 8),
-              _socialIcon(FontAwesomeIcons.userAstronaut, "https://www.instagram.com/mari.arujjo/", cores), // Ícone dev
+              _socialIcon(FontAwesomeIcons.github, "https://github.com/mari-arujjo", cores),
             ],
           ),
         ],
@@ -84,6 +93,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
     final cores = Cores();
     final int selectedIndex = widget.navigationShell.currentIndex;
     const double breakpoint = 600.0;
+    final bool mostrarFooter = _deveMostrarFooter(context);
 
     final destinations = <NavigationDestination>[
       NavigationDestination(
@@ -91,11 +101,11 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         label: 'Cursos',
       ),
       NavigationDestination(
-        icon: Icon(Icons.sign_language, color: selectedIconColor(selectedIndex, 1)),
+        icon: Icon(Icons.sign_language, color: selectedIndex == 1 ? Colors.white : Colors.black),
         label: 'Glossário',
       ),
       NavigationDestination(
-        icon: Icon(Icons.settings, color: selectedIconColor(selectedIndex, 2)),
+        icon: Icon(Icons.settings, color: selectedIndex == 2 ? Colors.white : Colors.black),
         label: 'Configurações',
       ),
     ];
@@ -103,6 +113,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < breakpoint) {
+          // --- LAYOUT MOBILE ---
           return Scaffold(
             body: Column(
               children: [
@@ -119,6 +130,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             ),
           );
         } else {
+          // --- LAYOUT DESKTOP/WEB ---
           return Scaffold(
             body: Row(
               children: [
@@ -149,7 +161,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                   child: Column(
                     children: [
                       Expanded(child: widget.navigationShell),
-                      _buildFooter(cores, false),
+                      if (mostrarFooter) _buildFooter(cores),
                     ],
                   ),
                 ),
@@ -159,9 +171,5 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         }
       },
     );
-  }
-
-  Color selectedIconColor(int selectedIndex, int targetIndex) {
-    return selectedIndex == targetIndex ? Colors.white : Colors.black;
   }
 }
