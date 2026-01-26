@@ -54,7 +54,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
         children: [
           Text(
             "© 2026 CAS Natal + IFRN",
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: cores.preto),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey[600]),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -62,12 +62,12 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
               _socialIcon(FontAwesomeIcons.instagram, "https://www.instagram.com/cas_natal/", cores),
               _socialIcon(FontAwesomeIcons.facebook, "https://www.facebook.com/casnatalrn/", cores),
               const SizedBox(width: 8),
-              Container(height: 15, width: 1, color: Colors.grey.withOpacity(0.5)),
+              Container(height: 15, width: 1, color: Colors.grey),
               const SizedBox(width: 8),
               _socialIcon(FontAwesomeIcons.instagram, "https://www.instagram.com/ifrnzonaleste/", cores),
               _socialIcon(FontAwesomeIcons.facebook, "https://www.facebook.com/ifrnzonaleste/", cores),
               const SizedBox(width: 8),
-              Container(height: 15, width: 1, color: Colors.grey.withOpacity(0.5)),
+              Container(height: 15, width: 1, color: Colors.grey),
               const SizedBox(width: 8),
               _socialIcon(FontAwesomeIcons.github, "https://github.com/mari-arujjo", cores),
             ],

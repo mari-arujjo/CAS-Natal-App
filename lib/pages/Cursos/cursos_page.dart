@@ -19,15 +19,19 @@ class CursosPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 1,
-        shadowColor: Color.fromARGB(115, 0, 0, 0),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(10), 
-          child: Column(children: [SearchBarWidget(), SizedBox(height: 10,)],)
+        shadowColor: const Color.fromARGB(115, 0, 0, 0),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(10),
+          child: Column(
+            children: [
+              SearchBarWidget(),
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
-
       body: RefreshIndicator(
         color: cor.laranja,
         backgroundColor: Colors.white,
@@ -40,41 +44,49 @@ class CursosPage extends ConsumerWidget {
             child: Text('Erro ao carregar cursos: $error'),
           ),
           data: (courses) {
-            if (courses.isEmpty) {
-              return const Center(
-                child: Text('Nenhum curso cadastrado.'),
-              );
-            }
-
             return SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Resultados encontrados: ${courses.length}', style: TextStyle(color: Colors.black54, fontStyle: FontStyle.italic)),
-                    SizedBox(height: 10),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isDesktop ? 3 : 1,
-                        mainAxisExtent: 180,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
+                    // --- OPÇÃO 1: BANNER DE HISTÓRIA ---
+                    _BannerHistoria(isDesktop: isDesktop, cor: cor),
+                    const SizedBox(height: 30),
+                    
+                    Text(
+                      'Resultados encontrados: ${courses.length}',
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontStyle: FontStyle.italic,
                       ),
-                      itemCount: courses.length,
-                      itemBuilder: (context, index) {
-                        final course = courses[index];
-                        return CourseCardWidget(
-                          course: course,
-                          onPressed: () {
-                            context.go('/cursos/detalheCurso/${course.id}');
-                          },
-                        );
-                      },
                     ),
+                    const SizedBox(height: 10),
+                    
+                    if (courses.isEmpty)
+                      const Center(child: Text('Nenhum curso cadastrado.'))
+                    else
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: isDesktop ? 3 : 1,
+                          mainAxisExtent: 180,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                        ),
+                        itemCount: courses.length,
+                        itemBuilder: (context, index) {
+                          final course = courses[index];
+                          return CourseCardWidget(
+                            course: course,
+                            onPressed: () {
+                              context.go('/cursos/detalheCurso/${course.id}');
+                            },
+                          );
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -82,6 +94,75 @@ class CursosPage extends ConsumerWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _BannerHistoria extends StatelessWidget {
+  final bool isDesktop;
+  final dynamic cor;
+
+  const _BannerHistoria({required this.isDesktop, required this.cor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: isDesktop ? 300 : 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        image: DecorationImage(
+          image: const AssetImage('assets/modulos/cas.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.4), 
+            BlendMode.darken,
+          ),
+        ),
+      ),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Nossa Jornada: A História do\nCAS Natal',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 10.0,
+                      color: Colors.black45,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  //context.go('/historia');
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  foregroundColor: cor.azulEscuro,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  'Descobrir',
+                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                ),
+              ),
+            ],
+          ),
+        ),
     );
   }
 }
