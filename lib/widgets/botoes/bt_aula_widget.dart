@@ -34,13 +34,7 @@ class _AulaTileState extends State<AulaTile> {
         decoration: BoxDecoration(
           color: _isHovered ? cores.cinzaClaro: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(64, 0, 0, 0),
-              offset: Offset(0, 2),
-              blurRadius: 2,
-            ),
-          ],
+          
         ),
         child: InkWell(
           onTap: widget.onTap,

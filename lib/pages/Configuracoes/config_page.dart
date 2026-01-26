@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/cores.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_menu_detalhes_widget.dart';
 import 'package:app_cas_natal/widgets/fotos/avatar_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
-import 'package:app_cas_natal/widgets/botoes/bt_menu_web_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -91,39 +91,47 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   Widget _buildHeaderPerfil(dynamic user, bool isWeb) {
     final asyncAvatar = ref.watch(avatarProvider);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        asyncAvatar.maybeWhen(
-          data: (imgBytes) => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: imgBytes),
-          orElse: () => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: null),
-        ),
-        const SizedBox(width: 25),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user.fullName,
-                style: TextStyle(
-                  fontSize: isWeb ? 28 : 22, 
-                  fontWeight: FontWeight.bold, 
-                  color: cores.azulEscuro
-                ),
-              ),
-              const SizedBox(height: 4),
-              Wrap(
-                spacing: 15,
-                runSpacing: 5,
+    return Card(
+      elevation: 0, 
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            asyncAvatar.maybeWhen(
+              data: (imgBytes) => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: imgBytes),
+              orElse: () => AvatarWidget(tam: isWeb ? 60 : 45, imgBytes: null),
+            ),
+            const SizedBox(width: 25),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildInfoItem("Usuário:", "@${user.userName}"),
-                  _buildInfoItem("Email:", user.email),
+                  Text(
+                    user.fullName,
+                    style: TextStyle(
+                      fontSize: isWeb ? 28 : 22,
+                      fontWeight: FontWeight.bold,
+                      color: cores.azulEscuro,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    spacing: 15,
+                    runSpacing: 5,
+                    children: [
+                      _buildInfoItem("Usuário:", "@${user.userName}"),
+                      _buildInfoItem("Email:", user.email),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -174,7 +182,7 @@ class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   }
 
   Widget _buildMenuCard(Map<String, dynamic> item) {
-    return MenuBotaoWidget(
+    return BotaoMenuDetalhesWidget(
       titulo: item['titulo'],
       subtitulo: item['subtitulo'],
       icone: item['icone'],

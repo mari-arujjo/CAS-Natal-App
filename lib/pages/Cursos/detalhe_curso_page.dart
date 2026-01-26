@@ -67,76 +67,79 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                child: course.photo != null
-                                    ? Image.memory(
-                                        course.photo!,
-                                        width: double.infinity,
-                                        height: 150,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(
-                                        width: double.infinity,
-                                        height: 200,
-                                        color: Colors.grey[200],
-                                        child: const Icon(Icons.image, size: 50),
-                                      ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: [
-                                    _infoItem(Icons.access_time, "Carga horária:", "3 horas"),
-                                    _infoItem(Icons.group_outlined, "Público-alvo:", "Professores, Estudantes, Profissionais"),
-                                    _infoItem(Icons.track_changes, "Objetivo:", course.description),
-                                  ],
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 1000), 
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                  child: course.photo != null
+                                      ? Image.memory(
+                                          course.photo!,
+                                          width: double.infinity,
+                                          height: 150,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          width: double.infinity,
+                                          height: 200,
+                                          color: Colors.grey[200],
+                                          child: const Icon(Icons.image, size: 50),
+                                        ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      _infoItem(Icons.access_time, "Carga horária:", "3 horas"),
+                                      _infoItem(Icons.group_outlined, "Público-alvo:", "Professores, Estudantes, Profissionais"),
+                                      _infoItem(Icons.track_changes, "Objetivo:", course.description),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
 
-                        const SizedBox(height: 30),
-                        
-                        const Text(
-                          "Aulas",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 15),
+                          const SizedBox(height: 30),
+                          
+                          const Text(
+                            "Aulas",
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 15),
 
-                        if (isEnrolled)
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: lessons.length,
-                          separatorBuilder: (context, index) => const SizedBox(height: 12),
-                          itemBuilder: (context, index) {
-                            final lesson = lessons[index];
-                            return AulaTile(
-                              index: index + 1,
-                              title: lesson.name,
-                              onTap: () {
-                                context.go('/cursos/detalheCurso/${course.id}/video/${lesson.id}');
-                              },
-                            );
-                          },
-                        )
-                      else
-                        _buildLockedState(course),
-                    ],
+                          if (isEnrolled)
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: lessons.length,
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              final lesson = lessons[index];
+                              return AulaTile(
+                                index: index + 1,
+                                title: lesson.name,
+                                onTap: () {
+                                  context.go('/cursos/detalheCurso/${course.id}/video/${lesson.id}');
+                                },
+                              );
+                            },
+                          )
+                        else
+                          _buildLockedState(course),
+                      ],
+                    ),
                   ),
-                ),
+                )
               );
             },
           );

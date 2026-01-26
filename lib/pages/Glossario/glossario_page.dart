@@ -20,8 +20,8 @@ class GlossarioPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 4,
-        shadowColor: const Color.fromARGB(83, 0, 0, 0),
+        elevation: 1,
+        shadowColor: Color.fromARGB(115, 0, 0, 0),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(10), 
           child: Column(

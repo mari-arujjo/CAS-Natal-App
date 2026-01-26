@@ -1,14 +1,14 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 
-class MenuBotaoWidget extends StatefulWidget {
+class BotaoMenuDetalhesWidget extends StatefulWidget {
   final String titulo;
   final String subtitulo;
   final IconData icone;
   final Color cor;
   final VoidCallback onPressed;
 
-  const MenuBotaoWidget({
+  const BotaoMenuDetalhesWidget({
     super.key,
     required this.titulo,
     required this.subtitulo,
@@ -18,32 +18,25 @@ class MenuBotaoWidget extends StatefulWidget {
     
   });
   @override
-  State<MenuBotaoWidget> createState() => _MenuBotaoWidgetState();
+  State<BotaoMenuDetalhesWidget> createState() => _BotaoMenuDetalhesWidgetState();
 }
 
-class _MenuBotaoWidgetState extends State<MenuBotaoWidget> {
+class _BotaoMenuDetalhesWidgetState extends State<BotaoMenuDetalhesWidget> {
   @override
   Widget build(BuildContext context) {
     final cores = Cores(); 
     final bool isSair = widget.titulo == 'Sair';
 
     return SizedBox(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 2,
-        color: Colors.white,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.white),
+            backgroundColor: WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             shadowColor: WidgetStatePropertyAll(Colors.transparent),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
             padding: WidgetStatePropertyAll(EdgeInsets.all(20)),
-            side: WidgetStatePropertyAll(BorderSide(color: const Color.fromARGB(24, 158, 158, 158),width: 1))
           ),
           onPressed: widget.onPressed,
           child: Row(
@@ -85,7 +78,6 @@ class _MenuBotaoWidgetState extends State<MenuBotaoWidget> {
             ],
           ),
         ),
-      )
     );
   }
 }

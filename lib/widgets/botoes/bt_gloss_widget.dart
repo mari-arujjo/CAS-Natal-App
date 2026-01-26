@@ -21,28 +21,39 @@ class BotaoGlossarioWidget extends StatefulWidget {
 
 class _BotaoGlossarioWidgetState extends State<BotaoGlossarioWidget> {
   final cores = Cores(); 
+  bool pressionado = false;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: 50,
       width: widget.tam,
-      child: Card(
-        shape: RoundedRectangleBorder(
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.transparent,
+              offset: Offset(0, 4),
+              blurRadius: 0,
+            ),
+          ],
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 2,
-        color: Colors.white,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.white),
+            backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+            shadowColor: WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
-            shadowColor: WidgetStatePropertyAll(Colors.transparent),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
-            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10,vertical: 10)),
-            side: WidgetStatePropertyAll(BorderSide(color: const Color.fromARGB(24, 158, 158, 158),width: 1))
+
+            padding: WidgetStatePropertyAll(
+              EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 5,
+              ), 
+            ),
           ),
           onPressed: widget.onPressed,
           child: Row(
