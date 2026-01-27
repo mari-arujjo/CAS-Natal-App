@@ -112,7 +112,7 @@ class _BannerHistoria extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
-          image: const AssetImage('assets/modulos/cas.jpg'),
+          image: const AssetImage('assets/storybook/cas.jpg'),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
             Colors.black.withOpacity(0.4), 

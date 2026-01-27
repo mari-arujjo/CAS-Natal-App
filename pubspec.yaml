@@ -36,20 +36,23 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/logo_cas.png
-    - assets/logo_cas_transparente.png
-    - assets/logo_cas_transparente2.png
+    - assets/logos/logo_cas.png
+    - assets/logos/logo_cas_transparente.png
+    - assets/logos/logo_cas_transparente2.png
 
     - assets/avatar/menina.png
     - assets/avatar/menino.png
     - assets/avatar/menina2.png
     - assets/avatar/menino2.png
 
-    - assets/modulos/cas.jpg
     - assets/modulos/diversidade.jpg
     - assets/modulos/letramento.png
     - assets/modulos/inclusao.jpg
     - assets/modulos/placeholder_curso.jpg
+    
+    - assets/storybook/cas.jpg
+    - assets/storybook/capa.png
+    - assets/storybook/foto0.png
 
 flutter_icons:
   android: true

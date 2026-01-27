@@ -145,7 +145,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
                   leading: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Image.asset(
-                      'assets/logo_cas_transparente2.png',
+                      'assets/logos/logo_cas_transparente2.png',
                       height: 80,
                       fit: BoxFit.contain,
                     ),
