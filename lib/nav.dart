@@ -69,7 +69,7 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
               const SizedBox(width: 8),
               Container(height: 15, width: 1, color: Colors.grey),
               const SizedBox(width: 8),
-              _socialIcon(FontAwesomeIcons.github, "https://github.com/mari-arujjo", cores),
+              _socialIcon(FontAwesomeIcons.github, "https://mari-arujjo.github.io/", cores),
             ],
           ),
         ],
