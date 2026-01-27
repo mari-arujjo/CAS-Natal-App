@@ -26,6 +26,7 @@ import 'package:app_cas_natal/pages/Configuracoes/sobre_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/termos_page.dart';
 import 'package:app_cas_natal/pages/Cursos/detalhe_curso_page.dart';
 import 'package:app_cas_natal/pages/Cursos/cursos_page.dart';
+import 'package:app_cas_natal/pages/historia_page.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/src/course/course_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
@@ -62,6 +63,18 @@ final goRouterProvider = Provider<GoRouter>((ref){
     },
 
     routes: <RouteBase>[
+      
+      GoRoute(
+        path: '/historia',
+        name: 'Historia',
+        pageBuilder: (context, state) => buildPageWithTransition(
+          context: context,
+          state: state,
+          child: HistoriaCASPage(key: state.pageKey),
+        ),
+      ),
+
+
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return NavigationBarWidget(navigationShell: navigationShell);

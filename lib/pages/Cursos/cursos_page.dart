@@ -108,7 +108,7 @@ class _BannerHistoria extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: isDesktop ? 300 : 180,
+      height: isDesktop ? 250 : 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
@@ -126,11 +126,11 @@ class _BannerHistoria extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Nossa Jornada: A História do\nCAS Natal',
+              Text(
+                'Nossa Jornada: A História do CAS Natal',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: isDesktop ? 28 : 18, 
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                   shadows: [
@@ -141,23 +141,28 @@ class _BannerHistoria extends StatelessWidget {
                     ),
                   ],
                 ),
+                softWrap: true, 
+                maxLines: 3,
               ),
               SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  //context.go('/historia');
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  foregroundColor: cor.azulEscuro,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              SizedBox(
+                height: 30,
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.goNamed('Historia');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    foregroundColor: cor.azulEscuro,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Descobrir',
-                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                  child: Text(
+                    'Descobrir',
+                    style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                  ),
                 ),
               ),
             ],
