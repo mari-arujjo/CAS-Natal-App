@@ -52,7 +52,7 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
     {
       'tipo': 'conteudo',
       'titulo': 'NOSSOS VALORES',
-      'texto': '',
+      'texto': 'Nossas ações são guiadas por três Valores inegociáveis, representados pelo aperto de mãos.\n1. Integridade e Transparência: Atuar com a mais alta ética profissional, garantindo clareza e honestidade irrestritas em todas as ações e processos.\n\n2. Respeito e Credibilidade: Construir a confiança mútua por meio de um atendimento empático e do profundo respeito à dignidade e às necessidades singulares do nosso público-alvo.\n\n3. Compromisso com a Educação Bilíngue: Manter fidelidade aos princípios e metodologias das propostas educacionais específicas para estudantes surdos, assegurando a excelência e a inclusão efetiva.',
       'imagem': 'assets/storybook/foto5.png',
     },
     {
