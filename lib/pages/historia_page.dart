@@ -98,7 +98,7 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
   @override
   Widget build(BuildContext context) {
     final cor = Cores();
-    final isMobile = MediaQuery.of(context).size.width < 600;
+    final isMobile = MediaQuery.of(context).size.width < 1000;
 
     return Scaffold(
       backgroundColor: const Color(0xFF1A1C1E),
@@ -136,7 +136,7 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
                     );
                   },
                 ),
-                if (!isMobile) _buildSetas(),
+                _buildSetas(),
               ],
             ),
           ),
@@ -166,7 +166,7 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
   Widget _botaoSeta(IconData icon, VoidCallback tap) => IconButton(
         onPressed: tap,
         icon: CircleAvatar(
-          backgroundColor: Colors.white.withOpacity(0.1),
+          backgroundColor: Cores().laranja.withOpacity(0.3),
           child: Icon(icon, color: Colors.white, size: 18),
         ),
       );
@@ -260,7 +260,7 @@ class _CardLivroComImagem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: isMobile ? 3 : 1,
+              flex: isMobile ? 2 : 1,
               child: Image.asset(
                 dados['imagem']!,
                 fit: BoxFit.cover,

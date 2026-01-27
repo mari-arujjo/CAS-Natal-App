@@ -36,7 +36,7 @@ class _BotaoMenuDetalhesWidgetState extends State<BotaoMenuDetalhesWidget> {
             ),
             shadowColor: WidgetStatePropertyAll(Colors.transparent),
             overlayColor: WidgetStatePropertyAll(cores.cinzaClaro),
-            padding: WidgetStatePropertyAll(EdgeInsets.all(20)),
+            padding: WidgetStatePropertyAll(EdgeInsets.all(10)),
           ),
           onPressed: widget.onPressed,
           child: Row(
@@ -66,7 +66,7 @@ class _BotaoMenuDetalhesWidgetState extends State<BotaoMenuDetalhesWidget> {
                     const SizedBox(height: 2),
                     Text(
                       widget.subtitulo,
-                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                      style: TextStyle(color: Colors.grey[700], fontSize: 12),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
