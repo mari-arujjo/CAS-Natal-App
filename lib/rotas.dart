@@ -26,7 +26,8 @@ import 'package:app_cas_natal/pages/Configuracoes/sobre_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/termos_page.dart';
 import 'package:app_cas_natal/pages/Cursos/detalhe_curso_page.dart';
 import 'package:app_cas_natal/pages/Cursos/cursos_page.dart';
-import 'package:app_cas_natal/pages/historia_page.dart';
+import 'package:app_cas_natal/pages/Historia/historia_page.dart';
+import 'package:app_cas_natal/pages/landing_page.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/src/course/course_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
@@ -45,29 +46,52 @@ final _rootNavigatorConfiguracoes = GlobalKey<NavigatorState>(debugLabel: 'shell
 final goRouterProvider = Provider<GoRouter>((ref){
   return GoRouter(
     debugLogDiagnostics: true,
-    initialLocation: '/cursos',
+    initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
 
-    redirect: (BuildContext context, GoRouterState state) async{
+    redirect: (BuildContext context, GoRouterState state) async {
       final storage = ref.read(secureStorageProvider);
       final token = await storage.read(key: 'token');
       final isLoggedIn = token != null && token.isNotEmpty;
 
+      final isGoingToLanding = state.matchedLocation == '/';
       final isGoingToLogin = state.matchedLocation == '/loginRegister';
 
-      if (!isLoggedIn && !isGoingToLogin) return '/loginRegister';
-      
-      if (isLoggedIn && isGoingToLogin) return '/cursos';
-      
+      if (!isLoggedIn && !isGoingToLanding && !isGoingToLogin) {
+        return '/loginRegister';
+      }
+
+      if (isLoggedIn && isGoingToLogin) {
+        return '/cursos';
+      }
+
       return null;
     },
 
     routes: <RouteBase>[
-      
+
+      GoRoute(
+        path: '/',
+        name: 'Landing',
+        pageBuilder: (context, state) => buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const LandingPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/loginRegister',
+        name: 'LoginRegister',
+        pageBuilder: (context, state) => buildPageWithTransition(
+          context: context,
+          state: state,
+          child: LoginRegisterPage(key: state.pageKey),
+        ),
+      ),
       GoRoute(
         path: '/historia',
         name: 'Historia',
-        pageBuilder: (context, state) => buildPageWithTransition(
+        pageBuilder: (context, state) => buildPageWithTransitionSlide(
           context: context,
           state: state,
           child: HistoriaCASPage(key: state.pageKey),
@@ -416,17 +440,6 @@ final goRouterProvider = Provider<GoRouter>((ref){
           
         ],
       ),
-
-      // Rota de Login (fora da navegação principal)
-      GoRoute(
-        path: '/loginRegister',
-        name: 'LoginRegister',
-        pageBuilder: (context, state) => buildPageWithTransition(
-          context: context,
-          state: state,
-          child: LoginRegisterPage(key: state.pageKey),
-        ),
-      )
     ],
   );
 });
@@ -456,14 +469,14 @@ CustomTransitionPage buildPageWithTransitionSlide<T>({
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
-    transitionDuration: const Duration(milliseconds: 250), // Um pouco mais rápido para ser sutil
+    transitionDuration: const Duration(milliseconds: 250),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(
         opacity: animation,
         child: SlideTransition(
           position: animation.drive(
             Tween<Offset>(
-              begin: const Offset(0.05, 0.0), // Apenas 5% de deslocamento. Quase imperceptível, mas fluido.
+              begin: const Offset(0.05, 0.0),
               end: Offset.zero,
             ).chain(CurveTween(curve: Curves.easeOut)),
           ),
