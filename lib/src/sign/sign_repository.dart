@@ -1,14 +1,14 @@
-// sign_repository.dart
 import 'dart:convert';
 import 'package:app_cas_natal/src/sign/sign_model.dart';
 import 'package:app_cas_natal/src/http_client.dart';
 
 class SignRepository {
   final IHttpClient client;
+  static const String _baseUrl = String.fromEnvironment('API_URL');
   SignRepository({required this.client});
 
   Future<List<SignModel>> getSigns() async {
-    final response = await client.get(url: 'https://cas-natal-api.onrender.com/CASNatal/signs');
+    final response = await client.get(url: '$_baseUrl/CASNatal/signs');
     try{
       final body = jsonDecode(response.body) as List;
       return body.map((item) => SignModel.fromMap(item)).toList();
@@ -18,7 +18,7 @@ class SignRepository {
   }
 
   Future<SignModel> getSignById(String id) async {
-    final response = await client.get(url: 'https://cas-natal-api.onrender.com/CASNatal/signs/$id');
+    final response = await client.get(url: '$_baseUrl/CASNatal/signs/$id');
     try{
       final body = jsonDecode(response.body);
       return SignModel.fromMap(body);
@@ -28,7 +28,7 @@ class SignRepository {
   }
 
   Future<List<SignModel>> getSignsWithLessons() async {
-    final response = await client.get(url: 'https://cas-natal-api.onrender.com/CASNatal/signs/lessons');
+    final response = await client.get(url: '$_baseUrl/CASNatal/signs/lessons');
     try{
       final body = jsonDecode(response.body) as List;
       return body.map((item) => SignModel.fromMap(item)).toList();
@@ -39,7 +39,7 @@ class SignRepository {
 
   Future<SignModel> newSign(SignModel sign) async {
     final response = await client.post(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/signs/create',
+      url: '$_baseUrl/CASNatal/signs/create',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(sign.toMap()),
     );
@@ -63,7 +63,7 @@ class SignRepository {
 
   Future<SignModel> updateSign(SignModel sign, String id) async {
     final response = await client.update(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/signs/update/$id',
+      url: '$_baseUrl/CASNatal/signs/update/$id',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(sign.toMap()),
     );
@@ -86,7 +86,7 @@ class SignRepository {
   }
 
   Future<void> deleteSign(String id) async {
-    await client.delete(url: 'https://cas-natal-api.onrender.com/CASNatal/signs/delete/$id');
+    await client.delete(url: '$_baseUrl/CASNatal/signs/delete/$id');
     try{
       return;
     } catch(e){

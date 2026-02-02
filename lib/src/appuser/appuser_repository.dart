@@ -5,11 +5,12 @@ import 'package:app_cas_natal/src/http_client.dart';
 
 class AppUserRepository {
   final IHttpClient client;
+  static const String _baseUrl = String.fromEnvironment('API_URL');
   AppUserRepository({required this.client});
 
   Future<List<AppUserModel>> fetchUsers({required String token}) async {
     final response = await client.get(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/users',
+      url: '$_baseUrl/CASNatal/account/users',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 
@@ -25,7 +26,7 @@ class AppUserRepository {
 
   Future<Uint8List?> fetchAvatar({required String token}) async {
     final response = await client.get(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/avatar',
+      url: '$_baseUrl/CASNatal/account/avatar',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 
@@ -58,7 +59,7 @@ class AppUserRepository {
     };
 
     final response = await client.post(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/register',
+      url: '$_baseUrl/CASNatal/account/register',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(requestBody),
     );
@@ -89,7 +90,7 @@ class AppUserRepository {
     };
 
     final response = await client.post(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/login',
+      url: '$_baseUrl/CASNatal/account/login',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(requestBody),
     );
@@ -133,7 +134,7 @@ class AppUserRepository {
     }
 
     final response = await client.patch(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/update',
+      url: '$_baseUrl/CASNatal/account/update',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 
@@ -170,7 +171,7 @@ class AppUserRepository {
     }
 
     final response = await client.patch(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/account/updateAvatar',
+      url: '$_baseUrl/CASNatal/account/updateAvatar',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 

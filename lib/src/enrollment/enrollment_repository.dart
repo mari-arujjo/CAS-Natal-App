@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'package:app_cas_natal/src/enrollment/enrollment_model.dart';
 import 'package:app_cas_natal/src/http_client.dart';
-import 'package:flutter/foundation.dart'; // Import necessário para debugPrint
+import 'package:flutter/foundation.dart';
 
 class EnrollmentRepository {
   final IHttpClient client;
+  static const String _baseUrl = String.fromEnvironment('API_URL');
   EnrollmentRepository({required this.client});
 
   Future<List<EnrollmentModel>> getEnrollments() async {
-    final response = await client.get(url: 'https://cas-natal-api.onrender.com/CASNatal/enrollments');
+    final response = await client.get(url: '$_baseUrl/CASNatal/enrollments');
     try{
       final body = jsonDecode(response.body) as List;
       return body.map((item) => EnrollmentModel.fromMap(item)).toList();
@@ -19,7 +20,7 @@ class EnrollmentRepository {
   
   Future<List<EnrollmentModel>> getCourseUserEnrollments({required String token}) async {
     final response = await client.get(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/enrollments/getCourseUserEnrollment',
+      url: '$_baseUrl/CASNatal/enrollments/getCourseUserEnrollment',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token', 
@@ -38,7 +39,7 @@ class EnrollmentRepository {
   
   Future<EnrollmentModel> newEnrollment({required String courseSymbol, required String token}) async {
     final response = await client.post(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/enrollments/create?symbol=$courseSymbol',
+      url: '$_baseUrl/CASNatal/enrollments/create?symbol=$courseSymbol',
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -82,13 +83,10 @@ class EnrollmentRepository {
   }) async {
     final body = jsonEncode({'status': newStatus});
     
-    // Garantindo que o ID não tenha espaços ou caracteres indesejados
     final safeEnrollmentId = enrollmentId.trim(); 
     
-    // URL MANTIDA conforme o backend [HttpPatch("update/{id}")]
-    final urlFinal = 'https://cas-natal-api.onrender.com/CASNatal/enrollments/update/$safeEnrollmentId';
-    
-    // Logs de Depuração
+    final urlFinal = '$_baseUrl/CASNatal/enrollments/update/$safeEnrollmentId';
+
     debugPrint('PATCH URL ENVIADA: $urlFinal'); 
     debugPrint('Body ENVIADO: $body');
     
@@ -97,7 +95,7 @@ class EnrollmentRepository {
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token',
-        'Accept': 'application/json', // <--- NOVO HEADER ADICIONADO PARA MAIOR COMPATIBILIDADE
+        'Accept': 'application/json',
       },
       body: body,
     );

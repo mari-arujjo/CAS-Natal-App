@@ -1,7 +1,7 @@
 import requests
 import time
 
-url = "https://cas-natal-api.onrender.com/CASNatal/quizQuestions/byLessonId/acfefe9f-4afb-4ae4-aa9f-77a43e7e7745"
+url = "https://cas-natal-api.onrender.com/CASNatal/health/database"
 i=0
 
 while True:

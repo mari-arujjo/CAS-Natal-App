@@ -4,10 +4,11 @@ import 'package:app_cas_natal/src/http_client.dart';
 
 class LessonRepository {
   final IHttpClient client;
+  static const String _baseUrl = String.fromEnvironment('API_URL');
   LessonRepository({required this.client});
 
   Future<List<LessonModel>> getLessons() async {
-    final response = await client.get(url:'https://cas-natal-api.onrender.com/CASNatal/lessons');
+    final response = await client.get(url:'$_baseUrl/CASNatal/lessons');
     try{
       final body = jsonDecode(response.body) as List;
       return body.map((item) => LessonModel.fromMap(item)).toList();
@@ -17,7 +18,7 @@ class LessonRepository {
   }
 
   Future<LessonModel> getLessonById(String id) async {
-    final response = await client.get(url:'https://cas-natal-api.onrender.com/CASNatal/lessons/$id');
+    final response = await client.get(url:'$_baseUrl/CASNatal/lessons/$id');
     
     if (response.statusCode != 200 && response.statusCode != 201){
         throw Exception("Falha ao buscar lição. Status: ${response.statusCode}");
@@ -36,7 +37,7 @@ class LessonRepository {
       throw Exception('O ID do curso não pode ser nulo ao cadastrar uma aula.');
     }
     final response = await client.post(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/lessons/create/${lesson.courseId}',
+      url: '$_baseUrl/CASNatal/lessons/create/${lesson.courseId}',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(lesson.toMap()), 
     );
@@ -67,7 +68,7 @@ class LessonRepository {
 
   Future<LessonModel> updateLesson(LessonModel course, String id) async {
     final response = await client.patch(
-      url: 'https://cas-natal-api.onrender.com/CASNatal/lessons/update/$id',
+      url: '$_baseUrl/CASNatal/lessons/update/$id',
       headers: {'Content-type': 'application/json'},
       body: jsonEncode(course.toMap()),
     );
@@ -90,7 +91,7 @@ class LessonRepository {
   }
 
   Future<void> deleteLesson(String id) async {
-    await client.delete(url:'https://cas-natal-api.onrender.com/CASNatal/lessons/delete/$id');
+    await client.delete(url:'$_baseUrl/CASNatal/lessons/delete/$id');
     try{
       return;
     }catch(e){

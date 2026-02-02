@@ -4,13 +4,13 @@ import 'package:app_cas_natal/src/quiz/quiz_model.dart';
 
 class QuizRepository {
   final IHttpClient client;
-
+  static const String _baseUrl = String.fromEnvironment('API_URL');
   QuizRepository({required this.client});
 
   Future<QuizQuestionModel> getQuizQuestionByLessonId({required String lessonId}) async {
     print('LOG: Tentando buscar questão do quiz para o lessonId: $lessonId');
     final finalLessonId = lessonId.toLowerCase();
-    final url = 'https://cas-natal-api.onrender.com/CASNatal/quizQuestions/byLessonId/$finalLessonId';
+    final url = '$_baseUrl/CASNatal/quizQuestions/byLessonId/$finalLessonId';
     print('LOG: URL da requisição: $url');
 
     final response = await client.get(
