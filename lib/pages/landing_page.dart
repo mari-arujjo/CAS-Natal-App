@@ -1,6 +1,7 @@
 import 'package:app_cas_natal/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LandingPage extends StatelessWidget {
@@ -11,25 +12,56 @@ class LandingPage extends StatelessWidget {
     final cores = Cores();
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        elevation: 1,
+        shadowColor: const Color.fromARGB(115, 0, 0, 0),
         title: Row(
           children: [
-            const Icon(Icons.school, color: Colors.blue, size: 30),
-            const SizedBox(width: 8),
-            const Text('LibrasEduca', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-            const Spacer(),
-            _navItem("Início"),
+            Icon(Icons.school, color: cores.azulEscuro, size: 30),
+            SizedBox(width: 8),
+            Text('CAS Natal + IFRN', style: TextStyle(color: cores.azulEscuro, fontWeight: FontWeight.bold)),
+            
+            Spacer(),
             _navItem("Sobre"),
             _navItem("Recursos"),
             _navItem("Contato"),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-              child: const Text("Acessar Plataforma", style: TextStyle(color: Colors.white)),
+            SizedBox(width: 10),
+            
+            SizedBox(
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.transparent,
+                      offset: Offset(0, 0),
+                      blurRadius: 0,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.goNamed('LoginRegister');
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(cores.laranja),
+                    shadowColor: WidgetStatePropertyAll(cores.laranjaEscuro),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    overlayColor: WidgetStatePropertyAll(cores.laranjaEscuro),
+                    elevation: WidgetStatePropertyAll(0),
+                    padding: WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ), 
+                    ),
+                  ),
+                  child: Text("Acessar Plataforma", style: TextStyle(color: Colors.white)),
+                ),
+              ),
             ),
           ],
         ),
@@ -38,9 +70,7 @@ class LandingPage extends StatelessWidget {
         child: Column(
           children: [
             _buildHeroSection(),
-            _buildFeaturesSection(),
-            _buildWhyChooseSection(), // O Footer saiu daqui de dentro e foi para baixo
-            _buildFooter(cores),      // Chamada corrigida aqui
+            _buildFooter(cores),
           ],
         ),
       ),
@@ -57,114 +87,9 @@ class LandingPage extends StatelessWidget {
   // --- SEÇÃO HERO ---
   Widget _buildHeroSection() {
     return Container(
-      padding: const EdgeInsets.all(40),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.blue.shade50, Colors.white],
-        ),
-      ),
+      padding: EdgeInsets.all(40),
       child: Row(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Capacitação em Libras\npara Professores",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color(0xFF0D47A1)),
-                ),
-                const SizedBox(height: 16),
-                const Text("Aprenda, pratique e ensine com confiança.", style: TextStyle(fontSize: 18, color: Colors.blueGrey)),
-                const SizedBox(height: 30),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
-                      child: const Text("Comece Agora"),
-                    ),
-                    const SizedBox(width: 15),
-                    OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.blue)),
-                      child: const Text("Saiba Mais"),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          Expanded(child: Icon(Icons.laptop_mac, size: 200, color: Colors.blue.shade200)),
-        ],
-      ),
-    );
-  }
-
-  // --- SEÇÃO CARACTERÍSTICAS ---
-  Widget _buildFeaturesSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 60),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _featureCard(Icons.play_circle_fill, "Aulas Interativas", "Vídeos e conteúdos completos."),
-          _featureCard(Icons.assignment_turned_in, "Quizzes e Exercícios", "Teste seus conhecimentos."),
-          _featureCard(Icons.bar_chart, "Progresso Salvo", "Acompanhe seu desempenho."),
-        ],
-      ),
-    );
-  }
-
-  Widget _featureCard(IconData icon, String title, String sub) {
-    return Column(
-      children: [
-        CircleAvatar(radius: 30, backgroundColor: Colors.blue.shade50, child: Icon(icon, color: Colors.blue, size: 30)),
-        const SizedBox(height: 10),
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        Text(sub, style: const TextStyle(color: Colors.grey, fontSize: 12)),
-      ],
-    );
-  }
-
-  // --- SEÇÃO POR QUE ESCOLHER ---
-  Widget _buildWhyChooseSection() {
-    return Container(
-      width: double.infinity,
-      color: Colors.blue.shade600,
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
-      child: Column(
-        children: [
-          const Text("Por que escolher o LibrasEduca?", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 40),
-          Wrap(
-            spacing: 20,
-            runSpacing: 20,
-            alignment: WrapAlignment.center,
-            children: [
-              _infoBox("Conteúdo de Qualidade", "Material didático atualizado."),
-              _infoBox("Plataforma Acessível", "Compatível com todos os dispositivos."),
-              _infoBox("Certificação Garantida", "Receba seu certificado ao concluir."),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _infoBox(String title, String desc) {
-    return Container(
-      width: 250,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        children: [
-          const Icon(Icons.school, color: Colors.orange, size: 40),
-          const SizedBox(height: 10),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
-          const SizedBox(height: 5),
-          Text(desc, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       ),
     );
