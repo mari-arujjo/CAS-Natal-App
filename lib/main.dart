@@ -55,6 +55,11 @@ class AppWidget extends ConsumerWidget {
           bodyMedium: TextStyle(color: cores.preto),
           bodySmall: TextStyle(color: cores.preto),
         ),
+        textSelectionTheme: TextSelectionThemeData(
+          selectionColor: cores.azulClaro, 
+          selectionHandleColor: cores.azulEscuro,
+          cursorColor: cores.azulEscuro,
+        ),
       ),
       routerConfig: router,
     );

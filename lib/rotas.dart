@@ -1,4 +1,3 @@
-// rotas.dart
 import 'package:app_cas_natal/nav.dart';
 import 'package:app_cas_natal/pages/Configuracoes/Admin/Gestao%20aula/aula_page.dart';
 import 'package:app_cas_natal/pages/Configuracoes/Admin/Gestao%20aula/cadastro_aula_page.dart';
@@ -33,6 +32,7 @@ import 'package:app_cas_natal/src/course/course_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_model.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -57,14 +57,12 @@ final goRouterProvider = Provider<GoRouter>((ref){
       final isGoingToLanding = state.matchedLocation == '/';
       final isGoingToLogin = state.matchedLocation == '/loginRegister';
 
-      if (!isLoggedIn && !isGoingToLanding && !isGoingToLogin) {
-        return '/loginRegister';
-      }
+      if (!kIsWeb && isGoingToLanding) return isLoggedIn ? '/cursos' : '/loginRegister';
 
-      if (isLoggedIn && isGoingToLogin) {
-        return '/cursos';
-      }
-
+      if (!isLoggedIn && !isGoingToLanding && !isGoingToLogin) return '/loginRegister';
+      
+      if (isLoggedIn && isGoingToLogin) return '/cursos';
+      
       return null;
     },
 
@@ -451,7 +449,7 @@ CustomTransitionPage buildPageWithTransition<T>({
 }) {
   return CustomTransitionPage<T>(
     key: state.pageKey,
-    child: child,
+    child: SelectionArea(child: child), 
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(
         opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
@@ -468,7 +466,7 @@ CustomTransitionPage buildPageWithTransitionSlide<T>({
 }) {
   return CustomTransitionPage<T>(
     key: state.pageKey,
-    child: child,
+    child: SelectionArea(child: child),
     transitionDuration: const Duration(milliseconds: 250),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(

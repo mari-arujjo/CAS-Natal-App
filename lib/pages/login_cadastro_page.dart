@@ -26,6 +26,7 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
   final TextEditingController emailCadastroCtrl = TextEditingController();
   final TextEditingController passwordCadastroCtrl = TextEditingController();
   final TextEditingController password2CadastroCtrl = TextEditingController();
+  
   final cor = Cores();
   final PopUp popUp = PopUp();
 
@@ -125,55 +126,44 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
         const SingleActivator(LogicalKeyboardKey.enter): () => asyncLogin(),
         const SingleActivator(LogicalKeyboardKey.numpadEnter): () => asyncLogin(),
       },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/avatar/menino2.png', height: 150),
-                      const SizedBox(height: 20),
-                      const Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 20),
-                      ContainerWidget(
-                        child: Column(
-                          children: [
-                            InputOutline(
-                              txt: "Usuário",
-                              ico: const Icon(Icons.person),
-                              controller: usernameLoginCtrl,
-                            ),
-                            const SizedBox(height: 15),
-                            InputOutlineSenha(
-                              txt: "Senha",
-                              controller: passwordLoginCtrl,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      BotaoLaranjaWidget(
-                        txt: 'Entrar',
-                        onPressed: asyncLogin,
-                        tam: 1000,
-                      ),
-                      const Spacer(),
-                      const Text(
-                        'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
-                        style: TextStyle(fontSize: 10),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        child: Column(
+          children: [
+            Image.asset('assets/avatar/menino2.png', height: 150),
+            const SizedBox(height: 20),
+            const Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            ContainerWidget(
+              child: Column(
+                children: [
+                  InputOutline(
+                    txt: "Usuário",
+                    ico: const Icon(Icons.person),
+                    controller: usernameLoginCtrl,
                   ),
-                ),
+                  const SizedBox(height: 15),
+                  InputOutlineSenha(
+                    txt: "Senha",
+                    controller: passwordLoginCtrl,
+                  ),
+                ],
               ),
             ),
-          );
-        },
+            const SizedBox(height: 30),
+            BotaoLaranjaWidget(
+              txt: 'Entrar',
+              onPressed: asyncLogin,
+              tam: 1000,
+            ),
+            SizedBox(height: 50),
+            Text(
+              'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
+              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -184,54 +174,43 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
         const SingleActivator(LogicalKeyboardKey.enter): () => asyncRegisterLogin(),
         const SingleActivator(LogicalKeyboardKey.numpadEnter): () => asyncRegisterLogin(),
       },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/avatar/menina2.png', height: 130),
-                      const SizedBox(height: 20),
-                      const Text('Crie agora a sua conta!', style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 20),
-                      ContainerWidget(
-                        child: Column(
-                          children: [
-                            InputOutline(txt: "Nome", ico: const Icon(Icons.person), controller: nameCadastroCtrl),
-                            const SizedBox(height: 15),
-                            InputOutline(txt: "Username", ico: const Icon(Icons.alternate_email), controller: usernameCadastroCtrl),
-                            const SizedBox(height: 15),
-                            InputOutline(txt: "Email", ico: const Icon(Icons.email), controller: emailCadastroCtrl),
-                            const SizedBox(height: 15),
-                            InputOutlineSenha(txt: "Senha", controller: passwordCadastroCtrl),
-                            const SizedBox(height: 15),
-                            InputOutlineSenha(txt: "Confirmar senha", controller: password2CadastroCtrl),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      BotaoLaranjaWidget(
-                        txt: 'Cadastrar',
-                        onPressed: asyncRegisterLogin,
-                        tam: 1000,
-                      ),
-                      const Spacer(),
-                      const Text(
-                        'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
-                        style: TextStyle(fontSize: 10),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        child: Column(
+          children: [
+            Image.asset('assets/avatar/menina2.png', height: 130),
+            const SizedBox(height: 20),
+            const Text('Crie agora a sua conta!', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            ContainerWidget(
+              child: Column(
+                children: [
+                  InputOutline(txt: "Nome", ico: const Icon(Icons.person), controller: nameCadastroCtrl),
+                  const SizedBox(height: 15),
+                  InputOutline(txt: "Username", ico: const Icon(Icons.alternate_email), controller: usernameCadastroCtrl),
+                  const SizedBox(height: 15),
+                  InputOutline(txt: "Email", ico: const Icon(Icons.email), controller: emailCadastroCtrl),
+                  const SizedBox(height: 15),
+                  InputOutlineSenha(txt: "Senha", controller: passwordCadastroCtrl),
+                  const SizedBox(height: 15),
+                  InputOutlineSenha(txt: "Confirmar senha", controller: password2CadastroCtrl),
+                ],
               ),
             ),
-          );
-        },
+            const SizedBox(height: 20),
+            BotaoLaranjaWidget(
+              txt: 'Cadastrar',
+              onPressed: asyncRegisterLogin,
+              tam: 1000,
+            ),
+            SizedBox(height: 50),
+            Text(
+              'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
+              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

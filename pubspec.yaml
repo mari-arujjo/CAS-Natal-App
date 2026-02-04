@@ -48,6 +48,7 @@ flutter:
     - assets/modulos/letramento.png
     - assets/modulos/inclusao.jpg
     - assets/modulos/placeholder_curso.jpg
+    - assets/placeholder.png
     
     - assets/storybook/cas.jpg
     - assets/storybook/capa.png

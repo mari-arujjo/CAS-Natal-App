@@ -111,20 +111,18 @@ class LessonContentPage extends ConsumerWidget {
                     horizontal: isWebWide ? 40.0 : 20.0,
                     vertical: 20.0,
                   ),
-                  child: SelectionArea( // Permite selecionar texto na Web
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          lesson.content,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            height: 1.6,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lesson.content,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          height: 1.6,
                         ),
-                        const SizedBox(height: 40),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 40),
+                    ],
                   ),
                 ),
               ),
