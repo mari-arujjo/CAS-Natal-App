@@ -36,10 +36,11 @@ class LessonRepository {
     if (lesson.courseId == null) {
       throw Exception('O ID do curso não pode ser nulo ao cadastrar uma aula.');
     }
+    final String bodyData = jsonEncode(lesson.toCreateMap());
     final response = await client.post(
       url: '$_baseUrl/CASNatal/lessons/create/${lesson.courseId}',
       headers: {'Content-type': 'application/json'},
-      body: jsonEncode(lesson.toMap()), 
+      body: bodyData, 
     );
     if (response.statusCode != 200 && response.statusCode != 201){
       final body = jsonDecode(response.body);
@@ -47,32 +48,25 @@ class LessonRepository {
         final erro = body['errors'] as Map<String, dynamic>;
         final key = erro.keys.first;
         final value = (erro[key] as List).first;
-        final msg = 'Campo: $key \n($value)';
-        throw Exception(msg);
-      } else if (response.body.isNotEmpty && body['error'] != null) {
-        throw Exception(body['error']);
-      } else {
-         throw Exception('Erro ${response.statusCode}: Falha na requisição.');
-      }
+        throw Exception('Campo: $key \n($value)');
+      } 
+      throw Exception('Erro ${response.statusCode}: ${body['error'] ?? 'Falha na requisição.'}');
     }
     try{
       final body = jsonDecode(response.body);
       return LessonModel.fromMap(body);
-    }catch(e){
-      if (response.statusCode == 201 && response.body.isEmpty) {
-         throw Exception('Sucesso, mas resposta da API inesperadamente vazia.');
-      }
+    } catch(e){
       throw Exception('Erro ao processar resposta da API: $e');
     }
   }
 
   Future<LessonModel> updateLesson(LessonModel lesson, String id) async {
     print('--- Enviando Update de Aula ---');
-  print('ID da Aula na URL: $id');
-  print('Tópicos sendo enviados:');
-  for (var topic in lesson.topics) {
-    print('  - ID: ${topic.id} | Título: ${topic.title} | Ordem: ${topic.order}');
-  }
+    print('ID da Aula na URL: $id');
+    print('Tópicos sendo enviados:');
+    for (var topic in lesson.topics) {
+      print('  - ID: ${topic.id} | Título: ${topic.title} | Ordem: ${topic.order}');
+    }
     final response = await client.patch(
       url: '$_baseUrl/CASNatal/lessons/update/$id',
       headers: {'Content-type': 'application/json'},

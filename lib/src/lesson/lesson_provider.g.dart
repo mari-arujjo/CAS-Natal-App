@@ -120,7 +120,7 @@ final class LessonNotifierProvider
   LessonNotifier create() => LessonNotifier();
 }
 
-String _$lessonNotifierHash() => r'd4f49c4343bd07ce2d59b46a43a2b7aa64dff9ad';
+String _$lessonNotifierHash() => r'f710373ddd3743b0897b6218525b1d243bdbc65b';
 
 abstract class _$LessonNotifier extends $AsyncNotifier<List<LessonModel>> {
   FutureOr<List<LessonModel>> build();

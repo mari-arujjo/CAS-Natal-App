@@ -28,6 +28,14 @@ class LessonTopicModel {
       'textContent': textContent,
     };
   }
+
+  Map<String, dynamic> toCreateMap() {
+    return {
+      'order': order,
+      'title': title,
+      'textContent': textContent,
+    };
+  }
 }
 
 class LessonModel {
@@ -80,6 +88,16 @@ class LessonModel {
       'content': content,
       'topics': topics.map((t) => t.toMap()).toList(),
       'courseId': courseId,
+    };
+  }
+
+  Map<String, dynamic> toCreateMap() {
+    return {
+      'name': name,
+      'order': order,
+      'url': url,
+      'content': content,
+      'topics': topics.map((t) => t.toCreateMap()).toList(),
     };
   }
 }

@@ -56,13 +56,13 @@ const quizQuestionDetailProvider = QuizQuestionDetailFamily._();
 final class QuizQuestionDetailProvider
     extends
         $FunctionalProvider<
-          AsyncValue<QuizQuestionModel>,
-          QuizQuestionModel,
-          FutureOr<QuizQuestionModel>
+          AsyncValue<List<QuizQuestionModel>>,
+          List<QuizQuestionModel>,
+          FutureOr<List<QuizQuestionModel>>
         >
     with
-        $FutureModifier<QuizQuestionModel>,
-        $FutureProvider<QuizQuestionModel> {
+        $FutureModifier<List<QuizQuestionModel>>,
+        $FutureProvider<List<QuizQuestionModel>> {
   const QuizQuestionDetailProvider._({
     required QuizQuestionDetailFamily super.from,
     required String super.argument,
@@ -86,12 +86,12 @@ final class QuizQuestionDetailProvider
 
   @$internal
   @override
-  $FutureProviderElement<QuizQuestionModel> $createElement(
+  $FutureProviderElement<List<QuizQuestionModel>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<QuizQuestionModel> create(Ref ref) {
+  FutureOr<List<QuizQuestionModel>> create(Ref ref) {
     final argument = this.argument as String;
     return quizQuestionDetail(ref, argument);
   }
@@ -108,10 +108,10 @@ final class QuizQuestionDetailProvider
 }
 
 String _$quizQuestionDetailHash() =>
-    r'8b4370db04c8fa38927e6805976a6144be19aa63';
+    r'13efde8046d9c6bf7568958347fb3bf6bcd07167';
 
 final class QuizQuestionDetailFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<QuizQuestionModel>, String> {
+    with $FunctionalFamilyOverride<FutureOr<List<QuizQuestionModel>>, String> {
   const QuizQuestionDetailFamily._()
     : super(
         retry: null,

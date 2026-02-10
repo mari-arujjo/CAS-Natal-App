@@ -12,9 +12,9 @@ QuizRepository quizRepository(Ref ref){
 }
 
 @riverpod
-Future<QuizQuestionModel> quizQuestionDetail(
+Future<List<QuizQuestionModel>> quizQuestionDetail(
   Ref ref, String lessonId
 ) async {
   final repository = ref.watch(quizRepositoryProvider);
-  return repository.getQuizQuestionByLessonId(lessonId: lessonId);
+  return repository.getQuizQuestionsByLessonId(lessonId: lessonId);
 }

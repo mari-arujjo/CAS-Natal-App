@@ -257,13 +257,13 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                         children: [
                           BotaoLaranjaWidget(
                             txt: 'Excluir', 
-                            tam: 150, 
+                            tam: 100, 
                             onPressed: _asyncDeleteLesson,
                           ),
                           const SizedBox(width: 20),
                           BotaoLaranjaWidget(
                             txt: 'Salvar', 
-                            tam: 150, 
+                            tam: 100, 
                             onPressed: _asyncUpdateLesson,
                           ),
                         ],
@@ -271,7 +271,7 @@ class _AulaPageState extends ConsumerState<AulaPage> {
                       const SizedBox(height: 20),
                       BotaoLaranjaWidget(
                         txt: 'Cancelar', 
-                        tam: 150, 
+                        tam: 100, 
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],

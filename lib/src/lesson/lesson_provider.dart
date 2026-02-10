@@ -33,6 +33,7 @@ class LessonNotifier extends _$LessonNotifier{
       ref.invalidateSelf();
     } catch(e, s){
       state = AsyncValue.error(e, s);
+      rethrow;
     }
   }
 

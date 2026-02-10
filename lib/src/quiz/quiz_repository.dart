@@ -7,46 +7,26 @@ class QuizRepository {
   static const String _baseUrl = String.fromEnvironment('API_URL');
   QuizRepository({required this.client});
 
-  Future<QuizQuestionModel> getQuizQuestionByLessonId({required String lessonId}) async {
-    print('LOG: Tentando buscar questão do quiz para o lessonId: $lessonId');
+  Future<List<QuizQuestionModel>> getQuizQuestionsByLessonId({required String lessonId}) async {
+    print('LOG: Tentando buscar questões do quiz para o lessonId: $lessonId');
     final finalLessonId = lessonId.toLowerCase();
     final url = '$_baseUrl/CASNatal/quizQuestions/byLessonId/$finalLessonId';
     print('LOG: URL da requisição: $url');
-
-    final response = await client.get(
-      url: url,
-    );
+    final response = await client.get(url: url);
     print('LOG: Resposta recebida. Status Code: ${response.statusCode}');
-
     if (response.statusCode != 200) {
-      print(
-        'LOG ERROR: Falha na requisição. Corpo da resposta: ${response.body}',
-      );
-      throw Exception(
-        'Falha ao buscar a questão do quiz. Status: ${response.statusCode}',
-      );
+      print('LOG ERROR: Falha na requisição. Corpo: ${response.body}');
+      throw Exception('Falha ao buscar as questões do quiz. Status: ${response.statusCode}');
     }
-
     try {
-      print(
-        'LOG SUCCESS: Resposta 200 OK. Corpo recebido: '
-        '${response.body.length > 200 ? response.body.substring(0, 200) + '...' : response.body}',
-      );
-
-      final body = jsonDecode(response.body) as Map<String, dynamic>;
-
-      print(
-        'LOG SUCCESS: Dados do QuizQuestionModel mapeados com sucesso.',
-      );
-
-      return QuizQuestionModel.fromMap(body);
+      final List<dynamic> body = jsonDecode(response.body);
+      print('LOG SUCCESS: ${body.length} questões encontradas.');
+      final quizzes = body.map((e) => QuizQuestionModel.fromMap(e)).toList();
+      quizzes.sort((a, b) => a.order.compareTo(b.order));
+      return quizzes;
     } catch (e) {
-      print(
-        'LOG EXCEPTION: Erro ao processar a resposta do quiz: $e',
-      );
-      throw Exception(
-        'Erro ao processar a resposta da questão do quiz: $e',
-      );
+      print('LOG EXCEPTION: Erro ao processar a resposta do quiz: $e');
+      throw Exception('Erro ao processar a resposta das questões do quiz: $e');
     }
   }
 }

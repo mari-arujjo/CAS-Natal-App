@@ -17,7 +17,7 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
     {
       'tipo': 'capa',
       'titulo': 'CAS Natal: O encontro entre línguas, educação, cultura e comunidade surda',
-      'imagem': 'assets/storybook/foto0.png',
+      'imagem': 'assets/storybook/capa.png',
     },
     {
       'tipo': 'conteudo',
@@ -53,31 +53,31 @@ class _HistoriaCASPageState extends State<HistoriaCASPage> {
       'tipo': 'conteudo',
       'titulo': 'NOSSOS VALORES',
       'texto': 'Nossas ações são guiadas por três Valores inegociáveis, representados pelo aperto de mãos.\n1. Integridade e Transparência: Atuar com a mais alta ética profissional, garantindo clareza e honestidade irrestritas em todas as ações e processos.\n\n2. Respeito e Credibilidade: Construir a confiança mútua por meio de um atendimento empático e do profundo respeito à dignidade e às necessidades singulares do nosso público-alvo.\n\n3. Compromisso com a Educação Bilíngue: Manter fidelidade aos princípios e metodologias das propostas educacionais específicas para estudantes surdos, assegurando a excelência e a inclusão efetiva.',
-      'imagem': 'assets/storybook/foto5.png',
+      'imagem': 'assets/storybook/foto6.png',
     },
     {
       'tipo': 'conteudo',
       'titulo': 'COMO FAZEMOS?',
       'texto': 'O CAS Natal opera em uma estrutura de quatro vertentes interconectadas, que formam uma robusta rede de apoio essencial para o Atendimento Educacional Especializado (AEE) e para a promoção de uma perspectiva verdadeiramente bilíngue.',
-      'imagem': 'assets/storybook/foto6.png',
+      'imagem': 'assets/storybook/foto7.png',
     },
     {
       'tipo': 'conteudo',
       'titulo': '',
       'texto': '1. Núcleo de Capacitação (Acesso e Difusão da Libras): Promove a fluência e a proficiência em Libras entre os profissionais da educação, elevando a qualidade do ensino e a comunicação inclusiva na rede.\n\n2. Núcleo de Pesquisa e Extensão (Estudos e Discussões na Área): Fomenta a produção de conhecimento e o debate acadêmico sobre a Surdez, garantindo que as práticas pedagógicas do CAS Natal estejam sempre na vanguarda da ciência e da inclusão.',
-      'imagem': 'assets/storybook/foto7.png',
+      'imagem': 'assets/storybook/foto8.png',
     },
     {
       'tipo': 'conteudo',
       'titulo': '',
       'texto': '3. Núcleo de Produção de Material Didático (Adaptação e Criação de Recursos): É responsável por produzir e adaptar materiais físicos e virtuais alinhados à perspectiva bilíngue, fornecendo ferramentas essenciais para o AEE e o aprendizado autônomo.\n\n4. Núcleo da Família (Comunicação e Vínculos Familiares): Atua como ponte, promovendo a comunicação efetiva e estreitando os vínculos entre a família e o estudante surdo, reconhecendo o papel crucial do ambiente familiar no processo de inclusão e desenvolvimento.',
-      'imagem': 'assets/storybook/foto7.png',
+      'imagem': 'assets/storybook/foto9.png',
     },
     {
       'tipo': 'conteudo',
       'titulo': '',
-      'texto': 'O CAS Natal não é apenas um centro; é o ponto de partida para um futuro onde todas as vozes e todos os sinais têm espaço, onde a diversidade linguística é celebrada. A educação, a cultura e a comunidade se entrelaçam para construir um Rio Grande do Norte mais justo, acessível e inclusivo para todos.\n\nA conexão é a nossa força.',
-      'imagem': 'assets/storybook/foto8.png',
+      'texto': 'O CAS Natal não é apenas um centro; é o ponto de partida para um futuro onde todas as vozes e todos os sinais têm espaço, onde a diversidade linguística é celebrada. A educação, a cultura e a comunidade se entrelaçam para construir um Rio Grande do Norte mais justo, acessível e inclusivo para todos.\nA conexão é a nossa força.',
+      'imagem': 'assets/storybook/foto10.png',
     },
   ];
 

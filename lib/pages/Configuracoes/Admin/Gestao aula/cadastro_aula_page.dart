@@ -180,9 +180,9 @@ class _CadastroAulaPageState extends ConsumerState<CadastroAulaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BotaoLaranjaWidget(txt: 'Cancelar', onPressed: () => Navigator.of(context).pop(), tam: 150),
+                      BotaoLaranjaWidget(txt: 'Cancelar', onPressed: () => Navigator.of(context).pop(), tam: 100),
                       SizedBox(width: 20),
-                      BotaoLaranjaWidget(txt: 'Salvar', onPressed: asyncSaveLesson, tam: 150),
+                      BotaoLaranjaWidget(txt: 'Salvar', onPressed: asyncSaveLesson, tam: 100),
                     ],
                   )
                 ],

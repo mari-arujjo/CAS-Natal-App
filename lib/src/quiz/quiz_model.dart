@@ -23,6 +23,7 @@ class QuizQuestionModel {
   final String lessonId;
   final String questionText;
   final String feedback;
+  final int order;
   final List<QuizOptionModel> quizOptions;
 
   QuizQuestionModel({
@@ -30,6 +31,7 @@ class QuizQuestionModel {
     required this.lessonId,
     required this.questionText,
     required this.feedback,
+    required this.order,
     required this.quizOptions,
   });
 
@@ -40,6 +42,7 @@ class QuizQuestionModel {
       lessonId: map['lessonId'] as String,
       questionText: map['questionText'] as String,
       feedback: map['feedback'] as String,
+      order: map['order'] ?? 0,
       quizOptions: optionsList.map((e) => QuizOptionModel.fromMap(e as Map<String, dynamic>)).toList(),
     );
   }
