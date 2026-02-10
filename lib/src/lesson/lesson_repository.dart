@@ -66,11 +66,17 @@ class LessonRepository {
     }
   }
 
-  Future<LessonModel> updateLesson(LessonModel course, String id) async {
+  Future<LessonModel> updateLesson(LessonModel lesson, String id) async {
+    print('--- Enviando Update de Aula ---');
+  print('ID da Aula na URL: $id');
+  print('Tópicos sendo enviados:');
+  for (var topic in lesson.topics) {
+    print('  - ID: ${topic.id} | Título: ${topic.title} | Ordem: ${topic.order}');
+  }
     final response = await client.patch(
       url: '$_baseUrl/CASNatal/lessons/update/$id',
       headers: {'Content-type': 'application/json'},
-      body: jsonEncode(course.toMap()),
+      body: jsonEncode(lesson.toMap()),
     );
     if (response.statusCode != 200 && response.statusCode != 201){
       final body = jsonDecode(response.body);

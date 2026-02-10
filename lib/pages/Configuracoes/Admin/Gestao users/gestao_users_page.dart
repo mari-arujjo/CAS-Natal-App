@@ -1,23 +1,22 @@
 import 'package:app_cas_natal/cores.dart';
+import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_lista_widget.dart';
 import 'package:app_cas_natal/widgets/botoes/flutuante_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/search_widget.dart';
+import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class GestaoUsersPage extends StatefulWidget {
+class GestaoUsersPage extends ConsumerWidget {
   const GestaoUsersPage({super.key});
 
   @override
-  State<GestaoUsersPage> createState() => _GestaoUsersPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ScrollController scrollController = ScrollController();
+    final cor = Cores();
+    final asyncUsers = ref.watch(appUserProvider);
 
-class _GestaoUsersPageState extends State<GestaoUsersPage> {
-  final ScrollController scrollController = ScrollController(); // adicionado
-  final cor = Cores();
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Gestão de usuários'),
@@ -42,24 +41,43 @@ class _GestaoUsersPageState extends State<GestaoUsersPage> {
               color: cor.cinzaClaro,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Scrollbar(
-              controller: scrollController,
-              thumbVisibility: true,
-              radius: Radius.circular(10),
-              child: ListView.separated(
-                controller: scrollController,
-                padding: EdgeInsets.only(right: 15,left: 15,top: 10,bottom: 12),
-                separatorBuilder: (_, __) => SizedBox(height: 12),
-                itemCount: 1,
-                itemBuilder: (_, index) {
-                  return ButtonLista(
-                    txt: '@marujo - Mariana Araújo Silva',
-                    onPressed: () {
-                      context.goNamed('AlterarUser');
-                    },
-                  );
-                },
+
+            child: asyncUsers.when(
+              loading: () => Center(child: CarregandoWidget()),
+              error: (error, stackTrace) => Center(
+                child: Text('Erro ao carregar usuários: $error'),
               ),
+              data: (users) {
+                if (users.isEmpty){
+                  return Center(
+                    child: Text(
+                      'Nenhum curso cadastrado.',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  );
+                }
+                
+                return Scrollbar(
+                  controller: scrollController,
+                  thumbVisibility: true,
+                  radius: Radius.circular(10),
+                  child: ListView.separated(
+                    controller: scrollController,
+                    padding: EdgeInsets.only(right: 15,left: 15,top: 10,bottom: 12),
+                    separatorBuilder: (_, __) => SizedBox(height: 12),
+                    itemCount: 1,
+                    itemBuilder: (_, index) {
+                      final user = users[index];
+                      return ButtonLista(
+                        txt: '@${user.userName} - ${user.fullName}',
+                        onPressed: () {
+                          context.goNamed('AlterarUser', pathParameters: {'userId': user.id!});
+                        },
+                      );
+                    },
+                  ),
+                );
+              }
             ),
           ),
         ),

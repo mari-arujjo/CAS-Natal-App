@@ -72,7 +72,10 @@ class GestaoAulaPage extends ConsumerWidget {
                       return ButtonLista(
                         txt: '${lesson.lessonCode} - ${lesson.name}',
                         onPressed: () {
-                          context.goNamed('AlterarAula', extra: lesson);
+                          context.goNamed(
+                            'AlterarAula', 
+                            pathParameters: {'lessonId': lesson.id!},
+                          );
                         },
                       );
                     },

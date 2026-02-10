@@ -54,7 +54,7 @@ final class SecureStorageProvider
   }
 }
 
-String _$secureStorageHash() => r'273dc403a965c1f24962aaf4d40776611a26f8b8';
+String _$secureStorageHash() => r'65b5990fb6d911d4c06ae67e210c350a8b9f02f5';
 
 @ProviderFor(httpClient)
 const httpClientProvider = HttpClientProvider._();
@@ -168,7 +168,7 @@ final class AppUserNotifierProvider
   AppUserNotifier create() => AppUserNotifier();
 }
 
-String _$appUserNotifierHash() => r'e3f95767d4e0d7f7171174244057a87b64ea60c6';
+String _$appUserNotifierHash() => r'19c0f6d87dc92e667d72a62d33fa4e12aa2c206d';
 
 abstract class _$AppUserNotifier extends $AsyncNotifier<List<AppUserModel>> {
   FutureOr<List<AppUserModel>> build();
@@ -265,4 +265,79 @@ final class AvatarProvider
   }
 }
 
-String _$avatarHash() => r'5fbd7230ad28ca73556878db754a7104b43c022e';
+String _$avatarHash() => r'cb38e410cb0c8998d9908c86ce37daf9156725f1';
+
+@ProviderFor(userDetail)
+const userDetailProvider = UserDetailFamily._();
+
+final class UserDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AppUserModel?>,
+          AppUserModel?,
+          FutureOr<AppUserModel?>
+        >
+    with $FutureModifier<AppUserModel?>, $FutureProvider<AppUserModel?> {
+  const UserDetailProvider._({
+    required UserDetailFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'userDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$userDetailHash();
+
+  @override
+  String toString() {
+    return r'userDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<AppUserModel?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AppUserModel?> create(Ref ref) {
+    final argument = this.argument as String;
+    return userDetail(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$userDetailHash() => r'4ad582b07969ce60493a27c81d0fb7cd62d693ff';
+
+final class UserDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<AppUserModel?>, String> {
+  const UserDetailFamily._()
+    : super(
+        retry: null,
+        name: r'userDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  UserDetailProvider call(String userId) =>
+      UserDetailProvider._(argument: userId, from: this);
+
+  @override
+  String toString() => r'userDetailProvider';
+}

@@ -18,11 +18,10 @@ class LandingPage extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 1,
         shadowColor: const Color.fromARGB(115, 0, 0, 0),
-        automaticallyImplyLeading: false, 
         title: Row(
           children: [
             Icon(Icons.school, color: cores.azulEscuro, size: isMobile ? 24 : 30),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Text(
               'CAS Natal + IFRN', 
               style: TextStyle(
@@ -31,8 +30,6 @@ class LandingPage extends StatelessWidget {
                 fontSize: isMobile ? 14 : 18
               )
             ),
-            Spacer(),
-            _botaoAcesso(context, cores, isMobile),
           ],
         ),
       ),
@@ -43,26 +40,6 @@ class LandingPage extends StatelessWidget {
             _buildFooter(cores, isMobile),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _botaoAcesso(BuildContext context, Cores cores, bool isMobile) {
-    return ElevatedButton(
-      onPressed: () => context.goNamed('LoginRegister'),
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(cores.laranja),
-        shadowColor: WidgetStatePropertyAll(cores.laranjaEscuro),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        overlayColor: WidgetStatePropertyAll(cores.laranjaEscuro),
-        elevation: WidgetStatePropertyAll(0),
-        padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10,vertical: 5)),
-      ),
-      child: Text(
-        isMobile ? "Acessar" : "Acessar Plataforma", 
-        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.5)
       ),
     );
   }
@@ -117,7 +94,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     SizedBox(height: 40),
                     BotaoLaranjaWidget(
-                      txt: "Ver Cursos", 
+                      txt: "Acessar Plataforma", 
                       onPressed: () => context.goNamed('Cursos'), 
                       tam: isMobile ? 200 : 250
                     ),

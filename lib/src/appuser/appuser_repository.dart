@@ -8,7 +8,7 @@ class AppUserRepository {
   static const String _baseUrl = String.fromEnvironment('API_URL');
   AppUserRepository({required this.client});
 
-  Future<List<AppUserModel>> fetchUsers({required String token}) async {
+  Future<List<AppUserModel>> getUsers({required String token}) async {
     final response = await client.get(
       url: '$_baseUrl/CASNatal/account/users',
       headers: {
@@ -24,7 +24,23 @@ class AppUserRepository {
     }
   }
 
-  Future<Uint8List?> fetchAvatar({required String token}) async {
+  Future<AppUserModel> getUserById(String id, {required String token}) async {
+    final response = await client.get(
+      url: '$_baseUrl/CASNatal/account/users/$id',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token', 
+      },
+    );
+    try{
+      final body = jsonDecode(response.body) as Map<String, dynamic>; 
+      return AppUserModel.fromMap(body);
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  Future<Uint8List?> getAvatar({required String token}) async {
     final response = await client.get(
       url: '$_baseUrl/CASNatal/account/avatar',
       headers: {

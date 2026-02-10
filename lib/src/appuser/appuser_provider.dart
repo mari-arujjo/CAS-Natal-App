@@ -35,7 +35,7 @@ class AppUserNotifier extends _$AppUserNotifier{
     if (currentUser == null || currentUser.token == null) {
         return []; 
     }
-    return repository.fetchUsers(token: currentUser.token!);
+    return repository.getUsers(token: currentUser.token!);
   }
 }
 
@@ -81,8 +81,22 @@ Future<Uint8List?> avatar(Ref ref) async {
   }
   try {
     final repository = ref.read(userRepositoryProvider);
-    return await repository.fetchAvatar(token: user.token!);
+    return await repository.getAvatar(token: user.token!);
   } catch (e) {
     return null;
+  }
+}
+
+@riverpod
+Future<AppUserModel?> userDetail(Ref ref, String userId) async {
+  final user = await ref.watch(currentUserProvider.future);
+  
+  if (user?.token == null) return null;
+
+  final repository = ref.watch(userRepositoryProvider);
+  try {
+    return await repository.getUserById(userId, token: user!.token!);
+  } catch (e) {
+    return null; 
   }
 }

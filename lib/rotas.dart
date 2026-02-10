@@ -28,8 +28,7 @@ import 'package:app_cas_natal/pages/Cursos/cursos_page.dart';
 import 'package:app_cas_natal/pages/Historia/historia_page.dart';
 import 'package:app_cas_natal/pages/landing_page.dart';
 import 'package:app_cas_natal/src/appuser/appuser_provider.dart';
-import 'package:app_cas_natal/src/course/course_model.dart';
-import 'package:app_cas_natal/src/lesson/lesson_model.dart';
+import 'package:app_cas_natal/src/course/course_provider.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/carregando_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -37,6 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:app_cas_natal/pages/login_cadastro_page.dart';
+import 'package:riverpod/src/framework.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _rootNavigatorCursos = GlobalKey<NavigatorState>(debugLabel: 'shellCursos');
@@ -110,7 +110,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
               GoRoute(
                 path: '/cursos',
                 name: 'Cursos',
-                pageBuilder: (context, state) => buildPageWithTransition(
+                pageBuilder: (context, state) => buildPageWithTransitionSlide(
                   context: context,
                   state: state,
                   child: CursosPage(key: state.pageKey),
@@ -290,13 +290,25 @@ final goRouterProvider = Provider<GoRouter>((ref){
                             ),
                           ),
                           GoRoute(
-                            path: 'alterarUser',
+                            path: 'alterarUser/:userId',
                             name: 'AlterarUser',
-                            pageBuilder: (context, state) => buildPageWithTransition(
-                              context: context,
-                              state: state,
-                              child: UserPage(key: state.pageKey),
-                            ),
+                            pageBuilder: (context, state) {
+                              final userId = state.pathParameters['userId']!;
+                              return buildPageWithTransition(
+                                context: context,
+                                state: state,
+                                child: Consumer(
+                                  builder: (context, ref, child) {
+                                    final userAsync = ref.watch(userDetailProvider(userId));
+                                    return userAsync.when(
+                                      loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                      error: (err, stack) => Scaffold(body: Center(child: Text('Erro: $err'))),
+                                      data: (user) => UserPage(key: state.pageKey, user: user),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           )
                         ]
                       ),
@@ -319,14 +331,23 @@ final goRouterProvider = Provider<GoRouter>((ref){
                             ),
                           ),
                           GoRoute(
-                            path: 'alterarCurso',
+                            path: 'alterarCurso/:courseId',
                             name: 'AlterarCurso',
                             pageBuilder: (context, state) {
-                              final curso = state.extra as CourseModel;
+                              final courseId = state.pathParameters['courseId']!;
                               return buildPageWithTransition(
                                 context: context,
                                 state: state,
-                                child: CursoPage(key: state.pageKey, curso: curso),
+                                child: Consumer(
+                                  builder: (context, ref, child) {
+                                    final courseAsync = ref.watch(courseDetailProvider(courseId));
+                                    return courseAsync.when(
+                                      loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                      error: (err, stack) => Scaffold(body: Center(child: Text('Erro: $err'))),
+                                      data: (curso) => CursoPage(key: state.pageKey, curso: curso),
+                                    );
+                                  },
+                                ),
                               );
                             },
                           ),
@@ -351,14 +372,23 @@ final goRouterProvider = Provider<GoRouter>((ref){
                             ),
                           ),
                           GoRoute(
-                            path: 'alterarAula',
+                            path: 'alterarAula/:lessonId',
                             name: 'AlterarAula',
                             pageBuilder: (context, state) {
-                              final aula = state.extra as LessonModel;
+                              final lessonId = state.pathParameters['lessonId']!;
                               return buildPageWithTransition(
                                 context: context,
                                 state: state,
-                                child: AulaPage(key: state.pageKey, aula: aula),
+                                child: Consumer(
+                                  builder: (context, ref, child) {
+                                    final lessonAsync = ref.watch(lessonDetailProvider(lessonId));
+                                    return lessonAsync.when(
+                                      loading: () => const Scaffold(body: Center(child: CarregandoWidget())),
+                                      error: (err, stack) => Scaffold(body: Center(child: Text('Erro: $err'))),
+                                      data: (lesson) => AulaPage(key: state.pageKey, aula: lesson),
+                                    );
+                                  },
+                                ),
                               );
                             },
                           ),

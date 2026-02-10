@@ -8,10 +8,39 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:app_cas_natal/src/quiz/quiz_provider.dart';
 import 'package:app_cas_natal/src/lesson/lesson_provider.dart';
 
-class LessonContentPage extends ConsumerWidget {
+class LessonContentPage extends ConsumerStatefulWidget {
   final LessonModel lesson;
 
   const LessonContentPage({super.key, required this.lesson});
+
+  @override
+  ConsumerState<LessonContentPage> createState() => _LessonContentPageState();
+}
+
+class _LessonContentPageState extends ConsumerState<LessonContentPage> {
+  int _currentIndex = 0;
+  late List<LessonTopicModel> _sortedTopics;
+  bool _hasQuiz = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _sortedTopics = List<LessonTopicModel>.from(widget.lesson.topics)
+      ..sort((a, b) => a.order.compareTo(b.order));
+    
+    _checkQuizExistence();
+  }
+
+  Future<void> _checkQuizExistence() async {
+    try {
+      await ref.read(quizQuestionDetailProvider(widget.lesson.id!).future);
+      if (mounted) setState(() => _hasQuiz = true);
+    } catch (e) {
+      if (mounted) setState(() => _hasQuiz = false);
+    }
+  }
+
+  int get _totalPages => 1 + _sortedTopics.length;
 
   String? _findNextLessonId(WidgetRef ref, LessonModel currentLesson) {
     final lessonsAsync = ref.watch(lessonProvider);
@@ -32,102 +61,104 @@ class LessonContentPage extends ConsumerWidget {
     );
   }
 
-  void QuizConfirmation(BuildContext context, WidgetRef ref) async {
-    final cor = Cores();
-    try {
-      await ref.read(quizQuestionDetailProvider(lesson.id!).future);
-      if (!context.mounted) return;
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            title: const Text('Início do Quiz'),
-            content: const Text(
-                'Tem certeza de que deseja prosseguir para o Quiz? Certifique-se de que revisou todo o conteúdo da lição.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(true),
-                child:
-                    Text('Prosseguir', style: TextStyle(color: cor.azulEscuro)),
-              ),
-            ],
-          );
-        },
-      );
+  void _handleFinalStep() async {
+    if (_hasQuiz) {
+      _showQuizConfirmation();
+    } else {
+      _goToNextLessonOrFinish();
+    }
+  }
 
-      if (confirmed == true && context.mounted) {
-        context.go('/cursos/detalheCurso/${lesson.courseId}/quiz/${lesson.id}');
-      }
-    } catch (e) {
-      final errorText = e.toString().toLowerCase();
-      if (errorText.contains('falha ao buscar a questão do quiz. status: 404') ||
-          errorText.contains('falha ao buscar a questão do quiz')) {
-        final nextLessonId = _findNextLessonId(ref, lesson);
-        if (!context.mounted) return;
-        if (nextLessonId != null) {
-          context.go(
-              '/cursos/detalheCurso/${lesson.courseId}/video/$nextLessonId');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text(
-                    'Quiz não encontrado. Prosseguindo para a próxima lição.')),
-          );
-        } else {
-          context.go('/cursos/detalheCurso/${lesson.courseId}');
-        }
-      } else {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text('Erro inesperado ao verificar o Quiz: ${e.toString()}')),
-          );
-        }
-      }
+  void _goToNextLessonOrFinish() {
+    final nextId = _findNextLessonId(ref, widget.lesson);
+    if (nextId != null) {
+      context.go('/cursos/detalheCurso/${widget.lesson.courseId}/video/$nextId');
+    } else {
+      context.go('/cursos/detalheCurso/${widget.lesson.courseId}');
+    }
+  }
+
+  void _showQuizConfirmation() async {
+    final cor = Cores();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Início do Quiz'),
+        content: const Text('Deseja prosseguir para o Quiz?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Cancelar', style: TextStyle(color: cor.azulEscuro)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Prosseguir', style: TextStyle(color: cor.azulEscuro)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      context.go('/cursos/detalheCurso/${widget.lesson.courseId}/quiz/${widget.lesson.id}');
+    }
+  }
+
+  void _nextStep() {
+    if (_currentIndex < _totalPages - 1) {
+      setState(() => _currentIndex++);
+    } else {
+      _handleFinalStep();
+    }
+  }
+
+  void _previousStep() {
+    if (_currentIndex > 0) {
+      setState(() => _currentIndex--);
+    } else {
+      context.go('/cursos/detalheCurso/${widget.lesson.courseId}/video/${widget.lesson.id}');
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final bool isWebWide = screenWidth > 900;
+  Widget build(BuildContext context) {
+    final cor = Cores();
+    final isWebWide = MediaQuery.of(context).size.width > 900;
+    double progress = (_currentIndex + 1) / _totalPages;
+
+    String finalBtnText = _hasQuiz ? 'Quiz' : 'Próximo';
+    IconData finalBtnIcon = _hasQuiz ? Icons.quiz : Icons.arrow_forward;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Conteúdo: ${lesson.name}'),
+        title: Text('Conteúdo: ${widget.lesson.name}'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(6.0),
+          child: LinearProgressIndicator(
+            value: progress,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(cor.azulEscuro),
+            minHeight: 6,
+          ),
+        ),
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 1000), 
+          constraints: const BoxConstraints(maxWidth: 1000),
           child: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
                     horizontal: isWebWide ? 40.0 : 20.0,
-                    vertical: 20.0,
+                    vertical: 30.0,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        lesson.content,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          height: 1.6,
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                    ],
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: _buildCurrentContent(),
                   ),
                 ),
               ),
-              
-              _buildBottomNavigation(context, ref),
+              _buildBottomNavigation(finalBtnText, finalBtnIcon),
             ],
           ),
         ),
@@ -135,7 +166,33 @@ class LessonContentPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildBottomNavigation(BuildContext context, WidgetRef ref) {
+  Widget _buildCurrentContent() {
+    if (_currentIndex == 0) {
+      return Column(
+        key: const ValueKey('intro'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("Introdução", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          Text(widget.lesson.content, style: const TextStyle(fontSize: 18, height: 1.6)),
+        ],
+      );
+    }
+    final topic = _sortedTopics[_currentIndex - 1];
+    return Column(
+      key: ValueKey(topic.id ?? _currentIndex),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(topic.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 20),
+        Text(topic.textContent, style: const TextStyle(fontSize: 18, height: 1.6)),
+      ],
+    );
+  }
+
+  Widget _buildBottomNavigation(String finalBtnText, IconData finalBtnIcon) {
+    bool isLastPage = _currentIndex == _totalPages - 1;
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
@@ -144,15 +201,13 @@ class LessonContentPage extends ConsumerWidget {
           BotaoNavegacaoWidget(
             txt: 'Anterior',
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.go(
-                  '/cursos/detalheCurso/${lesson.courseId}/video/${lesson.id}');
-            },
+            onPressed: _previousStep,
           ),
+          Text('${_currentIndex + 1} / $_totalPages', style: const TextStyle(fontWeight: FontWeight.bold)),
           BotaoNavegacaoWidget(
-            txt: 'Próximo',
-            icon: const Icon(Icons.arrow_forward),
-            onPressed: () => QuizConfirmation(context, ref),
+            txt: isLastPage ? finalBtnText : 'Próximo',
+            icon: Icon(isLastPage ? finalBtnIcon : Icons.arrow_forward),
+            onPressed: _nextStep,
           ),
         ],
       ),

@@ -72,7 +72,7 @@ class GestaoCursoPage extends ConsumerWidget {
                       return ButtonLista(
                         txt: '${course.courseCode} - ${course.name}',
                         onPressed: () {
-                          context.goNamed('AlterarCurso', extra: course);
+                          context.goNamed('AlterarCurso', pathParameters: {'courseId': course.id!});
                         },
                       );
                     },

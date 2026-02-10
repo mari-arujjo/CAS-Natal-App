@@ -17,4 +17,5 @@ class Cores {
   final branco = const Color.fromARGB(255, 241, 241, 241);
   final cinzaClaro = const Color(0xFFEDEDED);
   final preto = const Color(0xFF1D1B20);
+  final backgroundScaffold = const Color(0xFFF8F9FA);
 }

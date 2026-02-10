@@ -24,7 +24,7 @@ class AppWidget extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: Color(0xFFF8F9FA),
+        scaffoldBackgroundColor: cores.backgroundScaffold,
       
         // --- ESTILIZAÇÃO DO NAVIGATION RAIL (Desktop/Web) ---
         navigationRailTheme: NavigationRailThemeData(
