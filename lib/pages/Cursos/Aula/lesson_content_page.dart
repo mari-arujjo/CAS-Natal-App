@@ -18,6 +18,7 @@ class LessonContentPage extends ConsumerStatefulWidget {
 }
 
 class _LessonContentPageState extends ConsumerState<LessonContentPage> {
+  late PageController _pageController;
   int _currentIndex = 0;
   late List<LessonTopicModel> _sortedTopics;
   bool _hasQuiz = true;
@@ -25,10 +26,16 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: 0);
     _sortedTopics = List<LessonTopicModel>.from(widget.lesson.topics)
       ..sort((a, b) => a.order.compareTo(b.order));
-    
     _checkQuizExistence();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _checkQuizExistence() async {
@@ -105,7 +112,10 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
 
   void _nextStep() {
     if (_currentIndex < _totalPages - 1) {
-      setState(() => _currentIndex++);
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
     } else {
       _handleFinalStep();
     }
@@ -113,7 +123,10 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
 
   void _previousStep() {
     if (_currentIndex > 0) {
-      setState(() => _currentIndex--);
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
     } else {
       context.go('/cursos/detalheCurso/${widget.lesson.courseId}/video/${widget.lesson.id}');
     }
@@ -147,15 +160,21 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isWebWide ? 40.0 : 20.0,
-                    vertical: 30.0,
-                  ),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: _buildCurrentContent(),
-                  ),
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() => _currentIndex = index);
+                  },
+                  itemCount: _totalPages,
+                  itemBuilder: (context, index) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isWebWide ? 40.0 : 20.0,
+                        vertical: 30.0,
+                      ),
+                      child: _buildPageContent(index),
+                    );
+                  },
                 ),
               ),
               _buildBottomNavigation(finalBtnText, finalBtnIcon),
@@ -166,10 +185,9 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
     );
   }
 
-  Widget _buildCurrentContent() {
-    if (_currentIndex == 0) {
+  Widget _buildPageContent(int index) {
+    if (index == 0) {
       return Column(
-        key: const ValueKey('intro'),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Introdução", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -178,9 +196,9 @@ class _LessonContentPageState extends ConsumerState<LessonContentPage> {
         ],
       );
     }
-    final topic = _sortedTopics[_currentIndex - 1];
+
+    final topic = _sortedTopics[index - 1];
     return Column(
-      key: ValueKey(topic.id ?? _currentIndex),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(topic.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),

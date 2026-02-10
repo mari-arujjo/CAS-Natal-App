@@ -57,7 +57,8 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
         loading: () => Center(child: CarregandoWidget()),
         error: (error, stack) => Center(child: Text('Erro: $error')),
         data: (CourseModel course) {
-          final List<LessonModel> lessons = course.lessons ?? [];
+          final List<LessonModel> lessons = List.from(course.lessons ?? []);
+          lessons.sort((a, b) => a.order.compareTo(b.order));
           return userEnrollmentsAsync.when(
             loading: () => Center(child: CarregandoWidget()),
             error: (error, stack) => Center(child: Text('Erro nas matrículas')),
@@ -126,7 +127,7 @@ class _DetalheCursoPageState extends ConsumerState<DetalheCursoPage> {
                             itemBuilder: (context, index) {
                               final lesson = lessons[index];
                               return AulaTile(
-                                index: index + 1,
+                                index: lesson.order,
                                 title: lesson.name,
                                 onTap: () {
                                   context.go('/cursos/detalheCurso/${course.id}/video/${lesson.id}');

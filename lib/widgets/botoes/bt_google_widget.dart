@@ -1,26 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:app_cas_natal/cores.dart';
+import 'package:flutter/material.dart';
 
-class ButtonQuadradoIcon extends StatefulWidget {
+class BotaoGoogleWidget extends StatefulWidget {
   final String txt;
   final VoidCallback onPressed;
-  final IconData icon;
+  final double tam;
 
-  const ButtonQuadradoIcon({
+  const BotaoGoogleWidget({
     super.key,
     required this.txt,
     required this.onPressed,
-    required this.icon,
+    this.tam = 1000,
   });
 
   @override
-  State<ButtonQuadradoIcon> createState() => _ButtonQuadradoIconState();
+  State<BotaoGoogleWidget> createState() => _BotaoGoogleWidgetState();
 }
 
-class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
+class _BotaoGoogleWidgetState extends State<BotaoGoogleWidget> {
   bool _isHovered = false;
   bool _isPressed = false;
-  final cor = Cores();
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +44,16 @@ class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
         onTapCancel: () => setState(() => _isPressed = false),
         onTap: widget.onPressed,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 100),
           curve: Curves.easeOut,
+          height: 35,
+          width: widget.tam,
           transform: Matrix4.translationValues(0, offsetDeslocamento, 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: cor.laranjaEscuro,
+                color:  Cores().azulEscuro,
                 offset: Offset(0, offsetSombra),
                 blurRadius: 0,
               ),
@@ -61,29 +62,28 @@ class _ButtonQuadradoIconState extends State<ButtonQuadradoIcon> {
           child: ElevatedButton(
             onPressed: null,
             style: ElevatedButton.styleFrom(
-              disabledBackgroundColor: cor.laranja,
-              backgroundColor: cor.laranja,
+              disabledBackgroundColor: Colors.white,
               elevation: 0,
+              side: BorderSide(color:  Cores().azulEscuro,),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: const EdgeInsets.all(10),
-            ).copyWith(
-              overlayColor: WidgetStatePropertyAll(cor.laranjaEscuro),
+              padding: EdgeInsets.zero,
             ),
-            child: Column(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(widget.icon, color: Colors.white, size: 30),
-                SizedBox(height: 8),
+                Image.asset(
+                  'assets/logos/google_logo.png',
+                  height: 18,
+                ),
+                SizedBox(width: 10),
                 Text(
-                  widget.txt.toUpperCase(),
-                  textAlign: TextAlign.center,
+                  widget.txt,
                   style: TextStyle(
-                    color: Colors.white, 
-                    fontSize: 12, 
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
+                    color: Cores().azulEscuro,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
                   ),
                 ),
               ],

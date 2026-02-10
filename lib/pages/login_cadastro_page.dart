@@ -7,6 +7,7 @@ import 'package:app_cas_natal/widgets/vizualizacao/dg_loading_widget.dart';
 import 'package:app_cas_natal/cores.dart';
 import 'package:app_cas_natal/popup.dart';
 import 'package:app_cas_natal/widgets/botoes/bt_laranja_widget.dart';
+import 'package:app_cas_natal/widgets/botoes/bt_google_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/input_icon_widget.dart';
 import 'package:app_cas_natal/widgets/inputs/ipt_senha_outline_widget.dart';
 import 'package:app_cas_natal/widgets/vizualizacao/container_widget.dart';
@@ -26,7 +27,7 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
   final TextEditingController emailCadastroCtrl = TextEditingController();
   final TextEditingController passwordCadastroCtrl = TextEditingController();
   final TextEditingController password2CadastroCtrl = TextEditingController();
-  
+
   final cor = Cores();
   final PopUp popUp = PopUp();
 
@@ -40,11 +41,15 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
 
     DialogLoadingWidget.showLoading(context);
     try {
-      final user = await ref.read(userRepositoryProvider).login(userName: username, password: password);
+      final user = await ref
+          .read(userRepositoryProvider)
+          .login(userName: username, password: password);
       if (!mounted) return;
       DialogLoadingWidget.dismiss(context);
       if (user.token != null && user.token!.isNotEmpty) {
-        await ref.read(secureStorageProvider).write(key: 'token', value: user.token!);
+        await ref
+            .read(secureStorageProvider)
+            .write(key: 'token', value: user.token!);
         if (!mounted) return;
         context.pushReplacement('/cursos');
       }
@@ -73,12 +78,17 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
 
     DialogLoadingWidget.showLoading(context);
     try {
-      await ref.read(userRepositoryProvider).register(fullName: name, userName: username, email: email, password: pass1);
-      final user = await ref.read(userRepositoryProvider).login(userName: username, password: pass1);
+      await ref.read(userRepositoryProvider).register(
+          fullName: name, userName: username, email: email, password: pass1);
+      final user = await ref
+          .read(userRepositoryProvider)
+          .login(userName: username, password: pass1);
       if (!mounted) return;
       DialogLoadingWidget.dismiss(context);
       if (user.token != null && user.token!.isNotEmpty) {
-        await ref.read(secureStorageProvider).write(key: 'token', value: user.token!);
+        await ref
+            .read(secureStorageProvider)
+            .write(key: 'token', value: user.token!);
         if (!mounted) return;
         context.pushReplacement('/cursos');
       }
@@ -91,7 +101,7 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    const double maxContentWidth = 400;
+    double maxContentWidth = 400;
 
     return DefaultTabController(
       length: 2,
@@ -102,16 +112,16 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
             indicatorColor: cor.azulEscuro,
             labelColor: cor.azulEscuro,
             unselectedLabelColor: Colors.grey,
-            tabs: const [Tab(text: 'Login'), Tab(text: 'Cadastro')],
+            tabs: [Tab(text: 'Login'), Tab(text: 'Cadastro')],
           ),
         ),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: maxContentWidth),
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
             child: TabBarView(
               children: [
                 _buildLoginForm(cor),
-                _buildRegisterForm(cor)
+                _buildRegisterForm(cor),
               ],
             ),
           ),
@@ -123,46 +133,67 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
   Widget _buildLoginForm(Cores cor) {
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): () => asyncLogin(),
-        const SingleActivator(LogicalKeyboardKey.numpadEnter): () => asyncLogin(),
+        SingleActivator(LogicalKeyboardKey.enter): () => asyncLogin(),
+        SingleActivator(LogicalKeyboardKey.numpadEnter): () =>
+            asyncLogin(),
       },
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Column(
-          children: [
-            Image.asset('assets/avatar/menino2.png', height: 150),
-            const SizedBox(height: 20),
-            const Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
-            const SizedBox(height: 20),
-            ContainerWidget(
-              child: Column(
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: Column(
+            children: [
+              Image.asset('assets/avatar/menino2.png', height: 150),
+              SizedBox(height: 20),
+              Text('Bem vindo de volta!', style: TextStyle(fontSize: 18)),
+              SizedBox(height: 20),
+              ContainerWidget(
+                child: Column(
+                  children: [
+                    InputOutline(
+                      txt: "Usuário",
+                      ico: Icon(Icons.person),
+                      controller: usernameLoginCtrl,
+                    ),
+                    SizedBox(height: 15),
+                    InputOutlineSenha(
+                      txt: "Senha",
+                      controller: passwordLoginCtrl,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              BotaoLaranjaWidget(
+                txt: 'Entrar',
+                onPressed: asyncLogin,
+                tam: 1000,
+              ),
+              SizedBox(height: 25),
+              Row(
                 children: [
-                  InputOutline(
-                    txt: "Usuário",
-                    ico: const Icon(Icons.person),
-                    controller: usernameLoginCtrl,
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text("ou", style: TextStyle(color: Colors.grey)),
                   ),
-                  const SizedBox(height: 15),
-                  InputOutlineSenha(
-                    txt: "Senha",
-                    controller: passwordLoginCtrl,
-                  ),
+                  Expanded(child: Divider()),
                 ],
               ),
-            ),
-            const SizedBox(height: 30),
-            BotaoLaranjaWidget(
-              txt: 'Entrar',
-              onPressed: asyncLogin,
-              tam: 1000,
-            ),
-            SizedBox(height: 50),
-            Text(
-              'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
-              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              SizedBox(height: 20),
+              BotaoGoogleWidget(
+                txt: 'Entrar com Google',
+                onPressed: () {
+                },
+              ),
+              SizedBox(height: 50),
+              Text(
+                'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
+                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -171,45 +202,80 @@ class _LoginState extends ConsumerState<LoginRegisterPage> {
   Widget _buildRegisterForm(Cores cor) {
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): () => asyncRegisterLogin(),
-        const SingleActivator(LogicalKeyboardKey.numpadEnter): () => asyncRegisterLogin(),
+        SingleActivator(LogicalKeyboardKey.enter): () =>
+            asyncRegisterLogin(),
+        SingleActivator(LogicalKeyboardKey.numpadEnter): () =>
+            asyncRegisterLogin(),
       },
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Column(
-          children: [
-            Image.asset('assets/avatar/menina2.png', height: 130),
-            const SizedBox(height: 20),
-            const Text('Crie agora a sua conta!', style: TextStyle(fontSize: 18)),
-            const SizedBox(height: 20),
-            ContainerWidget(
-              child: Column(
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: Column(
+            children: [
+              Image.asset('assets/avatar/menina2.png', height: 130),
+              SizedBox(height: 20),
+              Text('Crie agora a sua conta!',
+                  style: TextStyle(fontSize: 18)),
+              SizedBox(height: 20),
+              ContainerWidget(
+                child: Column(
+                  children: [
+                    InputOutline(
+                        txt: "Nome",
+                        ico: Icon(Icons.person),
+                        controller: nameCadastroCtrl),
+                    SizedBox(height: 15),
+                    InputOutline(
+                        txt: "Username",
+                        ico: Icon(Icons.alternate_email),
+                        controller: usernameCadastroCtrl),
+                    SizedBox(height: 15),
+                    InputOutline(
+                        txt: "Email",
+                        ico: Icon(Icons.email),
+                        controller: emailCadastroCtrl),
+                    SizedBox(height: 15),
+                    InputOutlineSenha(
+                        txt: "Senha", controller: passwordCadastroCtrl),
+                    SizedBox(height: 15),
+                    InputOutlineSenha(
+                        txt: "Confirmar senha",
+                        controller: password2CadastroCtrl),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              BotaoLaranjaWidget(
+                txt: 'Cadastrar',
+                onPressed: asyncRegisterLogin,
+                tam: 1000,
+              ),
+              SizedBox(height: 25),
+              Row(
                 children: [
-                  InputOutline(txt: "Nome", ico: const Icon(Icons.person), controller: nameCadastroCtrl),
-                  const SizedBox(height: 15),
-                  InputOutline(txt: "Username", ico: const Icon(Icons.alternate_email), controller: usernameCadastroCtrl),
-                  const SizedBox(height: 15),
-                  InputOutline(txt: "Email", ico: const Icon(Icons.email), controller: emailCadastroCtrl),
-                  const SizedBox(height: 15),
-                  InputOutlineSenha(txt: "Senha", controller: passwordCadastroCtrl),
-                  const SizedBox(height: 15),
-                  InputOutlineSenha(txt: "Confirmar senha", controller: password2CadastroCtrl),
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text("ou", style: TextStyle(color: Colors.grey)),
+                  ),
+                  Expanded(child: Divider()),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
-            BotaoLaranjaWidget(
-              txt: 'Cadastrar',
-              onPressed: asyncRegisterLogin,
-              tam: 1000,
-            ),
-            SizedBox(height: 50),
-            Text(
-              'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
-              style: TextStyle(fontSize: 10, color: Colors.grey[600]),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              SizedBox(height: 20),
+              BotaoGoogleWidget(
+                txt: 'Cadastrar com Google',
+                onPressed: () {
+                },
+              ),
+              SizedBox(height: 50),
+              Text(
+                'CAS Natal/RN + IFRN\nDesenvolvido por Mariana Araújo',
+                style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
