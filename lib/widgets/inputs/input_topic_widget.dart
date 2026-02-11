@@ -37,7 +37,7 @@ class TopicInputWidget extends StatelessWidget {
               ],
             ),
             Text('Título do Tópico:'),
-            InputPadraoWidget(maxLength: 100, controller: titleCtrl, readOnly: false),
+            InputPadraoWidget(maxLength: 200, controller: titleCtrl, readOnly: false),
             SizedBox(height: 10),
             Text('Conteúdo:'),
             InputContentWidget(maxLength: 10000, controller: contentCtrl),
