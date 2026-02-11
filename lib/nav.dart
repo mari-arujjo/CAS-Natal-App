@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'env_config.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -56,6 +57,10 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
             "© 2026 CAS Natal + IFRN",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey[600]),
           ),
+          if (EnvConfig.env == 'dev')
+            Text(
+              "( EM BASE TESTE )", style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.red,letterSpacing: 1.2),
+            ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
